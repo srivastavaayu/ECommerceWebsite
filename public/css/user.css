@@ -1,0 +1,7 @@
+#editProfileButton {
+  display: flex;
+}
+
+#editProfileButtons {
+  display: none;
+}

@@ -11,6 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'IndexController@handle');
+
+Route::get('/logout', 'Auth\LogoutController@handle');
+
+Route::match(['GET', 'POST'], '/register', 'Auth\RegisterController@handle');
+
+Route::match(['GET', 'POST'], '/login', 'Auth\LoginController@handle');
+
+Route::match(['GET', 'POST'], '/user/profile', 'User\ProfileController@handle');
+
+Route::match(['GET', 'POST'], '/user/update-password', 'User\UpdatePasswordController@handle');
+
+Route::get('/shop/search', 'Shop\SearchController@handle');
