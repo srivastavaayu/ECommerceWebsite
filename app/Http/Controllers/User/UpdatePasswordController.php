@@ -23,23 +23,19 @@ class UpdatePasswordController extends Controller
       if($validator -> fails()) {
         return redirect('/user/update-password') -> withErrors($validator) -> withInput();
       }
-      else {
-        $user = User::where('id', Auth::id()) -> get();
-        if (Hash::check($request -> CurrentPasswordInput, $user[0] -> password)) {
-          $user = User::find(Auth::id());
-          $user -> password = Hash::make($request -> PasswordInput);
-          $user -> save();
-          $info = "Password has been updated successfully!";
-        }
-        else {
-          $info = "Current password is incorrect! Please check and try again.";
-        }
-        return view('update-password', ['info' => $info]);
+      $user = User::where('id', Auth::id()) -> get();
+      if (Hash::check($request -> CurrentPasswordInput, $user[0] -> password)) {
+        $user = User::find(Auth::id());
+        $user -> password = Hash::make($request -> PasswordInput);
+        $user -> save();
+        $info = "Password has been updated successfully!";
       }
+      else {
+        $info = "Current password is incorrect! Please check and try again.";
+      }
+      return view('user/update-password', ['info' => $info]);
     }
-    else {
-      return view('update-password');
-    }
+    return view('user/update-password');
   }
 
 }

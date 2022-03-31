@@ -23,4 +23,26 @@ Route::match(['GET', 'POST'], '/user/profile', 'User\ProfileController@handle');
 
 Route::match(['GET', 'POST'], '/user/update-password', 'User\UpdatePasswordController@handle');
 
+Route::match(['GET', 'POST'], '/inventory/product', 'Inventory\ProductsController@handle');
+
+Route::match(['GET', 'POST'], '/inventory/product/add-new-product', 'Inventory\AddNewProductController@handle');
+
+Route::match(['GET', 'POST'], '/inventory/product/{id}', 'Inventory\ProductController@handle');
+
 Route::get('/shop/search', 'Shop\SearchController@handle');
+
+Route::match(['GET', 'POST'], '/shop/category', 'Shop\CategoriesController@handle');
+
+Route::match(['GET', 'POST'], '/shop/category/{id}', 'Shop\CategoryController@handle');
+
+Route::match(['GET', 'POST'], '/shop/product', 'Shop\ProductsController@handle');
+
+Route::match(['GET', 'POST'], '/shop/product/{id}', 'Shop\ProductController@handle');
+
+Route::post('/shop/product/{id}/AddToCart', 'Shop\ProductController@addToCart');
+
+Route::post('/shop/product/{id}/RemoveFromCart', 'Shop\ProductController@removeFromCart');
+
+Route::post('/shop/product/{id}/IncreaseCartQuantity', 'Shop\ProductController@increaseCartQuantity');
+
+Route::post('/shop/product/{id}/DecreaseCartQuantity', 'Shop\ProductController@decreaseCartQuantity');

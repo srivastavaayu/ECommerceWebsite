@@ -23,27 +23,23 @@ class LoginController extends Controller
       if($validator -> fails()) {
         return redirect('/login') -> withErrors($validator) -> withInput();
       }
-      else {
-        $users = User::where('username', $request -> UsernameInput) -> get();
-        if ($users -> count()) {
-          if (Hash::check($request -> PasswordInput, $users[0] -> password)) {
-            // Auth::loginUsingId($users[0] -> id);
-            Auth::loginUsingId(1);
-            return redirect('/');
-          }
-          else {
-            $info = "Incorrect password! Please try again.";
-          }
+      $users = User::where('username', $request -> UsernameInput) -> get();
+      if ($users -> count()) {
+        if (Hash::check($request -> PasswordInput, $users[0] -> password)) {
+          // Auth::loginUsingId($users[0] -> id);
+          Auth::loginUsingId($users[0] -> id);
+          return redirect('/');
         }
         else {
-          $info = "Username does not exists! Please try again.";
+          $info = "Incorrect password! Please try again.";
         }
-          return view('login', ['info' -> $info]);
       }
+      else {
+        $info = "Username does not exists! Please try again.";
+      }
+      return view('auth/login', ['info' -> $info]);
     }
-    else {
-      return view('login');
-    }
+    return view('auth/login');
   }
 
 }

@@ -11,8 +11,6 @@ class IndexController extends Controller
     if(Auth::check()) {
       return view('index', ['name' => Auth::user() -> name]);
     }
-    else {
-      return view('index');
-    }
+    return view('index');
   }
 }

@@ -1,4 +1,4 @@
-@include('header')
+@include('../header')
 
 <!doctype html>
 <html lang="{{ app()->getLocale() }}">
@@ -15,7 +15,8 @@
     </head>
     <body>
       @yield(Auth::check() ? "RegisteredUserHeader" : "GuestUserHeader")
-      <main class="main container-fluid mt-3" style="width: 70%">
+      <main class="main container-fluid mt-3 mb-5" style="width: 70%">
+        <a href="{{ url()->previous() }}"><button type="button" class="btn btn-primary">&larr; Back</button></a>
         <h2 class="text-center mb-3">Profile</h2>
         <div style="color: orange; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3">{{ isset($info) ? $info : "" }}</div>
         @if ($errors->any())
@@ -26,7 +27,7 @@
         @endif
 
         <div id="editProfileButton" class="justify-content-end">
-          <button type="button" class="btn btn-success ms-2" onclick="editProfile()">Edit Profile</button>
+          <button type="button" class="btn btn-primary ms-2" onclick="editProfile()">Edit Profile</button>
         </div>
         <form method="POST" action="/user/profile">
           {{ csrf_field() }}

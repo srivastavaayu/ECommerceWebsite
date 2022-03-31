@@ -26,7 +26,7 @@
               <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
           </li> -->
-          <li class="nav-item dropdown">
+          <!-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarShopByDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Shop by
             </a>
@@ -34,10 +34,32 @@
               <li><a class="dropdown-item" href="/shop/category">Category</a></li>
               <li><a class="dropdown-item" href="/shop/product">Product</a></li>
             </ul>
+          </li> -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarBuyDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Buy
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarBuyDropdown">
+              <li><a class="dropdown-item" href="/shop/search">Search</a></li>
+              <li><a class="dropdown-item" href="/shop/category">Categories</a></li>
+              <li><a class="dropdown-item" href="/shop/product">Products</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/shop/cart">Cart</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarSellDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Sell
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarSellDropdown">
+              <li><a class="dropdown-item" href="/inventory/product">Products</a></li>
+              <li><a class="dropdown-item" href="/inventory/warehouse">Warehouses</a></li>
+            </ul>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Settings
+              My Account
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarProfileDropdown">
               <li><a class="dropdown-item" href="/user/profile">Profile</a></li>

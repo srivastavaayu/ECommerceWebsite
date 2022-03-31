@@ -54,21 +54,17 @@ class RegisterController extends Controller
       if($validator -> fails()) {
         return redirect('/register') -> withErrors($validator) -> withInput();
       }
-      else {
-        $user = new User;
-        // User::addUser(['name' => $request -> FullNameInput, 'email' => $request -> EmailInput, 'phone_number' => $request -> PhoneNumberInput, 'username' => $request -> UsernameInput, 'password' => Hash::make($request -> PasswordInput)]);
-        $user -> name = $request -> FullNameInput;
-        $user -> email = $request -> EmailInput;
-        $user -> phone_number = $request -> PhoneNumberInput;
-        $user -> username = $request -> UsernameInput;
-        $user -> password = Hash::make($request -> PasswordInput);
-        $user -> save();
-        return redirect('/login');
-      }
+      $user = new User;
+      // User::addUser(['name' => $request -> FullNameInput, 'email' => $request -> EmailInput, 'phone_number' => $request -> PhoneNumberInput, 'username' => $request -> UsernameInput, 'password' => Hash::make($request -> PasswordInput)]);
+      $user -> name = $request -> FullNameInput;
+      $user -> email = $request -> EmailInput;
+      $user -> phone_number = $request -> PhoneNumberInput;
+      $user -> username = $request -> UsernameInput;
+      $user -> password = Hash::make($request -> PasswordInput);
+      $user -> save();
+      return redirect('/login');
     }
-    else {
-      return view('register');
-    }
+    return view('auth/register');
   }
 
 }

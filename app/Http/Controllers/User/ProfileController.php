@@ -24,29 +24,25 @@ class ProfileController extends Controller
       if($validator -> fails()) {
         return redirect('/user/profile') -> withErrors($validator) -> withInput();
       }
-      else {
-        $user = User::find(Auth::id());
-        if (!is_null($request -> FullNameInput)) {
-          $user -> name = $request -> FullNameInput;
-        }
-        if (!is_null($request -> EmailInput)) {
-          $user -> email = $request -> EmailInput;
-        }
-        if (!is_null($request -> PhoneNumberInput)) {
-          $user -> phone_number = $request -> PhoneNumberInput;
-        }
-        if (!is_null($request -> UsernameInput)) {
-          $user -> username = $request -> UsernameInput;
-        }
-        $user -> save();
-        Auth::setUser($user);
-        $info = "Profile has been updated successfully!";
-        return view('profile', ['name' => Auth::user() -> name, 'email' => Auth::user() -> email, 'phoneNumber' => Auth::user() -> phone_number, 'username' => Auth::user() -> username, 'info' => $info]);
+      $user = User::find(Auth::id());
+      if (!is_null($request -> FullNameInput)) {
+        $user -> name = $request -> FullNameInput;
       }
+      if (!is_null($request -> EmailInput)) {
+        $user -> email = $request -> EmailInput;
+      }
+      if (!is_null($request -> PhoneNumberInput)) {
+        $user -> phone_number = $request -> PhoneNumberInput;
+      }
+      if (!is_null($request -> UsernameInput)) {
+        $user -> username = $request -> UsernameInput;
+      }
+      $user -> save();
+      Auth::setUser($user);
+      $info = "Profile has been updated successfully!";
+      return view('user/profile', ['name' => Auth::user() -> name, 'email' => Auth::user() -> email, 'phoneNumber' => Auth::user() -> phone_number, 'username' => Auth::user() -> username, 'info' => $info]);
     }
-    else {
-      return view('profile', ['name' => Auth::user() -> name, 'email' => Auth::user() -> email, 'phoneNumber' => Auth::user() -> phone_number, 'username' => Auth::user() -> username]);
-    }
+    return view('user/profile', ['name' => Auth::user() -> name, 'email' => Auth::user() -> email, 'phoneNumber' => Auth::user() -> phone_number, 'username' => Auth::user() -> username]);
   }
 
 }
