@@ -19,27 +19,31 @@
         <a href="{{ url()->previous() }}"><button type="button" class="btn btn-primary">&larr; Back</button></a>
         <h2 class="text-center mb-3">Shop - Categories</h2>
 
-        <div class="mt-4 categoriesContainer text-center">
-          @foreach ($categories as $category)
-            <a class="categoryLinkContainer" href="/shop/category/{{ $category -> id }}">
-              <button class="categoryButtonContainer">
-                <div class="categoryContainer d-flex flex-column justify-content-center">
-                  <h4 class="categoryTitleText text-truncate">{{ $category -> name }}</h4>
-                  <p class="text-truncate">{{ $category -> description }}</p>
-                </div>
-              </button>
-            </a>
-          @endforeach
-        </div>
-        <div class="d-flex justify-content-center mt-4">
-          @if ($categories -> previousPageUrl() != "")
-            <a href="{{ $categories -> previousPageUrl() }}"><button class="btn btn-secondary">&larr; Previous</button></a>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          @endif
-          @if ($categories -> nextPageUrl() != "")
-            <a href="{{ $categories -> nextPageUrl() }}"><button class="btn btn-secondary">Next &rarr;</button></a>
-          @endif
-        </div>
+        @if ($categories -> count() <= 0)
+          <h3 class="text-center">No categories to show!</h3>
+        @else
+          <div class="mt-4 categoriesContainer text-center">
+            @foreach ($categories as $category)
+              <a class="categoryLinkContainer" href="/shop/category/{{ $category -> id }}">
+                <button class="categoryButtonContainer">
+                  <div class="categoryContainer d-flex flex-column justify-content-center">
+                    <h4 class="categoryTitleText text-truncate">{{ $category -> name }}</h4>
+                    <p class="text-truncate">{{ $category -> description }}</p>
+                  </div>
+                </button>
+              </a>
+            @endforeach
+          </div>
+          <div class="d-flex justify-content-center mt-4">
+            @if ($categories -> previousPageUrl() != "")
+              <a href="{{ $categories -> previousPageUrl() }}"><button class="btn btn-secondary">&larr; Previous</button></a>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @endif
+            @if ($categories -> nextPageUrl() != "")
+              <a href="{{ $categories -> nextPageUrl() }}"><button class="btn btn-secondary">Next &rarr;</button></a>
+            @endif
+          </div>
+        @endif
       </main>
 
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

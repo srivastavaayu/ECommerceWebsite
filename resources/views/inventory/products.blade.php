@@ -99,7 +99,7 @@
                           <input type="text" class="form-control" id="UnitInput" name="UnitInput" value="{{ $product -> unit }}" placeholder="{{ $product -> unit }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="StockQuantityInput">Stock Quanity</label>
+                          <label class="form-label" for="StockQuantityInput">Stock Quantity</label>
                           <input type="number" class="form-control" id="StockQuantityInput" name="StockQuantityInput" value="{{ $product -> quantity }}" placeholder="{{ $product -> quantity }}" readonly>
                         </div>
                         <div class="mb-3">
@@ -165,7 +165,7 @@
                           <input type="text" class="form-control" id="UnitInput" name="UnitInput" value="{{ $product -> unit }}" placeholder="{{ $product -> unit }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="StockQuantityInput">Stock Quanity</label>
+                          <label class="form-label" for="StockQuantityInput">Stock Quantity</label>
                           <input type="text" class="form-control" id="StockQuantityInput" name="StockQuantityInput" value="{{ $product -> quantity }}" placeholder="{{ $product -> quantity }}" readonly>
                         </div>
                       </div>
@@ -222,7 +222,7 @@
                           <input type="text" class="form-control" id="UnitInput" name="UnitInput" value="{{ $product -> unit }}" placeholder="{{ $product -> unit }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="StockQuantityInput">Stock Quanity</label>
+                          <label class="form-label" for="StockQuantityInput">Stock Quantity</label>
                           <input type="text" class="form-control" id="StockQuantityInput" name="StockQuantityInput" value="{{ $product -> quantity }}" placeholder="{{ $product -> quantity }}" readonly>
                         </div>
                       </div>

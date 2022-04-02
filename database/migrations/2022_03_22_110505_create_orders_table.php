@@ -23,6 +23,7 @@ class CreateOrdersTable extends Migration
             $table -> string('state');
             $table -> string('country');
             $table -> string('pin_code', 6);
+            $table -> unsignedBigInteger('total');
             $table -> timestamps();
             $table -> softDeletes();
             $table -> foreign('user_id') -> references('id') -> on('users') -> onDelete('set null');

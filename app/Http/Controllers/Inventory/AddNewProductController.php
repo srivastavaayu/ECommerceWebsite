@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class AddNewProductController extends Controller
 {
@@ -43,11 +44,15 @@ class AddNewProductController extends Controller
           return redirect('/inventory/product/add-new-product') -> withErrors($validator) -> withInput();
         }
         $product = new Product;
+        $product -> category_id = $request -> CategoryInput;
+        $product -> sku = $request -> SKUInput;
         $product -> name = $request -> ProductNameInput;
         $product -> description = $request -> ProductDescriptionInput;
-        $product -> sku = $request -> SKUInput;
-        $product -> category_id = $request -> CategoryInput;
         $product -> user_id = Auth::id();
+        if ($request -> hasFile('ProductImageInput')) {
+          $productImageInputPath = Storage::disk('ecomwebProducts') -> putFile('products', $request -> ProductImageInput);
+          $product -> image_path = $productImageInputPath;
+        }
         $product -> price = $request -> PriceInput;
         $product -> unit = $request -> UnitInput;
         $product -> quantity = $request -> StockQuantityInput;

@@ -19,9 +19,11 @@ Route::match(['GET', 'POST'], '/register', 'Auth\RegisterController@handle');
 
 Route::match(['GET', 'POST'], '/login', 'Auth\LoginController@handle');
 
-Route::match(['GET', 'POST'], '/user/profile', 'User\ProfileController@handle');
+Route::match(['GET', 'POST'], '/user/profile', 'UserController@profile');
 
-Route::match(['GET', 'POST'], '/user/update-password', 'User\UpdatePasswordController@handle');
+Route::get('/user/orders-history', 'UserController@ordersHistory');
+
+Route::match(['GET', 'POST'], '/user/update-password', 'UserController@updatePassword');
 
 Route::match(['GET', 'POST'], '/inventory/product', 'Inventory\ProductsController@handle');
 
@@ -39,10 +41,16 @@ Route::match(['GET', 'POST'], '/shop/product', 'Shop\ProductsController@handle')
 
 Route::match(['GET', 'POST'], '/shop/product/{id}', 'Shop\ProductController@handle');
 
-Route::post('/shop/product/{id}/AddToCart', 'Shop\ProductController@addToCart');
+Route::post('/shop/product/{id}/addToCart', 'Shop\ProductController@addToCart');
 
-Route::post('/shop/product/{id}/RemoveFromCart', 'Shop\ProductController@removeFromCart');
+Route::post('/shop/product/{id}/removeFromCart', 'Shop\ProductController@removeFromCart');
 
-Route::post('/shop/product/{id}/IncreaseCartQuantity', 'Shop\ProductController@increaseCartQuantity');
+Route::post('/shop/product/{id}/increaseCartQuantity', 'Shop\ProductController@increaseCartQuantity');
 
-Route::post('/shop/product/{id}/DecreaseCartQuantity', 'Shop\ProductController@decreaseCartQuantity');
+Route::post('/shop/product/{id}/decreaseCartQuantity', 'Shop\ProductController@decreaseCartQuantity');
+
+Route::get('/checkout/cart', 'Shop\CheckoutController@getCart');
+
+Route::match(['GET', 'POST'], '/checkout/checkout', 'Shop\CheckoutController@getCheckout');
+
+Route::get('/checkout/thank-you', 'Shop\CheckoutController@getThankYou');

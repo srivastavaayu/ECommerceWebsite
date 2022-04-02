@@ -106,7 +106,7 @@
             <input type="text" class="form-control" id="UnitInput" name="UnitInput" placeholder="{{ $product -> unit }}" value="{{ old('UnitInput') }}">
           </div>
           <div class="mb-3">
-            <label class="form-label" for="StockQuantityInput">Stock Quanity*</label>
+            <label class="form-label" for="StockQuantityInput">Stock Quantity*</label>
             <input type="number" class="form-control" id="StockQuantityInput" name="StockQuantityInput" placeholder="{{ $product -> quantity }}" value="{{ old('StockQuantityInput') }}" min="1">
           </div>
           <div class="d-flex justify-content-end">

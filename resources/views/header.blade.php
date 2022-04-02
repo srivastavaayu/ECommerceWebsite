@@ -46,7 +46,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/shop/cart">Cart</a>
+            <a class="nav-link" href="/checkout/cart">Cart</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarSellDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -63,6 +63,7 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarProfileDropdown">
               <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
+              <li><a class="dropdown-item" href="/user/orders-history">Orders History</a></li>
               <li><a class="dropdown-item" href="/user/saved-address">Saved Addresses</a></li>
               <li><a class="dropdown-item" href="/user/update-password">Update Password</a></li>
               <li><hr class="dropdown-divider"></li>

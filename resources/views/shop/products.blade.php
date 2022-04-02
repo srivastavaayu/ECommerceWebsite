@@ -55,29 +55,36 @@
           </form>
         </div>
 
-        <div class="mt-4 productsContainer text-center">
-          @foreach ($products as $product)
-            <a class="productLinkContainer" href="/shop/product/{{ $product -> id }}">
-              <button class="productButtonContainer">
-                <div class="productContainer">
-                  <h4 class="productTitleText text-truncate">{{ $product -> name }}</h4>
-                  <p class="mb-1 text-truncate">{{ $product -> description }}</p>
-                  <p class="productPriceContainer mb-1 text-truncate">{{ $product -> price }}/{{ $product -> unit }}</p>
-                </div>
-              </button>
-            </a>
-          @endforeach
-        </div>
-        <div class="d-flex justify-content-center mt-4">
-          @if ($products -> previousPageUrl() != "")
-            <a href="{{ $products -> previousPageUrl() }}"><button class="btn btn-secondary">&larr; Previous</button></a>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          @endif
+        @if ($products -> count() <= 0)
+          <h3 class="text-center">No products to show!</h3>
+        @else
+          <div class="mt-4 productsContainer text-center">
+            @foreach ($products as $product)
+              <a class="productLinkContainer" href="/shop/product/{{ $product -> id }}">
+                <button class="productButtonContainer">
+                  <div class="productContainer">
+                    <h4 class="productTitleText text-truncate">{{ $product -> name }}</h4>
+                    <p class="mb-1 text-truncate">{{ $product -> description }}</p>
+                    <p class="productPriceContainer mb-1 text-truncate">{{ $product -> price }}/{{ $product -> unit }}</p>
+                    @if ($product -> quantity <= 0)
+                      <small style="color: red;">Out of stock!</small>
+                    @endif
+                  </div>
+                </button>
+              </a>
+            @endforeach
+          </div>
+          <div class="d-flex justify-content-center mt-4">
+            @if ($products -> previousPageUrl() != "")
+              <a href="{{ $products -> previousPageUrl() }}"><button class="btn btn-secondary">&larr; Previous</button></a>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @endif
 
-          @if ($products -> nextPageUrl() != "")
-            <a href="{{ $products -> nextPageUrl() }}"><button class="btn btn-secondary">Next &rarr;</button></a>
-          @endif
-        </div>
+            @if ($products -> nextPageUrl() != "")
+              <a href="{{ $products -> nextPageUrl() }}"><button class="btn btn-secondary">Next &rarr;</button></a>
+            @endif
+          </div>
+        @endif
       </main>
 
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

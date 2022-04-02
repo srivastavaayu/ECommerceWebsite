@@ -24,35 +24,103 @@
           <div>
             <small>{{ $category -> name }}</small>
             <h2>{{ $product -> name }}</h2>
+            <div class="d-flex flex-row gap-1">
+              <div id="star1" class="star star1"></div>
+              <div id="star2" class="star star2"></div>
+              <div id="star3" class="star star3"></div>
+              <div id="star4" class="star star4"></div>
+              <div id="star5" class="star star5"></div>
+            </div>
             <p>{{ $product -> description }}</p>
             <p class="productPriceContainer">{{ $product -> price }}/{{ $product -> unit }}</p>
             @if ($cart != null)
-            <form id="removeFromCart" method="POST" action="/shop/product/{{ $product -> id}}/RemoveFromCart">{{ csrf_field() }}</form>
-            <form id="decreaseCartQuantity" method="POST" action="/shop/product/{{ $product -> id}}/DecreaseCartQuantity">{{ csrf_field() }}</form>
-            <form id="increaseCartQuantity" method="POST" action="/shop/product/{{ $product -> id}}/IncreaseCartQuantity">{{ csrf_field() }}</form>
-            <button class="btn btn-primary mb-2" form="removeFromCart"><img src="../../../images/trash.png" class="productCartImage"> Remove From Cart</button>
+              <form id="removeFromCart" method="POST" action="/shop/product/{{ $product -> id}}/removeFromCart">{{ csrf_field() }}</form>
+              <form id="decreaseCartQuantity" method="POST" action="/shop/product/{{ $product -> id}}/decreaseCartQuantity">{{ csrf_field() }}</form>
+              <form id="increaseCartQuantity" method="POST" action="/shop/product/{{ $product -> id}}/increaseCartQuantity">{{ csrf_field() }}</form>
+              <button class="btn btn-primary mb-2" form="removeFromCart"><img src="../../../images/trash.png" class="productCartImage"> Remove From Cart</button>
               <div class="d-flex flex-row input-group">
                 @if ($cart -> quantity <= 1)
                   <button class="btn btn-secondary" form="removeFromCart"><img src="../../../images/trash.png" class="productCartImage"></button>
                 @else
                   <button class="btn btn-secondary" form="decreaseCartQuantity"> -1 </button>
                 @endif
-                <input type="number" class="form-control text-center" name="quantity" value="{{ $cart -> quantity }}" required>
-                <button class="btn btn-secondary" form="increaseCartQuantity"> +1 </button>
+                <input type="number" class="form-control text-center" name="quantity" value="{{ $cart -> quantity }}" min="1" max="{{ $product -> quantity }}"required>
+                @if ($cart -> quantity >= $product -> quantity)
+                  <button class="btn btn-secondary" form="increaseCartQuantity" disabled> +1 </button>
+                @else
+                  <button class="btn btn-secondary" form="increaseCartQuantity"> +1 </button>
+                @endif
               </div>
+              <a href="/checkout/cart"><button class="btn btn-success mt-2">Go To Cart</button></a>
             @else
               <div>
-                <form method="POST" action="/shop/product/{{ $product -> id }}/AddToCart">
-                  {{ csrf_field() }}
-                  <button class="btn btn-primary"><img src="../../../images/cart.png" class="productCartImage"> Add To Cart</button>
-                </form>
+                @if ($product -> quantity > 0)
+                  <form method="POST" action="/shop/product/{{ $product -> id }}/addToCart">
+                    {{ csrf_field() }}
+                    <button class="btn btn-primary"><img src="../../../images/cart.png" class="productCartImage"> Add To Cart</button>
+                  </form>
+                @else
+                  <p style="color: red; font-size: 1.1em;">Product out of stock!</p>
+                @endif
               </div>
             @endif
-            <a href="/shop/cart"><button class="btn btn-success mt-2">Go To Cart</button></a>
           </div>
         </div>
       </main>
 
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+      <script type="text/javascript">
+        document.getElementById("star1").addEventListener("mouseenter", function(event) {
+          document.getElementById("star1").style.backgroundColor = "#FFD700";
+        })
+        document.getElementById("star1").addEventListener("mouseleave", function(event) {
+          document.getElementById("star1").style.backgroundColor = "unset";
+        })
+        document.getElementById("star2").addEventListener("mouseenter", function(event) {
+          document.getElementById("star1").style.backgroundColor = "#FFD700";
+          document.getElementById("star2").style.backgroundColor = "#FFD700";
+        })
+        document.getElementById("star2").addEventListener("mouseleave", function(event) {
+          document.getElementById("star1").style.backgroundColor = "unset";
+          document.getElementById("star2").style.backgroundColor = "unset";
+
+        })
+        document.getElementById("star3").addEventListener("mouseenter", function(event) {
+          document.getElementById("star1").style.backgroundColor = "#FFD700";
+          document.getElementById("star2").style.backgroundColor = "#FFD700";
+          document.getElementById("star3").style.backgroundColor = "#FFD700";
+        })
+        document.getElementById("star3").addEventListener("mouseleave", function(event) {
+          document.getElementById("star1").style.backgroundColor = "unset";
+          document.getElementById("star2").style.backgroundColor = "unset";
+          document.getElementById("star3").style.backgroundColor = "unset";
+        })
+        document.getElementById("star4").addEventListener("mouseenter", function(event) {
+          document.getElementById("star1").style.backgroundColor = "#FFD700";
+          document.getElementById("star2").style.backgroundColor = "#FFD700";
+          document.getElementById("star3").style.backgroundColor = "#FFD700";
+          document.getElementById("star4").style.backgroundColor = "#FFD700";
+        })
+        document.getElementById("star4").addEventListener("mouseleave", function(event) {
+          document.getElementById("star1").style.backgroundColor = "unset";
+          document.getElementById("star2").style.backgroundColor = "unset";
+          document.getElementById("star3").style.backgroundColor = "unset";
+          document.getElementById("star4").style.backgroundColor = "unset";
+        })
+        document.getElementById("star5").addEventListener("mouseenter", function(event) {
+          document.getElementById("star1").style.backgroundColor = "#FFD700";
+          document.getElementById("star2").style.backgroundColor = "#FFD700";
+          document.getElementById("star3").style.backgroundColor = "#FFD700";
+          document.getElementById("star4").style.backgroundColor = "#FFD700";
+          document.getElementById("star5").style.backgroundColor = "#FFD700";
+        })
+        document.getElementById("star5").addEventListener("mouseleave", function(event) {
+          document.getElementById("star1").style.backgroundColor = "unset";
+          document.getElementById("star2").style.backgroundColor = "unset";
+          document.getElementById("star3").style.backgroundColor = "unset";
+          document.getElementById("star4").style.backgroundColor = "unset";
+          document.getElementById("star5").style.backgroundColor = "unset";
+        })
+      </script>
     </body>
 </html>

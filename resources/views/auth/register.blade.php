@@ -17,13 +17,10 @@
     <main class="main container-fluid mt-3 mb-5" style="width: 70%">
       <h2 class="text-center mb-3">Register</h2>
       @if ($errors->any())
-        <div class="alert alert-danger">
-          <ul>
-            @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
-            @endforeach
-          </ul>
-        </div>
+        @foreach ($errors->all() as $error)
+          <div style="color: orange; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3">{{ $error }}</div>
+          @break
+        @endforeach
       @endif
 
       <form method="POST" action="/register">

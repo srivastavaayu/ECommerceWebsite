@@ -30,34 +30,42 @@
         @endif
         <div>
           <h3>Categories</h3>
-          <div class="mt-4 categoriesContainer text-center justify-content-start">
-            @foreach ($categories as $category)
-              <a class="categoryLinkContainer" href="/shop/category/{{ $category -> id }}">
-                <button class="categoryButtonContainer">
-                  <div class="categoryContainer d-flex flex-column justify-content-center">
-                    <h4 class="categoryTitleText text-truncate">{{ $category -> name }}</h4>
-                    <p class="text-truncate">{{ $category -> description }}</p>
-                  </div>
-                </button>
-              </a>
-            @endforeach
-          </div>
+          @if ($categories -> count() <= 0)
+            <p>No categories available!</p>
+          @else
+            <div class="mt-4 categoriesContainer text-center justify-content-start">
+              @foreach ($categories as $category)
+                <a class="categoryLinkContainer" href="/shop/category/{{ $category -> id }}">
+                  <button class="categoryButtonContainer">
+                    <div class="categoryContainer d-flex flex-column justify-content-center">
+                      <h4 class="categoryTitleText text-truncate">{{ $category -> name }}</h4>
+                      <p class="text-truncate">{{ $category -> description }}</p>
+                    </div>
+                  </button>
+                </a>
+              @endforeach
+            </div>
+          @endif
         </div>
         <div>
           <h3>Products</h3>
-          <div class="mt-4 productsContainer text-center justify-content-start">
-            @foreach ($products as $product)
-              <a class="productLinkContainer" href="/shop/product/{{ $product -> id }}">
-                <button class="productButtonContainer">
-                  <div class="productContainer">
-                    <h4 class="productTitleText text-truncate">{{ $product -> name }}</h4>
-                    <p class="mb-1 text-truncate">{{ $product -> description }}</p>
-                    <p class="productPriceContainer mb-1 text-truncate">{{ $product -> price }}/{{ $product -> unit }}</p>
-                  </div>
-                </button>
-              </a>
-            @endforeach
-          </div>
+          @if ($products -> count() <= 0)
+            <p>No products available!</p>
+          @else
+            <div class="mt-4 productsContainer text-center justify-content-start">
+              @foreach ($products as $product)
+                <a class="productLinkContainer" href="/shop/product/{{ $product -> id }}">
+                  <button class="productButtonContainer">
+                    <div class="productContainer">
+                      <h4 class="productTitleText text-truncate">{{ $product -> name }}</h4>
+                      <p class="mb-1 text-truncate">{{ $product -> description }}</p>
+                      <p class="productPriceContainer mb-1 text-truncate">{{ $product -> price }}/{{ $product -> unit }}</p>
+                    </div>
+                  </button>
+                </a>
+              @endforeach
+            </div>
+          @endif
         </div>
 
       </main>

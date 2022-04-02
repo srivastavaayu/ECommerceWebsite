@@ -62,10 +62,6 @@
   overflow: hidden;
 }
 
-.productTitleText {
-  height: 70%;
-}
-
 .productHeadContainer {
   display: grid;
   grid-template-columns: 2fr 3fr;
@@ -78,4 +74,11 @@
 
 .productCartImage {
   height: 20px;
+}
+
+.star {
+  height: 1vw;
+  width: 1vw;
+  border-radius: 50%;
+  border: 1px solid black;
 }

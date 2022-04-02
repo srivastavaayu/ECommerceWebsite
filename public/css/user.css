@@ -5,3 +5,33 @@
 #editProfileButtons {
   display: none;
 }
+
+.orderContainer {
+  border: 0.5px solid #bebebe;
+  border-radius: 10px;
+}
+
+.orderContainer:hover {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+.orderSummaryContainer {
+  padding: 1vw;
+  border: 0.5px solid #bebebe;
+  border-radius: 10px;
+}
+
+.orderSummaryContainer > div {
+  padding: 1vw;
+  border-bottom: 1px dashed #bebebe;
+}
+
+.orderProductContainer {
+  padding: 2vw;
+  display: grid;
+  grid-template-columns: 2fr 4fr;
+}
+
+.orderProductContainer:hover {
+  background-color: rgba(0, 0, 0, 0.075);
+}

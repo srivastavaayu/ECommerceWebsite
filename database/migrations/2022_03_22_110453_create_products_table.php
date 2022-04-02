@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table -> string('name');
             $table -> mediumText('description');
             $table -> string('sku') -> unique();
+            $table -> string('image_path') -> nullable();
             $table -> unsignedBigInteger('category_id') -> nullable();
             $table -> unsignedBigInteger('user_id') -> nullable();
             $table -> bigInteger('price');
