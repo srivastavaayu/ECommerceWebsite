@@ -28,7 +28,7 @@
 
         <div>
           @if ($orders -> count() <= 0)
-            <h4>No orders to show!</h4>
+            <h4 class="text-center">No orders to show!</h4>
           @else
             @foreach ($orders as $order)
               <a href="/user/orders-history?orderId={{ $order -> id }}" style="color: black; text-decoration: none;">

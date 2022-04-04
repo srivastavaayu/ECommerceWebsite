@@ -57,9 +57,15 @@
                 <a class="productLinkContainer" href="/shop/product/{{ $product -> id }}">
                   <button class="productButtonContainer">
                     <div class="productContainer">
-                      <h4 class="productTitleText text-truncate">{{ $product -> name }}</h4>
-                      <p class="mb-1 text-truncate">{{ $product -> description }}</p>
-                      <p class="productPriceContainer mb-1 text-truncate">{{ $product -> price }}/{{ $product -> unit }}</p>
+                      <div class="mb-3" style="height: 50%;"><img src="{{ asset(Storage::url($product -> image_path)) }}" /></div>
+                      <div>
+                        <h4 class="productTitleText text-truncate">{{ $product -> name }}</h4>
+                        <p class="mb-1 text-truncate">{{ $product -> description }}</p>
+                        <p class="productPriceContainer mb-1 text-truncate">{{ $product -> price }}/{{ $product -> unit }}</p>
+                        @if ($product -> quantity <= 0)
+                          <small style="color: red;">Out of stock!</small>
+                        @endif
+                      </div>
                     </div>
                   </button>
                 </a>

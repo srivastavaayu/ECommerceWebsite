@@ -10,10 +10,15 @@ use App\Http\Controllers\Controller;
 class CategoryController extends Controller
 {
 
-    public function handle(Request $request, $id) {
-      $category = Category::find($id);
-      $products = Product::where('category_id', $id) -> simplePaginate(3);
-      return view('shop/category', ['category' => $category, 'products' => $products]);
-    }
+  public function categories(Request $request) {
+    $categories = Category::simplePaginate(2);
+    return view('shop/categories', ['categories' => $categories]);
+  }
+
+  public function category(Request $request, $id) {
+    $category = Category::find($id);
+    $products = Product::where('category_id', $id) -> simplePaginate(3);
+    return view('shop/category', ['category' => $category, 'products' => $products]);
+  }
 
 }

@@ -63,12 +63,15 @@
               <a class="productLinkContainer" href="/shop/product/{{ $product -> id }}">
                 <button class="productButtonContainer">
                   <div class="productContainer">
-                    <h4 class="productTitleText text-truncate">{{ $product -> name }}</h4>
-                    <p class="mb-1 text-truncate">{{ $product -> description }}</p>
-                    <p class="productPriceContainer mb-1 text-truncate">{{ $product -> price }}/{{ $product -> unit }}</p>
-                    @if ($product -> quantity <= 0)
-                      <small style="color: red;">Out of stock!</small>
-                    @endif
+                    <div class="mb-3" style="height: 50%;"><img src="{{ asset(Storage::url($product -> image_path)) }}" /></div>
+                    <div>
+                      <h4 class="productTitleText text-truncate">{{ $product -> name }}</h4>
+                      <p class="mb-1 text-truncate">{{ $product -> description }}</p>
+                      <p class="productPriceContainer mb-1 text-truncate">{{ $product -> price }}/{{ $product -> unit }}</p>
+                      @if ($product -> quantity <= 0)
+                        <small style="color: red;">Out of stock!</small>
+                      @endif
+                    </div>
                   </div>
                 </button>
               </a>
@@ -76,12 +79,12 @@
           </div>
           <div class="d-flex justify-content-center mt-4">
             @if ($products -> previousPageUrl() != "")
-              <a href="{{ $products -> previousPageUrl() }}"><button class="btn btn-secondary">&larr; Previous</button></a>
+              <a href="{{ $products -> previousPageUrl().'&sort='.$sortBehavior }}"><button class="btn btn-secondary">&larr; Previous</button></a>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             @endif
 
             @if ($products -> nextPageUrl() != "")
-              <a href="{{ $products -> nextPageUrl() }}"><button class="btn btn-secondary">Next &rarr;</button></a>
+              <a href="{{ $products -> nextPageUrl().'&sort='.$sortBehavior }}"><button class="btn btn-secondary">Next &rarr;</button></a>
             @endif
           </div>
         @endif

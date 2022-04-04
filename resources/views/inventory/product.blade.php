@@ -11,6 +11,7 @@
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link href="../../css/general.css" rel="stylesheet">
+        <link href="../../css/inventory.css" rel="stylesheet">
     </head>
     <body>
       @yield(Auth::check() ? "RegisteredUserHeader" : "GuestUserHeader")
@@ -65,20 +66,8 @@
             </button>
           </form>
         </div>
-        <form method="POST" action="/inventory/product/{{ $product -> id }}">
+        <form method="POST" enctype="multipart/form-data" action="/inventory/product/{{ $product -> id }}">
           {{ csrf_field() }}
-          <div class="mb-3">
-            <label class="form-label" for="ProductNameInput">Product Name*</label>
-            <input type="text" class="form-control" id="ProductNameInput" name="ProductNameInput" placeholder="{{ $product -> name }}" value="{{ old('ProductNameInput') }}">
-          </div>
-          <div class="mb-3">
-            <label class="form-label" for="ProductDescriptionInput">Product Description*</label>
-            <textarea class="form-control" id="ProductDescriptionInput" name="ProductDescriptionInput" placeholder="{{ $product -> description }}" style="height: 50vh">{{ old('ProductDescriptionInput') }}</textarea>
-          </div>
-          <div class="mb-3">
-            <label class="form-label" for="SKUInput">Stock Keeping Unit (SKU)*</label>
-            <input type="text" class="form-control" id="SKUInput" name="SKUInput" placeholder="{{ $product -> sku }}" value="{{ old('SKUInput') }}">
-          </div>
           <label class="form-label" for="CategoryInput">Category*</label>
           <div class="input-group mb-3">
             <select class="form-select" id="CategoryInput" name="CategoryInput" placeholder="{{ $product -> category_id }}" value="{{ old('CategoryInput') }}">
@@ -96,6 +85,26 @@
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addNewCategoryModal">
               Add New Category
             </button>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="SKUInput">Stock Keeping Unit (SKU)*</label>
+            <input type="text" class="form-control" id="SKUInput" name="SKUInput" placeholder="{{ $product -> sku }}" value="{{ old('SKUInput') }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="ProductNameInput">Product Name*</label>
+            <input type="text" class="form-control" id="ProductNameInput" name="ProductNameInput" placeholder="{{ $product -> name }}" value="{{ old('ProductNameInput') }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="ProductDescriptionInput">Product Description*</label>
+            <textarea class="form-control" id="ProductDescriptionInput" name="ProductDescriptionInput" placeholder="{{ $product -> description }}" style="height: 50vh">{{ old('ProductDescriptionInput') }}</textarea>
+          </div>
+          <label class="form-label">Current Product Images</label>
+          @if (!is_null($product -> image_path) && ($product -> image_path != ""))
+            <div class="productImageContainer mb-3"><img src="{{ asset(Storage::url($product -> image_path)) }}" style="object-fit: contain; height: 100%;"/></div>
+          @endif
+          <div class="mt-3 mb-3">
+            <label for="ProductImageInput" class="form-label">Product Image</label>
+            <input type="file" class="form-control" id="ProductImageInput" name="ProductImageInput">
           </div>
           <div class="mb-3">
             <label class="form-label" for="PriceInput">Price per unit*</label>

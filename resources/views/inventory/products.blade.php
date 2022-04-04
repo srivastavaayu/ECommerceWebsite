@@ -11,6 +11,7 @@
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link href="../css/general.css" rel="stylesheet">
+        <link href="../css/inventory.css" rel="stylesheet">
     </head>
     <body>
       @yield(Auth::check() ? "RegisteredUserHeader" : "GuestUserHeader")
@@ -50,6 +51,9 @@
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="heading{{ $index }}">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}" aria-expanded="true" aria-controls="collapse{{ $index }}">
+                        @if (!is_null($product -> image_path) && ($product -> image_path != ""))
+                          <div class="productImageThumbnailContainer me-3"><img src="{{ asset(Storage::url($product -> image_path)) }}" style="object-fit: contain; height: 100%;"/></div>
+                        @endif
                         {{ $product -> name }} (<small>{{ $product -> sku }}</small>)
                       </button>
                     </h2>
@@ -71,14 +75,6 @@
                           </form>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="ProductNameInput">Product Name</label>
-                          <input type="text" class="form-control" id="ProductNameInput" name="ProductNameInput" value="{{ $product -> name }}" placeholder="{{ $product -> name }}" readonly>
-                        </div>
-                        <div class="mb-3">
-                          <label class="form-label" for="ProductDescriptionInput">Product Description</label>
-                          <textarea class="form-control" id="ProductDescriptionInput" name="ProductDescriptionInput" placeholder="{{ $product -> description }}" style="height: 50vh" readonly>{{ $product -> description }}</textarea>
-                        </div>
-                        <div class="mb-3">
                           <label class="form-label" for="SKUInput">Stock Keeping Unit (SKU)</label>
                           <input type="text" class="form-control" id="SKUInput" name="SKUInput" value="{{ $product -> sku }}" placeholder="{{ $product -> sku }}" readonly>
                         </div>
@@ -90,6 +86,18 @@
                             @endif
                           @endforeach
                         </div>
+                        <div class="mb-3">
+                          <label class="form-label" for="ProductNameInput">Product Name</label>
+                          <input type="text" class="form-control" id="ProductNameInput" name="ProductNameInput" value="{{ $product -> name }}" placeholder="{{ $product -> name }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label" for="ProductDescriptionInput">Product Description</label>
+                          <textarea class="form-control" id="ProductDescriptionInput" name="ProductDescriptionInput" placeholder="{{ $product -> description }}" style="height: 50vh" readonly>{{ $product -> description }}</textarea>
+                        </div>
+                        <label class="form-label">Product Images</label>
+                        @if (!is_null($product -> image_path) && ($product -> image_path != ""))
+                          <div class="productImageContainer mb-3"><img src="{{ asset(Storage::url($product -> image_path)) }}" style="object-fit: contain; height: 100%;"/></div>
+                        @endif
                         <div class="mb-3">
                           <label class="form-label" for="PriceInput">Price per unit</label>
                           <input type="number" class="form-control" id="PriceInput" name="PriceInput" value="{{ $product -> price }}" placeholder="{{ $product -> price }}" readonly>
@@ -126,6 +134,9 @@
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="heading{{ $index }}">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}" aria-expanded="true" aria-controls="collapse{{ $index }}">
+                        @if (!is_null($product -> image_path) && ($product -> image_path != ""))
+                          <div class="productImageThumbnailContainer me-3"><img src="{{ asset(Storage::url($product -> image_path)) }}" style="object-fit: contain; height: 100%;"/></div>
+                        @endif
                         {{ $product -> name }} (<small>{{ $product -> sku }}</small>)
                       </button>
                     </h2>
@@ -141,6 +152,18 @@
                           </form>
                         </div>
                         <div class="mb-3">
+                          <label class="form-label" for="SKUInput">Stock Keeping Unit (SKU)</label>
+                          <input type="text" class="form-control" id="SKUInput" name="SKUInput" value="{{ $product -> sku }}" placeholder="{{ $product -> sku }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label" for="CategoryInput">Category</label>
+                          @foreach ($categories as $category)
+                            @if (($category -> id) == ($product -> category_id))
+                              <input type="text" class="form-control" id="CategoryInput" name="CategoryInput" value="{{ $category -> name }}" placeholder="{{ $category -> name }}" readonly>
+                            @endif
+                          @endforeach
+                        </div>
+                        <div class="mb-3">
                           <label class="form-label" for="ProductNameInput">Product Name</label>
                           <input type="text" class="form-control" id="ProductNameInput" name="ProductNameInput" value="{{ $product -> name }}" placeholder="{{ $product -> name }}" readonly>
                         </div>
@@ -148,14 +171,10 @@
                           <label class="form-label" for="ProductDescriptionInput">Product Description</label>
                           <textarea class="form-control" id="ProductDescriptionInput" name="ProductDescriptionInput" placeholder="{{ $product -> description }}" style="height: 50vh" readonly>{{ $product -> description }}</textarea>
                         </div>
-                        <div class="mb-3">
-                          <label class="form-label" for="SKUInput">Stock Keeping Unit (SKU)</label>
-                          <input type="text" class="form-control" id="SKUInput" name="SKUInput" value="{{ $product -> sku }}" placeholder="{{ $product -> sku }}" readonly>
-                        </div>
-                        <div class="mb-3">
-                          <label class="form-label" for="CategoryInput">Category</label>
-                          <input type="text" class="form-control" id="CategoryInput" name="CategoryInput" value="{{ $product -> category_id }}" placeholder="{{ $product -> category_id }}" readonly>
-                        </div>
+                        <label class="form-label">Product Images</label>
+                        @if (!is_null($product -> image_path) && ($product -> image_path != ""))
+                          <div class="productImageContainer mb-3"><img src="{{ asset(Storage::url($product -> image_path)) }}" style="object-fit: contain; height: 100%;"/></div>
+                        @endif
                         <div class="mb-3">
                           <label class="form-label" for="PriceInput">Price per unit</label>
                           <input type="text" class="form-control" id="PriceInput" name="PriceInput" value="{{ $product -> price }}" placeholder="{{ $product -> price }}" readonly>
@@ -183,6 +202,9 @@
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="heading{{ $index }}">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}" aria-expanded="true" aria-controls="collapse{{ $index }}">
+                        @if (!is_null($product -> image_path) && ($product -> image_path != ""))
+                          <div class="productImageThumbnailContainer me-3"><img src="{{ asset(Storage::url($product -> image_path)) }}" style="object-fit: contain; height: 100%;"/></div>
+                        @endif
                         {{ $product -> name }} (<small>{{ $product -> sku }}</small>)
                       </button>
                     </h2>
@@ -198,6 +220,18 @@
                           </form>
                         </div>
                         <div class="mb-3">
+                          <label class="form-label" for="SKUInput">Stock Keeping Unit (SKU)</label>
+                          <input type="text" class="form-control" id="SKUInput" name="SKUInput" value="{{ $product -> sku }}" placeholder="{{ $product -> sku }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label" for="CategoryInput">Category</label>
+                          @foreach ($categories as $category)
+                            @if (($category -> id) == ($product -> category_id))
+                              <input type="text" class="form-control" id="CategoryInput" name="CategoryInput" value="{{ $category -> name }}" placeholder="{{ $category -> name }}" readonly>
+                            @endif
+                          @endforeach
+                        </div>
+                        <div class="mb-3">
                           <label class="form-label" for="ProductNameInput">Product Name</label>
                           <input type="text" class="form-control" id="ProductNameInput" name="ProductNameInput" value="{{ $product -> name }}" placeholder="{{ $product -> name }}" readonly>
                         </div>
@@ -205,14 +239,10 @@
                           <label class="form-label" for="ProductDescriptionInput">Product Description</label>
                           <textarea class="form-control" id="ProductDescriptionInput" name="ProductDescriptionInput" placeholder="{{ $product -> description }}" style="height: 50vh" readonly>{{ $product -> description }}</textarea>
                         </div>
-                        <div class="mb-3">
-                          <label class="form-label" for="SKUInput">Stock Keeping Unit (SKU)</label>
-                          <input type="text" class="form-control" id="SKUInput" name="SKUInput" value="{{ $product -> sku }}" placeholder="{{ $product -> sku }}" readonly>
-                        </div>
-                        <div class="mb-3">
-                          <label class="form-label" for="CategoryInput">Category</label>
-                          <input type="text" class="form-control" id="CategoryInput" name="CategoryInput" value="{{ $product -> category_id }}" placeholder="{{ $product -> category_id }}" readonly>
-                        </div>
+                        <label class="form-label">Product Images</label>
+                        @if (!is_null($product -> image_path) && ($product -> image_path != ""))
+                          <div class="productImageContainer mb-3"><img src="{{ asset(Storage::url($product -> image_path)) }}" style="object-fit: contain; height: 100%;"/></div>
+                        @endif
                         <div class="mb-3">
                           <label class="form-label" for="PriceInput">Price per unit</label>
                           <input type="text" class="form-control" id="PriceInput" name="PriceInput" value="{{ $product -> price }}" placeholder="{{ $product -> price }}" readonly>

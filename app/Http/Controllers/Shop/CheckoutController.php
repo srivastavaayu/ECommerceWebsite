@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 class CheckoutController extends Controller
 {
 
-  public function getCart() {
+  public function cart() {
     $cart = Cart::where('user_id', Auth::id()) -> get();
     $products = [];
     $cartTotal = 0;
@@ -28,7 +28,7 @@ class CheckoutController extends Controller
     return view('checkout/cart', ['cart' => $cart, 'products' => $products, 'cartTotal' => $cartTotal]);
   }
 
-  public function getCheckout(Request $request) {
+  public function checkout(Request $request) {
     $user = Auth::user();
     $cart = Cart::where('user_id', Auth::id()) -> get();
     $products = [];
@@ -81,7 +81,7 @@ class CheckoutController extends Controller
     return view('checkout/checkout', ['user' => $user, 'cart' => $cart, 'products' => $products, 'cartTotal' => $cartTotal]);
   }
 
-  public function getThankYou(Request $request) {
+  public function thankYou(Request $request) {
     $order = Order::find($request -> orderId);
     $user = User::find($order -> user_id);
     $orderItems = OrderDetail::where('order_id', $order -> id) -> get();

@@ -12,10 +12,48 @@ use Illuminate\Support\Facades\Auth;
 class ProductController extends Controller
 {
 
-  public function handle(Request $request, $id) {
+  public $sortBehavior = 'none';
+  public $sortField = 'id';
+  public $sortDirection = 'ASC';
+
+  public function products(Request $request) {
+    if ($request -> has('sort')) {
+      switch ($request -> sort) {
+        case "priceASC":
+          $this -> sortBehavior = 'priceASC';
+          $this -> sortField = 'price';
+          $this -> sortDirection = 'ASC';
+          break;
+        case "priceDESC":
+          $this -> sortBehavior = 'priceDESC';
+          $this -> sortField = 'price';
+          $this -> sortDirection = 'DESC';
+          break;
+        case "ratingASC":
+          $this -> sortBehavior = 'ratingASC';
+          $this -> sortField = 'rating';
+          $this -> sortDirection = 'ASC';
+          break;
+        case "ratingDESC":
+          $this -> sortBehavior = 'ratingDESC';
+          $this -> sortField = 'rating';
+          $this -> sortDirection = 'DESC';
+          break;
+        default:
+          $this -> sortBehavior = 'none';
+          $this -> sortField = 'id';
+          $this -> sortDirection = 'ASC';
+          break;
+      }
+    }
     if ($request -> isMethod('POST')) {
 
     }
+    $products = Product::where('is_archived', 0) -> orderBy($this -> sortField, $this -> sortDirection) -> simplePaginate(3);
+    return view('shop/products',['products' => $products, 'sortBehavior' => $this -> sortBehavior]);
+  }
+
+  public function product(Request $request, $id) {
     $product = Product::find($id);
     $category = Category::find($product -> category_id);
     $cart = Cart::where([['product_id', $id], ['user_id', Auth::id()]]) -> firstOr(function () {

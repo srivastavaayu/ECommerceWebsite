@@ -33,7 +33,6 @@
                       <div></div>
                       <div>
                         <h4>{{ $product -> name }}</h4>
-                        <p>{{ $product -> description }}</p>
                         @foreach ($cart as $cartItem)
                           @if ($cartItem -> product_id == $product -> id)
                             <span class="fw-bold" style="font-size: 1.2em">{{ $product -> price * $cartItem -> quantity }}</span>

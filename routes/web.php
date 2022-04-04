@@ -13,44 +13,44 @@
 
 Route::get('/', 'IndexController@handle');
 
-Route::get('/logout', 'Auth\LogoutController@handle');
+Route::match(['GET', 'POST'], '/register', 'AuthController@register');
 
-Route::match(['GET', 'POST'], '/register', 'Auth\RegisterController@handle');
+Route::match(['GET', 'POST'], '/login', 'AuthController@login');
 
-Route::match(['GET', 'POST'], '/login', 'Auth\LoginController@handle');
+Route::get('/logout', 'AuthController@logout') -> middleware('guest');
 
-Route::match(['GET', 'POST'], '/user/profile', 'UserController@profile');
+Route::match(['GET', 'POST'], '/user/profile', 'UserController@profile') -> middleware('guest');
 
-Route::get('/user/orders-history', 'UserController@ordersHistory');
+Route::get('/user/orders-history', 'UserController@ordersHistory') -> middleware('guest');
 
-Route::match(['GET', 'POST'], '/user/update-password', 'UserController@updatePassword');
+Route::match(['GET', 'POST'], '/user/update-password', 'UserController@updatePassword') -> middleware('guest');
 
-Route::match(['GET', 'POST'], '/inventory/product', 'Inventory\ProductsController@handle');
+Route::match(['GET', 'POST'], '/inventory/product', 'Inventory\ProductController@products') -> middleware('guest');
 
-Route::match(['GET', 'POST'], '/inventory/product/add-new-product', 'Inventory\AddNewProductController@handle');
+Route::match(['GET', 'POST'], '/inventory/product/add-new-product', 'Inventory\ProductController@addNewProduct') -> middleware('guest');
 
-Route::match(['GET', 'POST'], '/inventory/product/{id}', 'Inventory\ProductController@handle');
+Route::match(['GET', 'POST'], '/inventory/product/{id}', 'Inventory\ProductController@product') -> middleware('guest');
 
-Route::get('/shop/search', 'Shop\SearchController@handle');
+Route::get('/shop/search', 'Shop\SearchController@handle') -> middleware('guest');
 
-Route::match(['GET', 'POST'], '/shop/category', 'Shop\CategoriesController@handle');
+Route::match(['GET', 'POST'], '/shop/category', 'Shop\CategoryController@categories') -> middleware('guest');
 
-Route::match(['GET', 'POST'], '/shop/category/{id}', 'Shop\CategoryController@handle');
+Route::match(['GET', 'POST'], '/shop/category/{id}', 'Shop\CategoryController@category') -> middleware('guest');
 
-Route::match(['GET', 'POST'], '/shop/product', 'Shop\ProductsController@handle');
+Route::match(['GET', 'POST'], '/shop/product', 'Shop\ProductController@products') -> middleware('guest');
 
-Route::match(['GET', 'POST'], '/shop/product/{id}', 'Shop\ProductController@handle');
+Route::match(['GET', 'POST'], '/shop/product/{id}', 'Shop\ProductController@product') -> middleware('guest');
 
-Route::post('/shop/product/{id}/addToCart', 'Shop\ProductController@addToCart');
+Route::post('/shop/product/{id}/addToCart', 'Shop\ProductController@addToCart') -> middleware('guest');
 
-Route::post('/shop/product/{id}/removeFromCart', 'Shop\ProductController@removeFromCart');
+Route::post('/shop/product/{id}/removeFromCart', 'Shop\ProductController@removeFromCart') -> middleware('guest');
 
-Route::post('/shop/product/{id}/increaseCartQuantity', 'Shop\ProductController@increaseCartQuantity');
+Route::post('/shop/product/{id}/increaseCartQuantity', 'Shop\ProductController@increaseCartQuantity') -> middleware('guest');
 
-Route::post('/shop/product/{id}/decreaseCartQuantity', 'Shop\ProductController@decreaseCartQuantity');
+Route::post('/shop/product/{id}/decreaseCartQuantity', 'Shop\ProductController@decreaseCartQuantity') -> middleware('guest');
 
-Route::get('/checkout/cart', 'Shop\CheckoutController@getCart');
+Route::get('/checkout/cart', 'Shop\CheckoutController@cart') -> middleware('guest');
 
-Route::match(['GET', 'POST'], '/checkout/checkout', 'Shop\CheckoutController@getCheckout');
+Route::match(['GET', 'POST'], '/checkout/checkout', 'Shop\CheckoutController@checkout') -> middleware('guest');
 
-Route::get('/checkout/thank-you', 'Shop\CheckoutController@getThankYou');
+Route::get('/checkout/thank-you', 'Shop\CheckoutController@thankYou') -> middleware('guest');

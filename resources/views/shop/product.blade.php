@@ -24,7 +24,7 @@
           <div>
             <small>{{ $category -> name }}</small>
             <h2>{{ $product -> name }}</h2>
-            <div class="d-flex flex-row gap-1">
+            <div class="d-flex flex-row gap-1 mb-3">
               <div id="star1" class="star star1"></div>
               <div id="star2" class="star star2"></div>
               <div id="star3" class="star star3"></div>
