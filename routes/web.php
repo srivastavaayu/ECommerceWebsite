@@ -51,6 +51,8 @@ Route::post('/shop/product/{id}/increaseCartQuantity', 'Shop\ProductController@i
 
 Route::post('/shop/product/{id}/decreaseCartQuantity', 'Shop\ProductController@decreaseCartQuantity') -> middleware('guest');
 
+Route::post('/shop/product/{id}/setRating', 'Shop\ProductController@setRating') -> middleware('guest');
+
 Route::get('/checkout/cart', 'Shop\CheckoutController@cart') -> middleware('guest');
 
 Route::match(['GET', 'POST'], '/checkout/checkout', 'Shop\CheckoutController@checkout') -> middleware('guest');

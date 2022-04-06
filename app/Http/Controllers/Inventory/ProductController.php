@@ -15,6 +15,7 @@ class ProductController extends Controller
 {
 
   public $sortBehavior = "ASC";
+  public $viewStyle = "tabular";
 
   public function products(Request $request) {
     $info = "";
@@ -22,21 +23,26 @@ class ProductController extends Controller
       $this -> sortBehavior = $request -> sort;
     }
     if ($request -> isMethod('POST')) {
-      $product = Product::getProduct([['id', $request -> productId]]);
-      if ($product -> is_archived) {
-        Product::setProduct([['id', $request -> productId]], [['is_archived', 0]]);
-        $info = "Product unarchived successfully!";
+      if ($request -> has('view')) {
+        $this -> viewStyle = $request -> view;
       }
       else {
-        Product::setProduct([['id', $request -> productId]], [['is_archived', 1]]);
-        $info = "Product archived successfully!";
+        $product = Product::getProduct([['id', $request -> productId]]);
+        if ($product -> is_archived) {
+          Product::setProduct([['id', $request -> productId]], [['is_archived', 0]]);
+          $info = "Product unarchived successfully!";
+        }
+        else {
+          Product::setProduct([['id', $request -> productId]], [['is_archived', 1]]);
+          $info = "Product archived successfully!";
+        }
       }
     }
     $allProducts = Product::getProducts([['user_id', Auth::id()]], null, null, ['updated_at', $this -> sortBehavior]) -> get();
     $activeProducts = Product::getProducts([['user_id', Auth::id()], ['is_archived', 0]], null, null, ['updated_at', $this -> sortBehavior]) -> get();
     $archivedProducts = Product::getProducts([['user_id', Auth::id()], ['is_archived', 1]], null, null, ['updated_at', $this -> sortBehavior]) -> get();
     $categories = Category::getCategories() -> get();
-    return view('inventory/products', ['allProducts' => $allProducts, 'activeProducts' => $activeProducts, 'archivedProducts' => $archivedProducts, 'categories' => $categories, 'sortBehavior' => $this -> sortBehavior, 'info' => $info]);
+    return view('inventory/products', ['allProducts' => $allProducts, 'activeProducts' => $activeProducts, 'archivedProducts' => $archivedProducts, 'categories' => $categories, 'sortBehavior' => $this -> sortBehavior, 'viewStyle' => $this -> viewStyle, 'info' => $info]);
   }
 
   public function product(Request $request, $id) {
@@ -118,7 +124,7 @@ class ProductController extends Controller
         if ($request -> hasFile('ProductImageInput')) {
           $productImageInputPath = Storage::putFile('public', $request -> ProductImageInput);
         }
-        $product = Product::addProduct(['category_id' => $request -> CategoryInput, 'sku' => $request -> SKUInput, 'name' => $request -> ProductNameInput, 'description' => $request -> ProductDescriptionInput, 'image_path' => $productImageInputPath, 'price' => $request -> PriceInput, 'unit' => $request -> UnitInput, 'quantity' => $request -> StockQuantityInput, 'is_archived' => 0]);
+        $product = Product::addProduct(['user_id' => Auth::id(), 'category_id' => $request -> CategoryInput, 'sku' => $request -> SKUInput, 'name' => $request -> ProductNameInput, 'description' => $request -> ProductDescriptionInput, 'image_path' => $productImageInputPath, 'price' => $request -> PriceInput, 'unit' => $request -> UnitInput, 'quantity' => $request -> StockQuantityInput, 'is_archived' => 0, 'rating' => 0]);
         return redirect('/inventory/product');
       }
     }

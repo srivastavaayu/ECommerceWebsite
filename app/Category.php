@@ -12,7 +12,7 @@ class Category extends Model
   protected $dates = ['deleted_at'];
   protected $fillable = ['name', 'description'];
 
-  public function addCategory($data) {
+  public static function addCategory($data) {
     Category::create($data);
   }
 

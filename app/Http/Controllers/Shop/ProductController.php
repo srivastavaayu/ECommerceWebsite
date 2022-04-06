@@ -94,4 +94,9 @@ class ProductController extends Controller
     return redirect('/shop/product/'.$id);
   }
 
+  public function setRating(Request $request, $id) {
+    Product::setProduct([['id', $id]], [['rating', $request -> rating]]);
+    return redirect('/shop/product/'.$id);
+  }
+
 }

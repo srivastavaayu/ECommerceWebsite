@@ -10,7 +10,7 @@ class Product extends Model
 
   use SoftDeletes;
   protected $dates = ['deleted_at'];
-  protected $fillable = ['category_id', 'sku', 'name', 'description', 'user_id', 'image_path', 'price', 'unit', 'quantity', 'is_archived'];
+  protected $fillable = ['category_id', 'sku', 'name', 'description', 'user_id', 'image_path', 'price', 'unit', 'quantity', 'is_archived', 'rating'];
 
   public static function addProduct($data) {
     Product::create($data);

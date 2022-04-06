@@ -25,6 +25,7 @@ class CreateProductsTable extends Migration
             $table -> string('unit');
             $table -> bigInteger('quantity');
             $table -> tinyInteger('is_archived');
+            $table -> tinyInteger('rating');
             $table -> timestamps();
             $table -> softDeletes();
             $table -> foreign('category_id') -> references('id') -> on('categories') -> onDelete('set null');
