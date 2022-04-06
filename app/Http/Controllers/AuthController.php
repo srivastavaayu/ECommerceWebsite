@@ -26,14 +26,7 @@ class AuthController extends Controller
       if($validator -> fails()) {
         return redirect('/register') -> withErrors($validator) -> withInput();
       }
-      $user = new User;
-      // User::addUser(['name' => $request -> FullNameInput, 'email' => $request -> EmailInput, 'phone_number' => $request -> PhoneNumberInput, 'username' => $request -> UsernameInput, 'password' => Hash::make($request -> PasswordInput)]);
-      $user -> name = $request -> FullNameInput;
-      $user -> email = $request -> EmailInput;
-      $user -> phone_number = $request -> PhoneNumberInput;
-      $user -> username = $request -> UsernameInput;
-      $user -> password = Hash::make($request -> PasswordInput);
-      $user -> save();
+      User::addUser(['name' => $request -> FullNameInput, 'email' => $request -> EmailInput, 'phone_number' => $request -> PhoneNumberInput, 'username' => $request -> UsernameInput, 'password' => Hash::make($request -> PasswordInput)]);
       return redirect('/login');
     }
     return view('auth/register');
@@ -49,10 +42,9 @@ class AuthController extends Controller
       if($validator -> fails()) {
         return redirect('/login') -> withErrors($validator) -> withInput();
       }
-      $users = User::where('username', $request -> UsernameInput) -> get();
+      $users = User::getUsers([['username', $request -> UsernameInput]]) -> get();
       if ($users -> count()) {
         if (Hash::check($request -> PasswordInput, $users[0] -> password)) {
-          // Auth::loginUsingId($users[0] -> id);
           Auth::loginUsingId($users[0] -> id);
           return redirect('/');
         }

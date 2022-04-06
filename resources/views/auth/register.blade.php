@@ -13,6 +13,7 @@
     <link href="css/general.css" rel="stylesheet">
   </head>
   <body>
+    <div class="backgroundImage"></div>
     @yield(Auth::check() ? "RegisteredUserHeader" : "GuestUserHeader")
     <main class="main container-fluid mt-3 mb-5" style="width: 70%">
       <h2 class="text-center mb-3">Register</h2>

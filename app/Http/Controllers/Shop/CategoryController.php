@@ -10,15 +10,48 @@ use App\Http\Controllers\Controller;
 class CategoryController extends Controller
 {
 
+  public $sortBehavior = 'none';
+  public $sortField = 'id';
+  public $sortDirection = 'ASC';
+
   public function categories(Request $request) {
-    $categories = Category::simplePaginate(2);
+    $categories = Category::getCategories() -> simplePaginate(2);
     return view('shop/categories', ['categories' => $categories]);
   }
 
   public function category(Request $request, $id) {
-    $category = Category::find($id);
-    $products = Product::where('category_id', $id) -> simplePaginate(3);
-    return view('shop/category', ['category' => $category, 'products' => $products]);
+    if ($request -> has('sort')) {
+      switch ($request -> sort) {
+        case "priceASC":
+          $this -> sortBehavior = 'priceASC';
+          $this -> sortField = 'price';
+          $this -> sortDirection = 'ASC';
+          break;
+        case "priceDESC":
+          $this -> sortBehavior = 'priceDESC';
+          $this -> sortField = 'price';
+          $this -> sortDirection = 'DESC';
+          break;
+        case "ratingASC":
+          $this -> sortBehavior = 'ratingASC';
+          $this -> sortField = 'rating';
+          $this -> sortDirection = 'ASC';
+          break;
+        case "ratingDESC":
+          $this -> sortBehavior = 'ratingDESC';
+          $this -> sortField = 'rating';
+          $this -> sortDirection = 'DESC';
+          break;
+        default:
+          $this -> sortBehavior = 'none';
+          $this -> sortField = 'id';
+          $this -> sortDirection = 'ASC';
+          break;
+      }
+    }
+    $category = Category::getCategory([['id', $id]]);
+    $products = Product::getProducts([['is_archived', 0], ['category_id', $id]], null, null, [$this -> sortField, $this -> sortDirection]) -> simplePaginate(3);
+    return view('shop/category', ['category' => $category, 'products' => $products, 'sortBehavior' => $this -> sortBehavior]);
   }
 
 }

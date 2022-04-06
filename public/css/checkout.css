@@ -11,7 +11,7 @@
   padding: 2vw;
   border-bottom: 0.5px solid black;
   display: grid;
-  grid-template-columns: 2fr 4fr;
+  grid-template-columns: 2fr 6fr 1fr;
   color: black;
   text-decoration: none;
 }
@@ -20,8 +20,13 @@
   background-color: rgba(0, 0, 0, 0.075);
 }
 
+.cartProductImageContainer {
+  height: 10vw;
+}
+
 .cartTotalsContainer {
   border: 0.5px solid black;
+  font-weight: 800;
 }
 
 .cartProductContainerLink {
@@ -33,6 +38,10 @@
   display: grid;
   grid-template-columns: 2fr 1fr;
   column-gap: 3vw;
+}
+
+.checkoutProductImageContainer {
+  height: 8vw;
 }
 
 .thankYouContainer {
@@ -52,6 +61,7 @@
 }
 
 .orderSummaryContainer {
+  background-color: white;
   padding: 1vw;
   border: 0.5px solid #bebebe;
   border-radius: 10px;
@@ -70,4 +80,8 @@
 
 .orderProductContainer:hover {
   background-color: rgba(0, 0, 0, 0.075);
+}
+
+.orderProductImageContainer {
+  height: 25vw;
 }

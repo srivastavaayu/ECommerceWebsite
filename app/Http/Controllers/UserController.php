@@ -28,20 +28,24 @@ class UserController extends Controller
       if($validator -> fails()) {
         return redirect('/user/profile') -> withErrors($validator) -> withInput();
       }
-      $user = User::find(Auth::id());
+      $data = [];
+      $user = User::getUser([['id', Auth::id()]]);
       if (!is_null($request -> FullNameInput)) {
-        $user -> name = $request -> FullNameInput;
+        array_push($data, ['name', $request -> FullNameInput]);
       }
       if (!is_null($request -> EmailInput)) {
-        $user -> email = $request -> EmailInput;
+        array_push($data, ['email', $request -> EmailInput]);
       }
       if (!is_null($request -> PhoneNumberInput)) {
-        $user -> phone_number = $request -> PhoneNumberInput;
+        array_push($data, ['phone_number', $request -> PhoneNumberInput]);
       }
       if (!is_null($request -> UsernameInput)) {
-        $user -> username = $request -> UsernameInput;
+        array_push($data, ['username', $request -> UsernameInput]);
       }
-      $user -> save();
+      if (count($data) > 0) {
+        User::setUser([['id', Auth::id()]], $data);
+      }
+      $user = User::getUser([['id', Auth::id()]]);
       Auth::setUser($user);
       $info = "Profile has been updated successfully!";
       return view('user/profile', ['name' => Auth::user() -> name, 'email' => Auth::user() -> email, 'phoneNumber' => Auth::user() -> phone_number, 'username' => Auth::user() -> username, 'info' => $info]);
@@ -51,16 +55,16 @@ class UserController extends Controller
 
   public function ordersHistory(Request $request) {
     if ($request -> has('orderId')) {
-      $order = Order::find($request -> orderId);
-      $orderDetail = OrderDetail::where('order_id', $order -> id) -> get();
+      $order = Order::getOrder([['id', $request -> orderId]]);
+      $orderDetail = OrderDetail::getOrderDetails([['order_id', $order -> id]]) -> get();
       $products = [];
       foreach ($orderDetail as $orderItem) {
-        $product = Product::find($orderItem -> item_id);
+        $product = Product::getProduct([['id', $orderItem -> item_id]]);
         array_push($products, $product);
       }
       return view('user/order-history', ['user' => Auth::user(), 'order' => $order, 'items' => $orderDetail, 'products' => $products]);
     }
-    $orders = Order::where('user_id', Auth::id()) -> orderBy('updated_at', 'DESD') -> get();
+    $orders = Order::getOrders([['user_id', Auth::id()]], null, null, ['updated_at', 'DESC']) -> get();
     return view('user/orders-history', ['user' => Auth::user(), 'orders' => $orders]);
   }
 
@@ -75,11 +79,9 @@ class UserController extends Controller
       if($validator -> fails()) {
         return redirect('/user/update-password') -> withErrors($validator) -> withInput();
       }
-      $user = User::where('id', Auth::id()) -> get();
-      if (Hash::check($request -> CurrentPasswordInput, $user[0] -> password)) {
-        $user = User::find(Auth::id());
-        $user -> password = Hash::make($request -> PasswordInput);
-        $user -> save();
+      $user = User::getUser([['id', Auth::id()]]);
+      if (Hash::check($request -> CurrentPasswordInput, $user -> password)) {
+        User::setUser([['id', Auth::id()]], [['password', Hash::make($request -> PasswordInput)]]);
         $info = "Password has been updated successfully!";
       }
       else {

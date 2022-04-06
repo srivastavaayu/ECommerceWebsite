@@ -17,26 +17,34 @@ class CheckoutController extends Controller
 {
 
   public function cart() {
-    $cart = Cart::where('user_id', Auth::id()) -> get();
-    $products = [];
+    $cart = Cart::getCarts([['user_id', Auth::id()]]) -> get();
+    $activeProducts = [];
+    $inactiveProducts = [];
     $cartTotal = 0;
     foreach ($cart as $cartItem) {
-      $product = Product::find($cartItem -> product_id);
-      $cartTotal += (($product -> price) * $cartItem -> quantity);
-      array_push($products, $product);
+      $product = Product::getProduct([['id', $cartItem -> product_id]]);
+      if ($product -> is_archived == 0) {
+        $cartTotal += (($product -> price) * $cartItem -> quantity);
+        array_push($activeProducts, $product);
+      }
+      else {
+        array_push($inactiveProducts, $product);
+      }
     }
-    return view('checkout/cart', ['cart' => $cart, 'products' => $products, 'cartTotal' => $cartTotal]);
+    return view('checkout/cart', ['cart' => $cart, 'activeProducts' => $activeProducts, 'inactiveProducts' => $inactiveProducts, 'cartTotal' => $cartTotal]);
   }
 
   public function checkout(Request $request) {
     $user = Auth::user();
-    $cart = Cart::where('user_id', Auth::id()) -> get();
+    $cart = Cart::getCarts([['user_id', Auth::id()]]) -> get();
     $products = [];
     $cartTotal = 0;
     foreach ($cart as $cartItem) {
-      $product = Product::find($cartItem -> product_id);
-      $cartTotal += (($product -> price) * $cartItem -> quantity);
-      array_push($products, $product);
+      $product = Product::getProduct([['id', $cartItem -> product_id]]);
+      if ($product -> is_archived == 0){
+        $cartTotal += (($product -> price) * $cartItem -> quantity);
+        array_push($products, $product);
+      }
     }
     if ($request -> isMethod('POST')) {
       $validator = Validator::make($request -> all(), [
@@ -52,28 +60,15 @@ class CheckoutController extends Controller
         return redirect('/register') -> withErrors($validator) -> withInput();
       }
 
-      $order = new Order;
-      $order -> user_id = Auth::id();
-      $order -> address_line_1 = $request -> AddressLine1Input;
-      $order -> address_line_2 = $request -> AddressLine2Input;
-      $order -> city = $request -> CityInput;
-      $order -> state = $request -> StateInput;
-      $order -> country = $request -> CountryInput;
-      $order -> pin_code = $request -> PINCodeInput;
-      $order -> total = $cartTotal;
-      $order -> save();
+      $order = Order::addOrder(['user_id' => Auth::id(), 'address_line_1' => $request -> AddressLine1Input, 'address_line_2' => $request -> AddressLine2Input, 'city' => $request -> CityInput, 'state' => $request -> StateInput, 'country' => $request -> CountryInput, 'pin_code' => $request -> PINCodeInput, 'total' => $cartTotal]);
 
       foreach ($cart as $cartItem) {
-        $orderDetail = new OrderDetail;
-        $orderDetail -> user_id = Auth::id();
-        $orderDetail -> order_id = $order -> id;
-        $orderDetail -> item_id = $cartItem -> product_id;
-        $orderDetail -> quantity = $cartItem -> quantity;
-        $orderDetail -> save();
-        $product = Product::find($cartItem -> product_id);
-        $product -> quantity = ($product -> quantity - $cartItem -> quantity);
-        $product -> save();
-        $cartItem -> delete();
+        $product = Product::getProduct([['id', $cartItem -> product_id]]);
+        if ($product -> is_archived == 0) {
+          OrderDetail::addOrderDetail(['user_id' => Auth::id(), 'order_id' => $order -> id, 'item_id' => $cartItem -> product_id, 'quantity' => $cartItem -> quantity]);
+          Product::setProduct([['id', $cartItem -> product_id]], [['quantity', ($product -> quantity - $cartItem -> quantity)]]);
+          Cart::removeCart([['id', $cartItem -> id]]);
+        }
       }
 
       return redirect('/checkout/thank-you?orderId='.$order -> id);
@@ -82,12 +77,12 @@ class CheckoutController extends Controller
   }
 
   public function thankYou(Request $request) {
-    $order = Order::find($request -> orderId);
-    $user = User::find($order -> user_id);
-    $orderItems = OrderDetail::where('order_id', $order -> id) -> get();
+    $order = Order::getOrder([['id', $request -> orderId]]);
+    $user = User::getUser([['id', $order -> user_id]]);
+    $orderItems = OrderDetail::getOrderDetails([['order_id', $order -> id]]) -> get();
     $products = [];
     foreach ($orderItems as $orderItem) {
-      $product = Product::find($orderItem -> item_id);
+      $product = Product::getProduct([['id', $orderItem -> item_id]]);
       array_push($products, $product);
     }
     return view('checkout/thank-you', ['user' => $user, 'order' => $order, 'items' => $orderItems, 'products' => $products]);

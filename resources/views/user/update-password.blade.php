@@ -13,6 +13,7 @@
       <link href="../css/general.css" rel="stylesheet">
   </head>
   <body>
+    <div class="backgroundImage"></div>
     @yield(Auth::check() ? "RegisteredUserHeader" : "GuestUserHeader")
     <main class="main container-fluid mt-3 mb-5" style="width: 70%">
       <a href="{{ url()->previous() }}"><button type="button" class="btn btn-primary">&larr; Back</button></a>
@@ -49,5 +50,10 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script>
+      if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+      }
+    </script>
   </body>
 </html>

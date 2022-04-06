@@ -73,6 +73,11 @@
   grid-template-columns: 2fr 3fr;
 }
 
+.productImageContainer {
+  height: 30vw;
+  width: 100%;
+}
+
 .productPriceContainer {
   font-size: 1.2em;
   font-weight: 600;

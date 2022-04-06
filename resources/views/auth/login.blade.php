@@ -13,6 +13,7 @@
     <link href="css/general.css" rel="stylesheet">
   </head>
   <body>
+    <div class="backgroundImage"></div>
     @yield(Auth::check() ? "RegisteredUserHeader" : "GuestUserHeader")
     <main class="main container-fluid mt-3 mb-5" style="width: 70%">
       <h2 class="text-center mb-3">Login</h2>
@@ -35,7 +36,7 @@
           <label for="PasswordInput">Password*</label>
         </div>
         <div class="d-flex justify-content-end">
-          <a href="/register"><button type="button" class="btn btn-primary">New to PHP Blog? Register here!</button></a>
+          <a href="/register"><button type="button" class="btn btn-primary">New to EComWeb? Register here!</button></a>
           <button type="submit" class="btn btn-success ms-2">Login</button>
         </div>
       </form>

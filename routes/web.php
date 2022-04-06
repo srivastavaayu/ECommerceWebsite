@@ -45,6 +45,8 @@ Route::post('/shop/product/{id}/addToCart', 'Shop\ProductController@addToCart') 
 
 Route::post('/shop/product/{id}/removeFromCart', 'Shop\ProductController@removeFromCart') -> middleware('guest');
 
+Route::post('/shop/product/{id}/setCartQuantity', 'Shop\ProductController@setCartQuantity') -> middleware('guest');
+
 Route::post('/shop/product/{id}/increaseCartQuantity', 'Shop\ProductController@increaseCartQuantity') -> middleware('guest');
 
 Route::post('/shop/product/{id}/decreaseCartQuantity', 'Shop\ProductController@decreaseCartQuantity') -> middleware('guest');

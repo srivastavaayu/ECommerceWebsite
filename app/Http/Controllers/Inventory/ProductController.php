@@ -22,58 +22,67 @@ class ProductController extends Controller
       $this -> sortBehavior = $request -> sort;
     }
     if ($request -> isMethod('POST')) {
-      $product = Product::find($request -> productId);
+      $product = Product::getProduct([['id', $request -> productId]]);
       if ($product -> is_archived) {
-        $product -> is_archived = 0;
+        Product::setProduct([['id', $request -> productId]], [['is_archived', 0]]);
         $info = "Product unarchived successfully!";
       }
       else {
-        $product -> is_archived = 1;
+        Product::setProduct([['id', $request -> productId]], [['is_archived', 1]]);
         $info = "Product archived successfully!";
       }
-      $product -> save();
     }
-    $allProducts = Product::where('user_id', Auth::id()) -> orderBy('updated_at', $this -> sortBehavior) -> get();
-    $activeProducts = Product::where([['user_id', Auth::id()], ['is_archived', 0]]) -> orderBy('updated_at', $this -> sortBehavior) -> get();
-    $archivedProducts = Product::where([['user_id', Auth::id()], ['is_archived', 1]]) -> orderBy('updated_at', $this -> sortBehavior) -> get();
-    $categories = Category::all();
+    $allProducts = Product::getProducts([['user_id', Auth::id()]], null, null, ['updated_at', $this -> sortBehavior]) -> get();
+    $activeProducts = Product::getProducts([['user_id', Auth::id()], ['is_archived', 0]], null, null, ['updated_at', $this -> sortBehavior]) -> get();
+    $archivedProducts = Product::getProducts([['user_id', Auth::id()], ['is_archived', 1]], null, null, ['updated_at', $this -> sortBehavior]) -> get();
+    $categories = Category::getCategories() -> get();
     return view('inventory/products', ['allProducts' => $allProducts, 'activeProducts' => $activeProducts, 'archivedProducts' => $archivedProducts, 'categories' => $categories, 'sortBehavior' => $this -> sortBehavior, 'info' => $info]);
   }
 
   public function product(Request $request, $id) {
     $info = "";
-    $product = Product::find($id);
+    $product = Product::getProduct([['id', $id]], null, null, null);
     if ($request -> isMethod("POST")) {
+      $data = [];
       if (($request -> ProductNameInput) != ($product -> name) && (!is_null($request -> ProductNameInput))) {
-        $product -> name = $request -> ProductNameInput;
+        array_push($data, ['name', $request -> ProductNameInput]);
       }
       if (($request -> ProductDescriptionInput) != ($product -> description) && (!is_null($request -> ProductDescriptionInput))) {
-        $product -> description = $request -> ProductDescriptionInput;
+        array_push($data, ['description', $request -> ProductDescriptionInput]);
+
       }
       if (($request -> SKUInput) != ($product -> sku) && (!is_null($request -> SKUInput))) {
-        $product -> sku = $request -> SKUInput;
+        array_push($data, ['sku', $request -> SKUInput]);
+
       }
       if (($request -> CategoryInput) != ($product -> category_id) && (!is_null($request -> CategoryInput))) {
-        $product -> category_id = $request -> CategoryInput;
+        array_push($data, ['category_id', $request -> CategoryInput]);
+
       }
       if ($request -> hasFile('ProductImageInput')) {
         $productImageInputPath = Storage::putFile('public', $request -> ProductImageInput);
         $product -> image_path = $productImageInputPath;
+        array_push($data, ['image_path', $productImageInputPath]);
       }
       if (($request -> PriceInput) != ($product -> price) && (!is_null($request -> PriceInput))) {
         $product -> price = $request -> PriceInput;
+        array_push($data, ['price', $request -> PriceInput]);
       }
       if (($request -> UnitInput) != ($product -> unit) && (!is_null($request -> UnitInput))) {
         $product -> unit = $request -> UnitInput;
+        array_push($data, ['unit', $request -> UnitInput]);
       }
       if (($request -> StockQuantityInput) != ($product -> quantity) && (!is_null($request -> StockQuantityInput))) {
         $product -> quantity = $request -> StockQuantityInput;
+        array_push($data, ['quantity', $request -> StockQuantityInput]);
       }
-      $product -> save();
-      $info = "Product updated successfully!";
+      if (count($data) > 0) {
+        Product::setProduct([['id', $id]], $data);
+        $info = "Product updated successfully!";
+      }
     }
-    $product = Product::find($id);
-    $categories = Category::all();
+    $product = Product::getProduct([['id', $id]]);
+    $categories = Category::getCategories() -> get();
     return view('inventory/product', ['product' => $product, 'categories' => $categories, 'info' => $info]);
   }
 
@@ -88,10 +97,7 @@ class ProductController extends Controller
         if($validator -> fails()) {
           return redirect('/inventory/product/add-new-product') -> withErrors($validator) -> withInput();
         }
-        $category = new Category;
-        $category -> name = $request -> CategoryNameInput;
-        $category -> description = $request -> CategoryDescriptionInput;
-        $category -> save();
+        $category = Category::addCategory(['name' => $request -> CategoryNameInput, 'description' => $request -> CategoryDescriptionInput]);
         return redirect('/inventory/product/add-new-product');
       }
       else {
@@ -109,25 +115,14 @@ class ProductController extends Controller
         if($validator -> fails()) {
           return redirect('/inventory/product/add-new-product') -> withErrors($validator) -> withInput();
         }
-        $product = new Product;
-        $product -> category_id = $request -> CategoryInput;
-        $product -> sku = $request -> SKUInput;
-        $product -> name = $request -> ProductNameInput;
-        $product -> description = $request -> ProductDescriptionInput;
-        $product -> user_id = Auth::id();
         if ($request -> hasFile('ProductImageInput')) {
           $productImageInputPath = Storage::putFile('public', $request -> ProductImageInput);
-          $product -> image_path = $productImageInputPath;
         }
-        $product -> price = $request -> PriceInput;
-        $product -> unit = $request -> UnitInput;
-        $product -> quantity = $request -> StockQuantityInput;
-        $product -> is_archived = 0;
-        $product -> save();
+        $product = Product::addProduct(['category_id' => $request -> CategoryInput, 'sku' => $request -> SKUInput, 'name' => $request -> ProductNameInput, 'description' => $request -> ProductDescriptionInput, 'image_path' => $productImageInputPath, 'price' => $request -> PriceInput, 'unit' => $request -> UnitInput, 'quantity' => $request -> StockQuantityInput, 'is_archived' => 0]);
         return redirect('/inventory/product');
       }
     }
-    $categories = Category::all();
+    $categories = Category::getCategories() -> get();
     return view('inventory/add-new-product', ['categories' => $categories]);
   }
 

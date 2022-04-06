@@ -14,6 +14,7 @@
     <link href="css/index.css" rel="stylesheet">
   </head>
   <body>
+    <div class="backgroundImage"></div>
     @yield(Auth::check() ? "RegisteredUserHeader" : "GuestUserHeader")
     <main class="main container-fluid mt-3 mb-5" style="width: 95%">
       @if (Auth::check())

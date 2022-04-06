@@ -46,48 +46,51 @@ class ProductController extends Controller
           break;
       }
     }
-    if ($request -> isMethod('POST')) {
-
-    }
-    $products = Product::where('is_archived', 0) -> orderBy($this -> sortField, $this -> sortDirection) -> simplePaginate(3);
+    $products = Product::getProducts([['is_archived', 0]], null, null, [$this -> sortField, $this -> sortDirection]) -> simplePaginate(3);
     return view('shop/products',['products' => $products, 'sortBehavior' => $this -> sortBehavior]);
   }
 
-  public function product(Request $request, $id) {
-    $product = Product::find($id);
-    $category = Category::find($product -> category_id);
-    $cart = Cart::where([['product_id', $id], ['user_id', Auth::id()]]) -> firstOr(function () {
-      return null;
-    });
+  public function product($id) {
+    $product = Product::getProduct([['id', $id]]);
+    $category = Category::getCategory([['id', $product -> category_id]]);
+    $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
     return view('shop/product', ['product' => $product, 'category' => $category, 'cart' => $cart]);
   }
 
-  public function addToCart(Request $request, $id) {
-    $cart = new Cart;
-    $cart -> user_id = Auth::id();
-    $cart -> product_id = $id;
-    $cart -> quantity = 1;
-    $cart -> save();
+  public function addToCart($id) {
+    Cart::addCart(['user_id' => Auth::id(), 'product_id' => $id, 'quantity' => 1]);
     return redirect('/shop/product/'.$id);
   }
 
-  public function removeFromCart(Request $request, $id) {
-    $cart = Cart::where([['product_id', $id], ['user_id', Auth::id()]]) -> first();
-    $cart -> delete();
+  public function removeFromCart($id) {
+    Cart::removeCart([['product_id', $id], ['user_id', Auth::id()]]);
     return redirect('/shop/product/'.$id);
   }
 
-  public function increaseCartQuantity(Request $request, $id) {
-    $cart = Cart::where([['product_id', $id], ['user_id', Auth::id()]]) -> first();
-    $cart -> quantity = ($cart -> quantity) + 1;
-    $cart -> save();
+  public function setCartQuantity(Request $request, $id) {
+    $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
+    $product = Product::getProduct([['id', $id]]);
+    if ($request -> quantity > $product -> quantity) {
+      Cart::setCart([['product_id', $id], ['user_id', Auth::id()]], [['quantity', $product -> quantity]]);
+    }
+    else if($request -> quantity < 1) {
+      Cart::setCart([['product_id', $id], ['user_id', Auth::id()]], [['quantity', 1]]);
+    }
+    else {
+      Cart::setCart([['product_id', $id], ['user_id', Auth::id()]], [['quantity', $request -> quantity]]);
+    }
     return redirect('/shop/product/'.$id);
   }
 
-  public function decreaseCartQuantity(Request $request, $id) {
-    $cart = Cart::where([['product_id', $id], ['user_id', Auth::id()]]) -> first();
-    $cart -> quantity = ($cart -> quantity) - 1;
-    $cart -> save();
+  public function increaseCartQuantity($id) {
+    $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
+    Cart::setCart([['product_id', $id], ['user_id', Auth::id()]], [['quantity', ($cart -> quantity + 1)]]);
+    return redirect('/shop/product/'.$id);
+  }
+
+  public function decreaseCartQuantity($id) {
+    $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
+    Cart::setCart([['product_id', $id], ['user_id', Auth::id()]], [['quantity', ($cart -> quantity - 1)]]);
     return redirect('/shop/product/'.$id);
   }
 

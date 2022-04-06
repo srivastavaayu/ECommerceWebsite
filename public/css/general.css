@@ -3,3 +3,12 @@
 * {
   font-family: "Montserrat", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
+
+.backgroundImage {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background: url("../images/ecomweb-background.jpg") repeat;
+  filter: blur(5px) brightness(0.9);
+  z-index: -1;
+}
