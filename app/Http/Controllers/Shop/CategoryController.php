@@ -14,14 +14,18 @@ class CategoryController extends Controller
   public $sortField = 'id';
   public $sortDirection = 'ASC';
 
-  public function categories(Request $request) {
+  public function categories(Request $request)
+  {
     $categories = Category::getCategories() -> simplePaginate(2);
     return view('shop/categories', ['categories' => $categories]);
   }
 
-  public function category(Request $request, $id) {
-    if ($request -> has('sort')) {
-      switch ($request -> sort) {
+  public function category(Request $request, $id)
+  {
+    if ($request -> has('sort'))
+    {
+      switch ($request -> sort)
+      {
         case "priceASC":
           $this -> sortBehavior = 'priceASC';
           $this -> sortField = 'price';

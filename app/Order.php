@@ -12,45 +12,58 @@ class Order extends Model
   protected $dates = ['deleted_at'];
   protected $fillable = ['user_id', 'address_line_1', 'address_line_2', 'city', 'state', 'country', 'pin_code', 'total'];
 
-  public static function addOrder($data) {
+  public static function addOrder($data)
+  {
     $order = Order::create($data);
     return $order;
   }
 
-  public static function getOrders($where = null, $groupBy = null, $having = null, $orderBy = null) {
+  public static function getOrders($where = null, $groupBy = null, $having = null, $orderBy = null)
+  {
     $orders = new Order;
-    if ($where != null) {
+    if ($where != null)
+    {
       $orders = $orders -> where($where);
     }
-    if ($groupBy != null) {
+    if ($groupBy != null)
+    {
       $orders = $orders -> groupBy($groupBy);
     }
-    if ($having != null) {
+    if ($having != null)
+    {
       $orders = $orders -> having($having);
     }
-    if ($orderBy != null) {
+    if ($orderBy != null)
+    {
       $orders = $orders -> orderBy($orderBy[0], $orderBy[1]);
     }
     return $orders;
   }
 
-  public static function getOrder($where = null, $groupBy = null, $having = null, $orderBy = null) {
+  public static function getOrder($where = null, $groupBy = null, $having = null, $orderBy = null)
+  {
     $order = new Order;
-    if ($where != null) {
+    if ($where != null)
+    {
       $order = $order -> where($where);
     }
-    if ($groupBy != null) {
+    if ($groupBy != null)
+    {
       $order = $order -> groupBy($groupBy);
     }
-    if ($having != null) {
+    if ($having != null)
+    {
       $order = $order -> having($having);
     }
-    if ($orderBy != null) {
+    if ($orderBy != null)
+    {
       $order = $order -> orderBy($orderBy[0], $orderBy[1]);
     }
-    $order = $order -> firstOr(function() {
-      return null;
-    });
+    $order = $order -> firstOr(function()
+      {
+        return null;
+      }
+    );
     return $order;
   }
 

@@ -12,44 +12,57 @@ class OrderDetail extends Model
   protected $dates = ['deleted_at'];
   protected $fillable = ['user_id', 'order_id', 'item_id', 'quantity'];
 
-  public static function addOrderDetail($data) {
+  public static function addOrderDetail($data)
+  {
     OrderDetail::create($data);
   }
 
-  public static function getOrderDetails($where = null, $groupBy = null, $having = null, $orderBy = null) {
+  public static function getOrderDetails($where = null, $groupBy = null, $having = null, $orderBy = null)
+  {
     $orderDetails = new OrderDetail;
-    if ($where != null) {
+    if ($where != null)
+    {
       $orderDetails = $orderDetails -> where($where);
     }
-    if ($groupBy != null) {
+    if ($groupBy != null)
+    {
       $orderDetails = $orderDetails -> groupBy($groupBy);
     }
-    if ($having != null) {
+    if ($having != null)
+    {
       $orderDetails = $orderDetails -> having($having);
     }
-    if ($orderBy != null) {
+    if ($orderBy != null)
+    {
       $orderDetails = $orderDetails -> orderBy($orderBy[0], $orderBy[1]);
     }
     return $orderDetails;
   }
 
-  public static function getOrderDetail($where = null, $groupBy = null, $having = null, $orderBy = null) {
+  public static function getOrderDetail($where = null, $groupBy = null, $having = null, $orderBy = null)
+  {
     $orderDetail = new OrderDetail;
-    if ($where != null) {
+    if ($where != null)
+    {
       $orderDetail = $orderDetail -> where($where);
     }
-    if ($groupBy != null) {
+    if ($groupBy != null)
+    {
       $orderDetail = $orderDetail -> groupBy($groupBy);
     }
-    if ($having != null) {
+    if ($having != null)
+    {
       $orderDetail = $orderDetail -> having($having);
     }
-    if ($orderBy != null) {
+    if ($orderBy != null)
+    {
       $orderDetail = $orderDetail -> orderBy($orderBy[0], $orderBy[1]);
     }
-    $orderDetail = $orderDetail -> firstOr(function() {
-      return null;
-    });
+    $orderDetail = $orderDetail -> firstOr(function()
+      {
+        return null;
+      }
+    );
     return $orderDetail;
   }
 

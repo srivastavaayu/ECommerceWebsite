@@ -16,9 +16,12 @@ class ProductController extends Controller
   public $sortField = 'id';
   public $sortDirection = 'ASC';
 
-  public function products(Request $request) {
-    if ($request -> has('sort')) {
-      switch ($request -> sort) {
+  public function products(Request $request)
+  {
+    if ($request -> has('sort'))
+    {
+      switch ($request -> sort)
+      {
         case "priceASC":
           $this -> sortBehavior = 'priceASC';
           $this -> sortField = 'price';
@@ -50,30 +53,36 @@ class ProductController extends Controller
     return view('shop/products',['products' => $products, 'sortBehavior' => $this -> sortBehavior]);
   }
 
-  public function product($id) {
+  public function product($id)
+  {
     $product = Product::getProduct([['id', $id]]);
     $category = Category::getCategory([['id', $product -> category_id]]);
     $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
     return view('shop/product', ['product' => $product, 'category' => $category, 'cart' => $cart]);
   }
 
-  public function addToCart($id) {
+  public function addToCart($id)
+  {
     Cart::addCart(['user_id' => Auth::id(), 'product_id' => $id, 'quantity' => 1]);
     return redirect('/shop/product/'.$id);
   }
 
-  public function removeFromCart($id) {
+  public function removeFromCart($id)
+  {
     Cart::removeCart([['product_id', $id], ['user_id', Auth::id()]]);
     return redirect('/shop/product/'.$id);
   }
 
-  public function setCartQuantity(Request $request, $id) {
+  public function setCartQuantity(Request $request, $id)
+  {
     $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
     $product = Product::getProduct([['id', $id]]);
-    if ($request -> quantity > $product -> quantity) {
+    if ($request -> quantity > $product -> quantity)
+    {
       Cart::setCart([['product_id', $id], ['user_id', Auth::id()]], [['quantity', $product -> quantity]]);
     }
-    else if($request -> quantity < 1) {
+    else if($request -> quantity < 1)
+    {
       Cart::setCart([['product_id', $id], ['user_id', Auth::id()]], [['quantity', 1]]);
     }
     else {
@@ -82,19 +91,22 @@ class ProductController extends Controller
     return redirect('/shop/product/'.$id);
   }
 
-  public function increaseCartQuantity($id) {
+  public function increaseCartQuantity($id)
+  {
     $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
     Cart::setCart([['product_id', $id], ['user_id', Auth::id()]], [['quantity', ($cart -> quantity + 1)]]);
     return redirect('/shop/product/'.$id);
   }
 
-  public function decreaseCartQuantity($id) {
+  public function decreaseCartQuantity($id)
+  {
     $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
     Cart::setCart([['product_id', $id], ['user_id', Auth::id()]], [['quantity', ($cart -> quantity - 1)]]);
     return redirect('/shop/product/'.$id);
   }
 
-  public function setRating(Request $request, $id) {
+  public function setRating(Request $request, $id)
+  {
     Product::setProduct([['id', $id]], [['rating', $request -> rating]]);
     return redirect('/shop/product/'.$id);
   }
