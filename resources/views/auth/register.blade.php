@@ -19,7 +19,7 @@
       <h2 class="text-center mb-3">Register</h2>
       @if ($errors->any())
         @foreach ($errors->all() as $error)
-          <div style="color: orange; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3">{{ $error }}</div>
+          <div style="color: blue; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3">{{ $error }}</div>
           @break
         @endforeach
       @endif
