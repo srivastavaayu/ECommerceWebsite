@@ -70,7 +70,7 @@
                     <p class="mb-1 text-truncate">{{ $product -> description }}</p>
                     <p class="productPriceContainer mb-1 text-truncate">{{ $product -> price }}/{{ $product -> unit }}</p>
                     @if ($product -> quantity <= 0)
-                      <small style="color: red;">Out of stock!</small>
+                      <small style="color: red; font-weight: 700;">Out of stock!</small>
                     @endif
                   </div>
                 </div>

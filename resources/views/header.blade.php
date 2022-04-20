@@ -64,7 +64,7 @@
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarProfileDropdown">
               <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
               <li><a class="dropdown-item" href="/user/orders-history">Orders History</a></li>
-              <li><a class="dropdown-item" href="/user/saved-address">Saved Addresses</a></li>
+              <!-- <li><a class="dropdown-item" href="/user/saved-address">Saved Addresses</a></li> -->
               <li><a class="dropdown-item" href="/user/update-password">Update Password</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="/logout">Logout</a></li>

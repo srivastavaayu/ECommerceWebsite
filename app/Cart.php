@@ -46,43 +46,32 @@ class Cart extends Model
     return $carts;
   }
 
-  public static function getCart($where = null, $groupBy = null, $having = null, $orderBy = null)
+  public static function getCart($where = null)
   {
     $cart = new Cart;
     if ($where != null)
     {
       $cart = $cart -> where($where);
     }
-    if ($groupBy != null)
-    {
-      $cart = $cart -> groupBy($groupBy);
-    }
-    if ($having != null)
-    {
-      $cart = $cart -> having($having);
-    }
-    if ($orderBy != null)
-    {
-      $cart = $cart -> orderBy($orderBy[0], $orderBy[1]);
-    }
-    $cart = $cart -> firstOr(function() {
-      return null;
-    });
+    $cart = $cart -> first();
     return $cart;
   }
 
   public static function setCart($where, $data)
   {
-    $cart = Cart::where($where) -> firstOr(function()
-      {
-        return null;
-      }
-    );
-    foreach ($data as $dataPoint)
+    $cart = Cart::where($where) -> first();
+    if (!empty($null))
     {
-      $cart[$dataPoint[0]] = $dataPoint[1];
+      foreach ($data as $attr => $val)
+      {
+        // if (in_array($attr, $this -> fillable))
+        // {
+        //   $cart[$attr] = $val;
+        // }
+        $cart[$attr] = $val;
+      }
+      $cart -> save();
     }
-    $cart -> save();
   }
 
 }

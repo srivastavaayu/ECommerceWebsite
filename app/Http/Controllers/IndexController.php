@@ -11,11 +11,19 @@ class IndexController extends Controller
 {
   public function handle()
   {
-    $products = Product::getProducts([['is_archived', 0]]) -> get();
+    $products = Product::getProducts(
+      [['is_archived', 0], ['user_id', '!=', Auth::id()]]
+    ) -> get();
     $categories = Category::getCategories() -> get();
     if(Auth::check())
     {
-      return view('index', ['name' => Auth::user() -> name, 'products' => $products, 'categories' => $categories]);
+      return view('index',
+        [
+          'name' => Auth::user() -> name,
+          'products' => $products,
+          'categories' => $categories
+        ]
+      );
     }
     return view('index', ['products' => $products, 'categories' => $categories]);
   }

@@ -41,45 +41,32 @@ class User extends Authenticatable
     return $users;
   }
 
-  public static function getUser($where = null, $groupBy = null, $having = null, $orderBy = null)
+  public static function getUser($where = null)
   {
     $user = new User;
     if ($where != null)
     {
       $user = $user -> where($where);
     }
-    if ($groupBy != null)
-    {
-      $user = $user -> groupBy($groupBy);
-    }
-    if ($having != null)
-    {
-      $user = $user -> having($having);
-    }
-    if ($orderBy != null)
-    {
-      $user = $user -> orderBy($orderBy[0], $orderBy[1]);
-    }
-    $user = $user -> firstOr(function()
-      {
-        return null;
-      }
-    );
+    $user = $user -> first();
     return $user;
   }
 
   public static function setUser($where, $data)
   {
-    $user = User::where($where) -> firstOr(function()
-      {
-        return null;
-      }
-    );
-    foreach ($data as $dataPoint)
+    $user = User::where($where) -> first();
+    if (!empty($user))
     {
-      $user[$dataPoint[0]] = $dataPoint[1];
+      foreach ($data as $attr => $val)
+      {
+        // if (in_array($attr, $this -> fillable))
+        // {
+        //   $user[$attr] = $val;
+        // }
+        $user[$attr] = $val;
+      }
+      $user -> save();
     }
-    $user -> save();
   }
 
 }

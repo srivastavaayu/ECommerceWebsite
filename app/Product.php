@@ -39,44 +39,32 @@ class Product extends Model
     return $products;
   }
 
-  public static function getProduct($where = null, $groupBy = null, $having = null, $orderBy = null)
+  public static function getProduct($where = null)
   {
     $product = new Product;
     if ($where != null)
     {
       $product = $product -> where($where);
     }
-    if ($groupBy != null)
-    {
-      $product = $product -> groupBy($groupBy);
-    }
-    if ($having != null)
-    {
-      $product = $product -> having($having);
-    }
-    if ($orderBy != null)
-    {
-      $product = $product -> orderBy($orderBy[0], $orderBy[1]);
-    }
-    $product = $product -> firstOr(function()
-      {
-        return null;
-      }
-    );
+    $product = $product -> first();
     return $product;
   }
 
   public static function setProduct($where, $data)
   {
-    $product = Product::where($where) -> firstOr(function()
+    $product = Product::where($where) -> first();
+    if (!empty($product))
     {
-      return null;
-    });
-    foreach ($data as $dataPoint)
-    {
-      $product[$dataPoint[0]] = $dataPoint[1];
+      foreach ($data as $attr => $val)
+      {
+        // if (in_array($attr, $this -> fillable))
+        // {
+        //   $product[$attr] = $val;
+        // }
+        $product[$attr] = $val;
+      }
+      $product -> save();
     }
-    $product -> save();
   }
 
 }

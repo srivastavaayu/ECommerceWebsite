@@ -18,10 +18,20 @@ class SearchController extends Controller
     if ($request -> has('term'))
     {
       $searchTerm = $request -> term;
-      $products = Product::getProducts([['name', 'LIKE', '%'.$searchTerm.'%']]) -> get();
-      $categories = Category::getCategories([['name', 'LIKE', '%'.$searchTerm.'%']]) -> get();
+      $products = Product::getProducts(
+        [['name', 'LIKE', '%'.$searchTerm.'%']]
+      ) -> get();
+      $categories = Category::getCategories(
+        [['name', 'LIKE', '%'.$searchTerm.'%']]
+      ) -> get();
     }
-    return view('shop/search', ['products' => $products, 'categories' => $categories, 'term' => $searchTerm]);
+    return view('shop/search',
+      [
+        'products' => $products,
+        'categories' => $categories,
+        'term' => $searchTerm
+      ]
+    );
   }
 
 }

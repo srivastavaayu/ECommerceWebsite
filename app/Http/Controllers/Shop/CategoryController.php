@@ -6,6 +6,7 @@ use App\Product;
 use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -14,13 +15,13 @@ class CategoryController extends Controller
   public $sortField = 'id';
   public $sortDirection = 'ASC';
 
-  public function categories(Request $request)
+  public function getCategories(Request $request)
   {
     $categories = Category::getCategories() -> simplePaginate(2);
     return view('shop/categories', ['categories' => $categories]);
   }
 
-  public function category(Request $request, $id)
+  public function getCategory(Request $request, $id)
   {
     if ($request -> has('sort'))
     {
@@ -54,8 +55,19 @@ class CategoryController extends Controller
       }
     }
     $category = Category::getCategory([['id', $id]]);
-    $products = Product::getProducts([['is_archived', 0], ['category_id', $id]], null, null, [$this -> sortField, $this -> sortDirection]) -> simplePaginate(3);
-    return view('shop/category', ['category' => $category, 'products' => $products, 'sortBehavior' => $this -> sortBehavior]);
+    $products = Product::getProducts(
+      [['is_archived', 0], ['category_id', $id], ['user_id', '!=', Auth::id()]],
+      null,
+      null,
+      [$this -> sortField, $this -> sortDirection]
+    ) -> simplePaginate(3);
+    return view('shop/category',
+      [
+        'category' => $category,
+        'products' => $products,
+        'sortBehavior' => $this -> sortBehavior
+      ]
+    );
   }
 
 }

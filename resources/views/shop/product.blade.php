@@ -94,7 +94,7 @@
                     <button class="btn btn-primary"><img src="../../../images/cart.png" class="productCartImage"> Add To Cart</button>
                   </form>
                 @else
-                  <p style="color: red; font-size: 1.1em;">Product out of stock!</p>
+                  <p style="color: red; font-size: 1.1em; font-weight: 700;">Product out of stock!</p>
                 @endif
               </div>
             @endif

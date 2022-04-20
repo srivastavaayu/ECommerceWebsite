@@ -39,30 +39,14 @@ class OrderDetail extends Model
     return $orderDetails;
   }
 
-  public static function getOrderDetail($where = null, $groupBy = null, $having = null, $orderBy = null)
+  public static function getOrderDetail($where = null)
   {
     $orderDetail = new OrderDetail;
     if ($where != null)
     {
       $orderDetail = $orderDetail -> where($where);
     }
-    if ($groupBy != null)
-    {
-      $orderDetail = $orderDetail -> groupBy($groupBy);
-    }
-    if ($having != null)
-    {
-      $orderDetail = $orderDetail -> having($having);
-    }
-    if ($orderBy != null)
-    {
-      $orderDetail = $orderDetail -> orderBy($orderBy[0], $orderBy[1]);
-    }
-    $orderDetail = $orderDetail -> firstOr(function()
-      {
-        return null;
-      }
-    );
+    $orderDetail = $orderDetail -> first();
     return $orderDetail;
   }
 
