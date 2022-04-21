@@ -49,13 +49,20 @@ class ProductController extends Controller
           break;
       }
     }
-    $products = Product::getProducts(
-      [['is_archived', 0], ['user_id', '!=', Auth::id()]],
-      null,
-      null,
-      [$this -> sortField, $this -> sortDirection]
-    ) -> simplePaginate(3);
-    return view('shop/products',
+    try
+    {
+      $products = Product::getProducts(
+        [['is_archived', 0], ['user_id', '!=', Auth::id()]],
+        null,
+        null,
+        [$this -> sortField, $this -> sortDirection]
+      ) -> simplePaginate(3);
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
+      return view('shop/products',
       [
         'products' => $products,
         'sortBehavior' => $this -> sortBehavior
@@ -65,9 +72,16 @@ class ProductController extends Controller
 
   public function getProduct($id)
   {
-    $product = Product::getProduct([['id', $id]]);
-    $category = Category::getCategory([['id', $product -> category_id]]);
-    $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
+    try
+    {
+      $product = Product::getProduct([['id', $id]]);
+      $category = Category::getCategory([['id', $product -> category_id]]);
+      $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     return view('shop/product',
       [
         'product' => $product,
@@ -79,26 +93,47 @@ class ProductController extends Controller
 
   public function addToCart($id)
   {
-    Cart::addCart(
-      [
-        'user_id' => Auth::id(),
-        'product_id' => $id,
-        'quantity' => 1
-      ]
-    );
+    try
+    {
+      Cart::addCart(
+        [
+          'user_id' => Auth::id(),
+          'product_id' => $id,
+          'quantity' => 1
+        ]
+      );
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     return redirect('/shop/product/'.$id);
   }
 
   public function removeFromCart($id)
   {
-    Cart::removeCart([['product_id', $id], ['user_id', Auth::id()]]);
+    try
+    {
+      Cart::removeCart([['product_id', $id], ['user_id', Auth::id()]]);
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     return redirect('/shop/product/'.$id);
   }
 
   public function setCartQuantity(Request $request, $id)
   {
-    $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
-    $product = Product::getProduct([['id', $id]]);
+    try
+    {
+      $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
+      $product = Product::getProduct([['id', $id]]);
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     if ($request -> quantity > $product -> quantity)
     {
       Cart::setCart(
@@ -124,21 +159,35 @@ class ProductController extends Controller
 
   public function increaseCartQuantity($id)
   {
-    $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
-    Cart::setCart(
-      [['product_id', $id], ['user_id', Auth::id()]],
-      ['quantity' => ($cart -> quantity + 1)]
-    );
+    try
+    {
+      $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
+      Cart::setCart(
+        [['product_id', $id], ['user_id', Auth::id()]],
+        ['quantity' => ($cart -> quantity + 1)]
+      );
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     return redirect('/shop/product/'.$id);
   }
 
   public function decreaseCartQuantity($id)
   {
-    $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
-    Cart::setCart(
-      [['product_id', $id], ['user_id', Auth::id()]],
-      ['quantity' => ($cart -> quantity - 1)]
-    );
+    try
+    {
+      $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
+      Cart::setCart(
+        [['product_id', $id], ['user_id', Auth::id()]],
+        ['quantity' => ($cart -> quantity - 1)]
+      );
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     return redirect('/shop/product/'.$id);
   }
 

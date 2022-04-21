@@ -33,7 +33,14 @@ class UserController extends Controller
   public function postProfile(ProfileRequest $request)
   {
     $data = [];
-    $user = User::getUser([['id', Auth::id()]]);
+    try
+    {
+      $user = User::getUser([['id', Auth::id()]]);
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     if (!is_null($request -> FullNameInput))
     {
       $data['name'] = $request -> FullNameInput;
@@ -52,9 +59,23 @@ class UserController extends Controller
     }
     if (count($data) > 0)
     {
-      User::setUser([['id', Auth::id()]], $data);
+      try
+      {
+        User::setUser([['id', Auth::id()]], $data);
+      }
+      catch(Exception $e)
+      {
+        return view('404');
+      }
     }
-    $user = User::getUser([['id', Auth::id()]]);
+    try
+    {
+      $user = User::getUser([['id', Auth::id()]]);
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     Auth::setUser($user);
     $info = "Profile has been updated successfully!";
     return view('user/profile',
@@ -72,12 +93,26 @@ class UserController extends Controller
   {
     if ($request -> has('orderId'))
     {
-      $order = Order::getOrder([['id', $request -> orderId]]);
-      $orderDetail = OrderDetail::getOrderDetails([['order_id', $order -> id]]) -> get();
+      try
+      {
+        $order = Order::getOrder([['id', $request -> orderId]]);
+        $orderDetail = OrderDetail::getOrderDetails([['order_id', $order -> id]]) -> get();
+      }
+      catch(Exception $e)
+      {
+        return view('404');
+      }
       $products = [];
       foreach ($orderDetail as $orderItem)
       {
-        $product = Product::getProduct([['id', $orderItem -> item_id]]);
+        try
+        {
+          $product = Product::getProduct([['id', $orderItem -> item_id]]);
+        }
+        catch(Exception $e)
+        {
+          return view('404');
+        }
         array_push($products, $product);
       }
       return view('user/order-history',
@@ -89,12 +124,19 @@ class UserController extends Controller
         ]
       );
     }
-    $orders = Order::getOrders(
-      [['user_id', Auth::id()]],
-      null,
-      null,
-      ['updated_at', 'DESC']
-    ) -> get();
+    try
+    {
+      $orders = Order::getOrders(
+        [['user_id', Auth::id()]],
+        null,
+        null,
+        ['updated_at', 'DESC']
+      ) -> get();
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     return view('user/orders-history', ['user' => Auth::user(), 'orders' => $orders]);
   }
 
@@ -105,7 +147,14 @@ class UserController extends Controller
 
   public function postUpdatePassword(UpdatePasswordRequest $request)
   {
-    $user = User::getUser([['id', Auth::id()]]);
+    try
+    {
+      $user = User::getUser([['id', Auth::id()]]);
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     if (Hash::check($request -> CurrentPasswordInput, $user -> password))
     {
       User::setUser(

@@ -21,15 +21,22 @@ class AuthController extends Controller
 
   public function postRegister(RegisterRequest $request)
   {
-    User::addUser(
-      [
-        'name' => $request -> FullNameInput,
-        'email' => $request -> EmailInput,
-        'phone_number' => $request -> PhoneNumberInput,
-        'username' => $request -> UsernameInput,
-        'password' => Hash::make($request -> PasswordInput)
-      ]
-    );
+    try
+    {
+      User::addUser(
+        [
+          'name' => $request -> FullNameInput,
+          'email' => $request -> EmailInput,
+          'phone_number' => $request -> PhoneNumberInput,
+          'username' => $request -> UsernameInput,
+          'password' => Hash::make($request -> PasswordInput)
+        ]
+      );
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     return redirect('/login');
   }
 
@@ -40,7 +47,14 @@ class AuthController extends Controller
 
   public function postLogin(LoginRequest $request)
   {
-    $users = User::getUser([['username', $request -> UsernameInput]]);
+    try
+    {
+      $users = User::getUser([['username', $request -> UsernameInput]]);
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     if ($users != null)
     {
       if (Hash::check($request -> PasswordInput, $users -> password))

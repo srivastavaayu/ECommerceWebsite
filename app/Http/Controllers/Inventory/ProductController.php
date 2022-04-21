@@ -25,26 +25,33 @@ class ProductController extends Controller
     {
       $this -> sortBehavior = $request -> sort;
     }
-    $allProducts = Product::getProducts(
-      [['user_id', Auth::id()]],
-      null,
-      null,
-      ['updated_at', $this -> sortBehavior]
-    ) -> get();
-    $activeProducts = Product::getProducts(
-      [['user_id', Auth::id()], ['is_archived', 0]],
-      null,
-      null,
-      ['updated_at', $this -> sortBehavior]
-    ) -> get();
-    $archivedProducts = Product::getProducts(
-      [['user_id', Auth::id()],
-      ['is_archived', 1]],
-      null,
-      null,
-      ['updated_at', $this -> sortBehavior]
-    ) -> get();
-    $categories = Category::getCategories() -> get();
+    try
+    {
+      $allProducts = Product::getProducts(
+        [['user_id', Auth::id()]],
+        null,
+        null,
+        ['updated_at', $this -> sortBehavior]
+      ) -> get();
+      $activeProducts = Product::getProducts(
+        [['user_id', Auth::id()], ['is_archived', 0]],
+        null,
+        null,
+        ['updated_at', $this -> sortBehavior]
+      ) -> get();
+      $archivedProducts = Product::getProducts(
+        [['user_id', Auth::id()],
+        ['is_archived', 1]],
+        null,
+        null,
+        ['updated_at', $this -> sortBehavior]
+      ) -> get();
+      $categories = Category::getCategories() -> get();
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     return view('inventory/products',
       [
         'allProducts' => $allProducts,
@@ -71,7 +78,14 @@ class ProductController extends Controller
     }
     else
     {
-      $product = Product::getProduct([['id', $request -> productId]]);
+      try
+      {
+        $product = Product::getProduct([['id', $request -> productId]]);
+      }
+      catch(Exception $e)
+      {
+        return view('404');
+      }
       if ($product -> is_archived)
       {
         Product::setProduct([['id', $request -> productId]], ['is_archived' => 0]);
@@ -83,26 +97,33 @@ class ProductController extends Controller
         $info = "Product archived successfully!";
       }
     }
-    $allProducts = Product::getProducts(
-      [['user_id', Auth::id()]],
-      null,
-      null,
-      ['updated_at', $this -> sortBehavior]
-    ) -> get();
-    $activeProducts = Product::getProducts(
-      [['user_id', Auth::id()], ['is_archived', 0]],
-      null,
-      null,
-      ['updated_at', $this -> sortBehavior]
-    ) -> get();
-    $archivedProducts = Product::getProducts(
-      [['user_id', Auth::id()],
-      ['is_archived', 1]],
-      null,
-      null,
-      ['updated_at', $this -> sortBehavior]
-    ) -> get();
-    $categories = Category::getCategories() -> get();
+    try
+    {
+      $allProducts = Product::getProducts(
+        [['user_id', Auth::id()]],
+        null,
+        null,
+        ['updated_at', $this -> sortBehavior]
+      ) -> get();
+      $activeProducts = Product::getProducts(
+        [['user_id', Auth::id()], ['is_archived', 0]],
+        null,
+        null,
+        ['updated_at', $this -> sortBehavior]
+      ) -> get();
+      $archivedProducts = Product::getProducts(
+        [['user_id', Auth::id()],
+        ['is_archived', 1]],
+        null,
+        null,
+        ['updated_at', $this -> sortBehavior]
+      ) -> get();
+      $categories = Category::getCategories() -> get();
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     return view('inventory/products',
       [
         'allProducts' => $allProducts,
@@ -119,15 +140,29 @@ class ProductController extends Controller
   public function getProduct(Request $request, $id)
   {
     $info = "";
-    $product = Product::getProduct([['id', $id]]);
-    $categories = Category::getCategories() -> get();
+    try
+    {
+      $product = Product::getProduct([['id', $id]]);
+      $categories = Category::getCategories() -> get();
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     return view('inventory/product', ['product' => $product, 'categories' => $categories, 'info' => $info]);
   }
 
   public function postProduct(Request $request, $id)
   {
     $info = "";
-    $product = Product::getProduct([['id', $id]]);
+    try
+    {
+      $product = Product::getProduct([['id', $id]]);
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     $data = [];
     if (($request -> ProductNameInput) != ($product -> name) && (!is_null($request -> ProductNameInput)))
     {
@@ -171,14 +206,28 @@ class ProductController extends Controller
       Product::setProduct([['id', $id]], $data);
       $info = "Product updated successfully!";
     }
-    $product = Product::getProduct([['id', $id]]);
-    $categories = Category::getCategories() -> get();
+    try
+    {
+      $product = Product::getProduct([['id', $id]]);
+      $categories = Category::getCategories() -> get();
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     return view('inventory/product', ['product' => $product, 'categories' => $categories, 'info' => $info]);
   }
 
   public function getAddNewProduct(Request $request)
   {
-    $categories = Category::getCategories() -> get();
+    try
+    {
+      $categories = Category::getCategories() -> get();
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     return view('inventory/add-new-product', ['categories' => $categories]);
   }
 
@@ -186,12 +235,19 @@ class ProductController extends Controller
   {
     if ($request -> action == "AddNewCategory")
     {
-      $category = Category::addCategory(
-        [
-          'name' => $request -> CategoryNameInput,
-          'description' => $request -> CategoryDescriptionInput
-        ]
-      );
+      try
+      {
+        $category = Category::addCategory(
+          [
+            'name' => $request -> CategoryNameInput,
+            'description' => $request -> CategoryDescriptionInput
+          ]
+        );
+      }
+      catch(Exception $e)
+      {
+        return view('404');
+      }
       return redirect('/inventory/product/add-new-product');
     }
     else {
@@ -199,21 +255,28 @@ class ProductController extends Controller
       {
         $productImageInputPath = Storage::putFile('public', $request -> ProductImageInput);
       }
-      $product = Product::addProduct(
-        [
-          'user_id' => Auth::id(),
-          'category_id' => $request -> CategoryInput,
-          'sku' => $request -> SKUInput,
-          'name' => $request -> ProductNameInput,
-          'description' => $request -> ProductDescriptionInput,
-          'image_path' => $productImageInputPath,
-          'price' => $request -> PriceInput,
-          'unit' => $request -> UnitInput,
-          'quantity' => $request -> StockQuantityInput,
-          'is_archived' => 0,
-          'rating' => 0
-        ]
-      );
+      try
+      {
+        $product = Product::addProduct(
+          [
+            'user_id' => Auth::id(),
+            'category_id' => $request -> CategoryInput,
+            'sku' => $request -> SKUInput,
+            'name' => $request -> ProductNameInput,
+            'description' => $request -> ProductDescriptionInput,
+            'image_path' => $productImageInputPath,
+            'price' => $request -> PriceInput,
+            'unit' => $request -> UnitInput,
+            'quantity' => $request -> StockQuantityInput,
+            'is_archived' => 0,
+            'rating' => 0
+          ]
+        );
+      }
+      catch(Exception $e)
+      {
+        return view('404');
+      }
       return redirect('/inventory/product');
     }
   }

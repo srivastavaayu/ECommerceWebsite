@@ -17,7 +17,14 @@ class CategoryController extends Controller
 
   public function getCategories(Request $request)
   {
-    $categories = Category::getCategories() -> simplePaginate(2);
+    try
+    {
+      $categories = Category::getCategories() -> simplePaginate(2);
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     return view('shop/categories', ['categories' => $categories]);
   }
 
@@ -54,13 +61,20 @@ class CategoryController extends Controller
           break;
       }
     }
-    $category = Category::getCategory([['id', $id]]);
-    $products = Product::getProducts(
-      [['is_archived', 0], ['category_id', $id], ['user_id', '!=', Auth::id()]],
-      null,
-      null,
-      [$this -> sortField, $this -> sortDirection]
-    ) -> simplePaginate(3);
+    try
+    {
+      $category = Category::getCategory([['id', $id]]);
+      $products = Product::getProducts(
+        [['is_archived', 0], ['category_id', $id], ['user_id', '!=', Auth::id()]],
+        null,
+        null,
+        [$this -> sortField, $this -> sortDirection]
+      ) -> simplePaginate(3);
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     return view('shop/category',
       [
         'category' => $category,

@@ -13,17 +13,31 @@ class SearchController extends Controller
   public function handle(Request $request)
   {
     $searchTerm = "";
-    $products = Product::getProducts() -> get();
-    $categories = Category::getCategories() -> get();
+    try
+    {
+      $products = Product::getProducts() -> get();
+      $categories = Category::getCategories() -> get();
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     if ($request -> has('term'))
     {
       $searchTerm = $request -> term;
-      $products = Product::getProducts(
-        [['name', 'LIKE', '%'.$searchTerm.'%']]
-      ) -> get();
-      $categories = Category::getCategories(
-        [['name', 'LIKE', '%'.$searchTerm.'%']]
-      ) -> get();
+      try
+      {
+        $products = Product::getProducts(
+          [['name', 'LIKE', '%'.$searchTerm.'%']]
+        ) -> get();
+        $categories = Category::getCategories(
+          [['name', 'LIKE', '%'.$searchTerm.'%']]
+        ) -> get();
+      }
+      catch(Exception $e)
+      {
+        return view('404');
+      }
     }
     return view('shop/search',
       [

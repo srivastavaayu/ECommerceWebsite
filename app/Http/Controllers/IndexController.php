@@ -11,10 +11,17 @@ class IndexController extends Controller
 {
   public function handle()
   {
-    $products = Product::getProducts(
-      [['is_archived', 0], ['user_id', '!=', Auth::id()]]
-    ) -> get();
-    $categories = Category::getCategories() -> get();
+    try
+    {
+      $products = Product::getProducts(
+        [['is_archived', 0], ['user_id', '!=', Auth::id()]]
+      ) -> get();
+      $categories = Category::getCategories() -> get();
+    }
+    catch(Exception $e)
+    {
+      return view('404');
+    }
     if(Auth::check())
     {
       return view('index',
