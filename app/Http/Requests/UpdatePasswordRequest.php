@@ -28,20 +28,26 @@ class UpdatePasswordRequest extends FormRequest
           [
             'sometimes',
             'required',
-            'regex:/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$/u'
+            'regex:/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$/u',
+            'min: 1',
+            'max: 255'
           ],
         'PasswordInput' =>
           [
             'sometimes',
             'required',
-            'regex:/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$/u'
+            'regex:/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$/u',
+            'min: 1',
+            'max: 255'
           ],
         'ReenterPasswordInput' =>
           [
             'sometimes',
             'required',
             'regex:/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$/u',
-            'same:PasswordInput'
+            'same:PasswordInput',
+            'min: 1',
+            'max: 255'
           ]
       ];
     }

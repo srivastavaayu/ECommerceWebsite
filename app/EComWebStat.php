@@ -4,8 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EComWebStat extends Model
-{
+class EComWebStat extends Model {
 
   protected $fillable = ['product_id, units_sold'];
 
@@ -13,10 +12,8 @@ class EComWebStat extends Model
     if (empty($data)) {
       throw new Exception("Stat cannot be created!");
     }
-    foreach ($data as $attr => $val)
-    {
-      if (!in_array($attr, (new self) -> fillable))
-      {
+    foreach ($data as $attr => $val) {
+      if (!in_array($attr, (new self) -> fillable)) {
         throw new Exception("Stat cannot be created!");
       }
     }

@@ -12,15 +12,12 @@ class Product extends Model
   protected $dates = ['deleted_at'];
   protected $fillable = ['category_id', 'sku', 'name', 'description', 'user_id', 'image_path', 'price', 'unit', 'quantity', 'units_sold', 'is_archived', 'rating'];
 
-  public static function addProduct($data)
-  {
+  public static function addProduct($data) {
     if (empty($data)) {
       throw new Exception("Product cannot be created!");
     }
-    foreach ($data as $attr => $val)
-    {
-      if (!in_array($attr, (new self) -> fillable))
-      {
+    foreach ($data as $attr => $val) {
+      if (!in_array($attr, (new self) -> fillable)) {
         throw new Exception("Product cannot be created!");
       }
     }
@@ -30,20 +27,16 @@ class Product extends Model
   public static function getProducts($where = null, $groupBy = null, $having = null, $orderBy = null)
   {
     $products = new self;
-    if ($where != null)
-    {
+    if ($where != null) {
       $products = $products -> where($where);
     }
-    if ($groupBy != null)
-    {
+    if ($groupBy != null) {
       $products = $products -> groupBy($groupBy);
     }
-    if ($having != null)
-    {
+    if ($having != null) {
       $products = $products -> having($having);
     }
-    if ($orderBy != null)
-    {
+    if ($orderBy != null) {
       $products = $products -> orderBy($orderBy[0], $orderBy[1]);
     }
     return $products;
@@ -52,23 +45,18 @@ class Product extends Model
   public static function getProduct($where = null)
   {
     $product = new self;
-    if ($where != null)
-    {
+    if ($where != null) {
       $product = $product -> where($where);
     }
     $product = $product -> first();
     return $product;
   }
 
-  public static function setProduct($where, $data)
-  {
+  public static function setProduct($where, $data) {
     $product = Product::where($where) -> first();
-    if (!empty($product))
-    {
-      foreach ($data as $attr => $val)
-      {
-        if (in_array($attr, (new self) -> fillable))
-        {
+    if (!empty($product)) {
+      foreach ($data as $attr => $val) {
+        if (in_array($attr, (new self) -> fillable)) {
           $user[$attr] = $val;
         }
       }

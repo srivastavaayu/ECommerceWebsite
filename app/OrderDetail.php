@@ -12,15 +12,12 @@ class OrderDetail extends Model
   protected $dates = ['deleted_at'];
   protected $fillable = ['user_id', 'order_id', 'item_id', 'quantity'];
 
-  public static function addOrderDetail($data)
-  {
+  public static function addOrderDetail($data) {
     if (empty($data)) {
       throw new Exception("Order Detail cannot be created!");
     }
-    foreach ($data as $attr => $val)
-    {
-      if (!in_array($attr, (new self) -> fillable))
-      {
+    foreach ($data as $attr => $val) {
+      if (!in_array($attr, (new self) -> fillable)) {
         throw new Exception("Order Detail cannot be created!");
       }
     }
@@ -30,20 +27,16 @@ class OrderDetail extends Model
   public static function getOrderDetails($where = null, $groupBy = null, $having = null, $orderBy = null)
   {
     $orderDetails = new self;
-    if ($where != null)
-    {
+    if ($where != null) {
       $orderDetails = $orderDetails -> where($where);
     }
-    if ($groupBy != null)
-    {
+    if ($groupBy != null) {
       $orderDetails = $orderDetails -> groupBy($groupBy);
     }
-    if ($having != null)
-    {
+    if ($having != null) {
       $orderDetails = $orderDetails -> having($having);
     }
-    if ($orderBy != null)
-    {
+    if ($orderBy != null) {
       $orderDetails = $orderDetails -> orderBy($orderBy[0], $orderBy[1]);
     }
     return $orderDetails;
@@ -52,8 +45,7 @@ class OrderDetail extends Model
   public static function getOrderDetail($where = null)
   {
     $orderDetail = new self;
-    if ($where != null)
-    {
+    if ($where != null) {
       $orderDetail = $orderDetail -> where($where);
     }
     $orderDetail = $orderDetail -> first();

@@ -24,12 +24,12 @@ class CheckoutRequest extends FormRequest
     public function rules()
     {
       return [
-        'AddressLine1Input' => ['sometimes', 'required'],
-        'AddressLine2Input' => ['sometimes', 'required'],
-        'CityInput' => ['sometimes', 'required', 'regex:/[A-Za-z0-9 ]+/u'],
-        'StateInput' => ['sometimes', 'required', 'regex:/[A-Za-z0-9 ]+/u'],
-        'CountryInput' => ['sometimes', 'required', 'regex:/[A-Za-z0-9 ]+/u'],
-        'PINCodeInput' => ['sometimes', 'required', 'regex:/[A-Za-z0-9 ]+/u'],
+        'AddressLine1Input' => ['sometimes', 'required', 'min: 3', 'max: 255'],
+        'AddressLine2Input' => ['sometimes', 'required', 'min: 3', 'max: 255'],
+        'CityInput' => ['sometimes', 'required', 'regex:/[A-Za-z0-9 ]+/u', 'min: 1', 'max: 255'],
+        'StateInput' => ['sometimes', 'required', 'regex:/[A-Za-z0-9 ]+/u', 'min: 1', 'max: 255'],
+        'CountryInput' => ['sometimes', 'required', 'regex:/[A-Za-z0-9 ]+/u', 'min: 1', 'max: 255'],
+        'PINCodeInput' => ['sometimes', 'required', 'regex:/[A-Za-z0-9 ]+/u', 'min: 3', 'max: 10'],
       ];
     }
 }
