@@ -11,6 +11,13 @@ class Cart extends Model
 
   public static function addCart($data)
   {
+    foreach ($data as $attr => $val)
+    {
+      if (!in_array($attr, (new self) -> fillable))
+      {
+        throw new Exception("Cart element cannot be created!");
+      }
+    }
     Cart::create($data);
   }
 
@@ -64,11 +71,10 @@ class Cart extends Model
     {
       foreach ($data as $attr => $val)
       {
-        // if (in_array($attr, $this -> fillable))
-        // {
-        //   $cart[$attr] = $val;
-        // }
-        $cart[$attr] = $val;
+        if (in_array($attr, (new self) -> fillable))
+        {
+          $cart[$attr] = $val;
+        }
       }
       $cart -> save();
     }

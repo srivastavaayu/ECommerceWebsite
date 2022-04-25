@@ -18,7 +18,7 @@ use App\Http\Requests\UpdatePasswordRequest;
 class UserController extends Controller
 {
 
-  public function getProfile(Request $request)
+  public function showProfile(Request $request)
   {
     return view('user/profile',
       [
@@ -30,7 +30,7 @@ class UserController extends Controller
     );
   }
 
-  public function postProfile(ProfileRequest $request)
+  public function storeProfile(ProfileRequest $request)
   {
     $data = [];
     try
@@ -140,12 +140,12 @@ class UserController extends Controller
     return view('user/orders-history', ['user' => Auth::user(), 'orders' => $orders]);
   }
 
-  public function getUpdatePassword(Request $request)
+  public function showUpdatePassword(Request $request)
   {
     return view('user/update-password');
   }
 
-  public function postUpdatePassword(UpdatePasswordRequest $request)
+  public function storeUpdatePassword(UpdatePasswordRequest $request)
   {
     try
     {

@@ -18,7 +18,7 @@ class ProductController extends Controller
   public $sortBehavior = "ASC";
   public $viewStyle = "tabular";
 
-  public function getProducts(Request $request)
+  public function showProducts(Request $request)
   {
     $info = "";
     if ($request -> has('sort'))
@@ -65,7 +65,7 @@ class ProductController extends Controller
     );
   }
 
-  public function postProducts(Request $request)
+  public function storeProducts(Request $request)
   {
     $info = "";
     if ($request -> has('sort'))
@@ -137,7 +137,7 @@ class ProductController extends Controller
     );
   }
 
-  public function getProduct(Request $request, $id)
+  public function showProduct(Request $request, $id)
   {
     $info = "";
     try
@@ -152,7 +152,7 @@ class ProductController extends Controller
     return view('inventory/product', ['product' => $product, 'categories' => $categories, 'info' => $info]);
   }
 
-  public function postProduct(Request $request, $id)
+  public function storeProduct(Request $request, $id)
   {
     $info = "";
     try
@@ -218,7 +218,7 @@ class ProductController extends Controller
     return view('inventory/product', ['product' => $product, 'categories' => $categories, 'info' => $info]);
   }
 
-  public function getAddNewProduct(Request $request)
+  public function showAddNewProduct(Request $request)
   {
     try
     {
@@ -231,7 +231,7 @@ class ProductController extends Controller
     return view('inventory/new-product', ['categories' => $categories]);
   }
 
-  public function postAddNewProduct(NewProductRequest $request)
+  public function storeAddNewProduct(NewProductRequest $request)
   {
     if ($request -> action == "AddNewCategory")
     {

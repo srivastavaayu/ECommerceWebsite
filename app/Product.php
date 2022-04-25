@@ -14,6 +14,13 @@ class Product extends Model
 
   public static function addProduct($data)
   {
+    foreach ($data as $attr => $val)
+    {
+      if (!in_array($attr, (new self) -> fillable))
+      {
+        throw new Exception("Product cannot be created!");
+      }
+    }
     Product::create($data);
   }
 
@@ -57,11 +64,10 @@ class Product extends Model
     {
       foreach ($data as $attr => $val)
       {
-        // if (in_array($attr, $this -> fillable))
-        // {
-        //   $product[$attr] = $val;
-        // }
-        $product[$attr] = $val;
+        if (in_array($attr, (new self) -> fillable))
+        {
+          $user[$attr] = $val;
+        }
       }
       $product -> save();
     }

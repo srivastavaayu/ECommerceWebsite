@@ -59,7 +59,7 @@ class CheckoutController extends Controller
     );
   }
 
-  public function getCheckout(Request $request)
+  public function showCheckout(Request $request)
   {
     $user = Auth::user();
     try
@@ -98,7 +98,7 @@ class CheckoutController extends Controller
     );
   }
 
-  public function postCheckout(CheckoutRequest $request)
+  public function storeCheckout(CheckoutRequest $request)
   {
     $user = Auth::user();
     try

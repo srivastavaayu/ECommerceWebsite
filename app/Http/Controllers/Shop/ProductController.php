@@ -16,7 +16,7 @@ class ProductController extends Controller
   public $sortField = 'id';
   public $sortDirection = 'ASC';
 
-  public function getProducts(Request $request)
+  public function showProducts(Request $request)
   {
     if ($request -> has('sort'))
     {
@@ -70,7 +70,7 @@ class ProductController extends Controller
     );
   }
 
-  public function getProduct($id)
+  public function showProduct($id)
   {
     try
     {

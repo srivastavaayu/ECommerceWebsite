@@ -14,6 +14,13 @@ class OrderDetail extends Model
 
   public static function addOrderDetail($data)
   {
+    foreach ($data as $attr => $val)
+    {
+      if (!in_array($attr, (new self) -> fillable))
+      {
+        throw new Exception("Order Detail cannot be created!");
+      }
+    }
     OrderDetail::create($data);
   }
 

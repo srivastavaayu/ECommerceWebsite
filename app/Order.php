@@ -14,8 +14,14 @@ class Order extends Model
 
   public static function addOrder($data)
   {
-    $order = Order::create($data);
-    return $order;
+    foreach ($data as $attr => $val)
+    {
+      if (!in_array($attr, (new self) -> fillable))
+      {
+        throw new Exception("Order cannot be created!");
+      }
+    }
+    Order::create($data);
   }
 
   public static function getOrders($where = null, $groupBy = null, $having = null, $orderBy = null)

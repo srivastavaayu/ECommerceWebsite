@@ -14,6 +14,13 @@ class Category extends Model
 
   public static function addCategory($data)
   {
+    foreach ($data as $attr => $val)
+    {
+      if (!in_array($attr, (new self) -> fillable))
+      {
+        throw new Exception("Category cannot be created!");
+      }
+    }
     Category::create($data);
   }
 

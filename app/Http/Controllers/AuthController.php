@@ -14,12 +14,12 @@ use App\Http\Requests\LoginRequest;
 class AuthController extends Controller
 {
 
-  public function getRegister(Request $request)
+  public function showRegister(Request $request)
   {
     return view('auth/register');
   }
 
-  public function postRegister(RegisterRequest $request)
+  public function storeRegister(RegisterRequest $request)
   {
     try
     {
@@ -40,12 +40,12 @@ class AuthController extends Controller
     return redirect('/login');
   }
 
-  public function getLogin(Request $request)
+  public function showLogin(Request $request)
   {
     return view('auth/login');
   }
 
-  public function postLogin(LoginRequest $request)
+  public function storeLogin(LoginRequest $request)
   {
     try
     {

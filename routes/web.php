@@ -13,43 +13,43 @@
 
 Route::get('/', 'IndexController@handle');
 
-Route::get('/register', 'AuthController@getRegister');
+Route::get('/register', 'AuthController@showRegister');
 
-Route::post('/register', 'AuthController@postRegister');
+Route::post('/register', 'AuthController@storeRegister');
 
-Route::get('/login', 'AuthController@getLogin');
+Route::get('/login', 'AuthController@showLogin');
 
-Route::post('/login', 'AuthController@postLogin');
+Route::post('/login', 'AuthController@storeLogin');
 
 Route::get('/logout', 'AuthController@logout') -> middleware('checkAuthorization');
 
 Route::middleware(['checkAuthorization']) -> prefix('user')->group(function () {
 
-  Route::get('profile', 'UserController@getProfile');
+  Route::get('profile', 'UserController@showProfile');
 
-  Route::post('profile', 'UserController@postProfile');
+  Route::post('profile', 'UserController@storeProfile');
 
   Route::get('orders-history', 'UserController@ordersHistory');
 
-  Route::get('update-password', 'UserController@getUpdatePassword');
+  Route::get('update-password', 'UserController@showUpdatePassword');
 
-  Route::post('update-password', 'UserController@postUpdatePassword');
+  Route::post('update-password', 'UserController@storeUpdatePassword');
 
 });
 
 Route::middleware(['checkAuthorization']) -> prefix('inventory') -> group(function () {
 
-  Route::get('product', 'Inventory\ProductController@getProducts');
+  Route::get('product', 'Inventory\ProductController@showProducts');
 
-  Route::post('product', 'Inventory\ProductController@postProducts');
+  Route::post('product', 'Inventory\ProductController@storeProducts');
 
-  Route::get('product/new-product', 'Inventory\ProductController@getAddNewProduct');
+  Route::get('product/new-product', 'Inventory\ProductController@showAddNewProduct');
 
-  Route::post('product/new-product', 'Inventory\ProductController@postAddNewProduct');
+  Route::post('product/new-product', 'Inventory\ProductController@storeAddNewProduct');
 
-  Route::get('product/{id}', 'Inventory\ProductController@getProduct');
+  Route::get('product/{id}', 'Inventory\ProductController@showProduct');
 
-  Route::post('product/{id}', 'Inventory\ProductController@postProduct');
+  Route::post('product/{id}', 'Inventory\ProductController@storeProduct');
 
 });
 
@@ -57,13 +57,13 @@ Route::middleware(['checkAuthorization']) -> prefix('shop')->group(function () {
 
   Route::get('search', 'Shop\SearchController@handle');
 
-  Route::get('category', 'Shop\CategoryController@getCategories');
+  Route::get('category', 'Shop\CategoryController@showCategories');
 
-  Route::get('category/{id}', 'Shop\CategoryController@getCategory');
+  Route::get('category/{id}', 'Shop\CategoryController@showCategory');
 
-  Route::get('product', 'Shop\ProductController@getProducts');
+  Route::get('product', 'Shop\ProductController@showProducts');
 
-  Route::get('product/{id}', 'Shop\ProductController@getProduct');
+  Route::get('product/{id}', 'Shop\ProductController@showProduct');
 
   Route::post('product/{id}/addToCart', 'Shop\ProductController@addToCart');
 
@@ -83,9 +83,9 @@ Route::middleware(['checkAuthorization']) -> prefix('checkout')->group(function 
 
   Route::get('cart', 'Shop\CheckoutController@cart');
 
-  Route::get('checkout', 'Shop\CheckoutController@getCheckout');
+  Route::get('checkout', 'Shop\CheckoutController@showCheckout');
 
-  Route::post('checkout', 'Shop\CheckoutController@postCheckout');
+  Route::post('checkout', 'Shop\CheckoutController@storeCheckout');
 
   Route::get('thank-you', 'Shop\CheckoutController@thankYou');
 

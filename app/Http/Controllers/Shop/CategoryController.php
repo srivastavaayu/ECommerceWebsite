@@ -15,7 +15,7 @@ class CategoryController extends Controller
   public $sortField = 'id';
   public $sortDirection = 'ASC';
 
-  public function getCategories(Request $request)
+  public function showCategories(Request $request)
   {
     try
     {
@@ -28,7 +28,7 @@ class CategoryController extends Controller
     return view('shop/categories', ['categories' => $categories]);
   }
 
-  public function getCategory(Request $request, $id)
+  public function showCategory(Request $request, $id)
   {
     if ($request -> has('sort'))
     {

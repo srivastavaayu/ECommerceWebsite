@@ -16,6 +16,13 @@ class User extends Authenticatable
 
   public static function addUser($data)
   {
+    foreach ($data as $attr => $val)
+    {
+      if (!in_array($attr, (new self) -> fillable))
+      {
+        throw new Exception("User cannot be created!");
+      }
+    }
     User::create($data);
   }
 
@@ -59,11 +66,10 @@ class User extends Authenticatable
     {
       foreach ($data as $attr => $val)
       {
-        // if (in_array($attr, $this -> fillable))
-        // {
-        //   $user[$attr] = $val;
-        // }
-        $user[$attr] = $val;
+        if (in_array($attr, (new self) -> fillable))
+        {
+          $user[$attr] = $val;
+        }
       }
       $user -> save();
     }
