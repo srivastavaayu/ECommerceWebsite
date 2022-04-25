@@ -26,16 +26,19 @@ class UpdatePasswordRequest extends FormRequest
       return [
         'CurrentPasswordInput' =>
           [
+            'sometimes',
             'required',
             'regex:/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$/u'
           ],
         'PasswordInput' =>
           [
+            'sometimes',
             'required',
             'regex:/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$/u'
           ],
         'ReenterPasswordInput' =>
           [
+            'sometimes',
             'required',
             'regex:/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$/u',
             'same:PasswordInput'

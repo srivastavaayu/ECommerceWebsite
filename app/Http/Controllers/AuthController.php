@@ -64,7 +64,7 @@ class AuthController extends Controller
       }
     }
     $info = "Username/Password does not match! Please try again.";
-    return view('auth/login', ['info' -> $info]);
+    return view('auth/login', ['info' => $info]);
   }
 
   public function logout()

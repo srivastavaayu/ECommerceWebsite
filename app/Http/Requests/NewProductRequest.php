@@ -24,16 +24,16 @@ class NewProductRequest extends FormRequest
     public function rules()
     {
         return [
-          'CategoryNameInput' => ['required'],
-          'CategoryDescriptionInput' => ['required'],
-          'ProductNameInput' => ['required'],
-          'ProductDescriptionInput' => ['required'],
-          'SKUInput' => ['required', 'unique:products,sku'],
-          'CategoryInput' => ['required', 'exists:categories,id'],
+          'CategoryNameInput' => ['sometimes', 'required'],
+          'CategoryDescriptionInput' => ['sometimes', 'required'],
+          'ProductNameInput' => ['sometimes', 'required'],
+          'ProductDescriptionInput' => ['sometimes', 'required'],
+          'SKUInput' => ['sometimes', 'required', 'unique:products,sku'],
+          'CategoryInput' => ['sometimes', 'required', 'exists:categories,id'],
           'ProductImageInput'  =>  'file|mimes:jpeg,png,gif,jpg,webp,jfif',
-          'PriceInput' => ['required', 'min:1'],
-          'UnitInput' => ['required'],
-          'StockQuantityInput' => ['required', 'min:1'],
+          'PriceInput' => ['sometimes', 'required', 'min:1'],
+          'UnitInput' => ['sometimes', 'required'],
+          'StockQuantityInput' => ['sometimes', 'required', 'min:1'],
         ];
     }
 }

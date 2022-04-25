@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Product;
+use App\EComWebStat;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -26,6 +28,19 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule -> call(function() {
+          $products = Product::getProducts() -> all();
+          if (count($products) > 0) {
+            $maxUnitsSoldProduct = Product::getProducts() -> max('units_sold');
+            if ($maxUnitsSoldProduct -> units_sold != 0) {
+              EComWebStat::addEComWebStat(['product_id' => $maxUnitsSoldProduct -> id, 'units_sold' => $maxUnitsSoldProduct -> units_sold]);
+            } else {
+              EComWebStat::addEComWebStat(['product_id' => null, 'units_sold' => null]);
+            }
+          } else {
+            EComWebStat::addEComWebStat(['product_id' => null, 'units_sold' => null]);
+          }
+        }) -> everyFiveMinutes();
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Product;
 use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SearchController extends Controller
 {
@@ -15,7 +16,7 @@ class SearchController extends Controller
     $searchTerm = "";
     try
     {
-      $products = Product::getProducts() -> get();
+      $products = Product::getProducts([['user_id', '!=', Auth::id()]]) -> get();
       $categories = Category::getCategories() -> get();
     }
     catch(Exception $e)
@@ -28,7 +29,7 @@ class SearchController extends Controller
       try
       {
         $products = Product::getProducts(
-          [['name', 'LIKE', '%'.$searchTerm.'%']]
+          [['name', 'LIKE', '%'.$searchTerm.'%'], ['user_id', '!=', Auth::id()]]
         ) -> get();
         $categories = Category::getCategories(
           [['name', 'LIKE', '%'.$searchTerm.'%']]

@@ -21,7 +21,7 @@
       <h2 class="text-center mb-3">Inventory - Products</h2>
       <div style="color: blue; font-weight: 500; font-size: 1rem" class="text-center mb-3 mt-3">{{ isset($info) ? $info : "" }}</div>
       <div class="d-flex justify-content-center">
-        <a href="/inventory/product/add-new-product">
+        <a href="/inventory/product/new-product">
           <button type="button" class="btn btn-primary">Add New Product</button>
         </a>
       </div>

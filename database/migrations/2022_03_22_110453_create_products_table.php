@@ -21,9 +21,10 @@ class CreateProductsTable extends Migration
             $table -> string('image_path') -> nullable();
             $table -> unsignedBigInteger('category_id') -> nullable();
             $table -> unsignedBigInteger('user_id') -> nullable();
-            $table -> bigInteger('price');
+            $table -> unsignedBigInteger('price');
             $table -> string('unit');
-            $table -> bigInteger('quantity');
+            $table -> unsignedBigInteger('quantity');
+            $table -> unsignedBigInteger('units_sold');
             $table -> tinyInteger('is_archived');
             $table -> tinyInteger('rating');
             $table -> timestamps();

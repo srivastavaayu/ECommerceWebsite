@@ -228,7 +228,7 @@ class ProductController extends Controller
     {
       return view('404');
     }
-    return view('inventory/add-new-product', ['categories' => $categories]);
+    return view('inventory/new-product', ['categories' => $categories]);
   }
 
   public function postAddNewProduct(NewProductRequest $request)
@@ -248,7 +248,7 @@ class ProductController extends Controller
       {
         return view('404');
       }
-      return redirect('/inventory/product/add-new-product');
+      return redirect('/inventory/product/new-product');
     }
     else {
       if ($request -> hasFile('ProductImageInput'))
@@ -268,6 +268,7 @@ class ProductController extends Controller
             'price' => $request -> PriceInput,
             'unit' => $request -> UnitInput,
             'quantity' => $request -> StockQuantityInput,
+            'units_sold' => 0,
             'is_archived' => 0,
             'rating' => 0
           ]
