@@ -14,6 +14,9 @@ class OrderDetail extends Model
 
   public static function addOrderDetail($data)
   {
+    if (empty($data)) {
+      throw new Exception("Order Detail cannot be created!");
+    }
     foreach ($data as $attr => $val)
     {
       if (!in_array($attr, (new self) -> fillable))
@@ -21,12 +24,12 @@ class OrderDetail extends Model
         throw new Exception("Order Detail cannot be created!");
       }
     }
-    OrderDetail::create($data);
+    return self::create($data);
   }
 
   public static function getOrderDetails($where = null, $groupBy = null, $having = null, $orderBy = null)
   {
-    $orderDetails = new OrderDetail;
+    $orderDetails = new self;
     if ($where != null)
     {
       $orderDetails = $orderDetails -> where($where);
@@ -48,7 +51,7 @@ class OrderDetail extends Model
 
   public static function getOrderDetail($where = null)
   {
-    $orderDetail = new OrderDetail;
+    $orderDetail = new self;
     if ($where != null)
     {
       $orderDetail = $orderDetail -> where($where);

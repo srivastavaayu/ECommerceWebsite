@@ -14,6 +14,9 @@ class Order extends Model
 
   public static function addOrder($data)
   {
+    if (empty($data)) {
+      throw new Exception("Order cannot be created!");
+    }
     foreach ($data as $attr => $val)
     {
       if (!in_array($attr, (new self) -> fillable))
@@ -21,12 +24,12 @@ class Order extends Model
         throw new Exception("Order cannot be created!");
       }
     }
-    Order::create($data);
+    return self::create($data);
   }
 
   public static function getOrders($where = null, $groupBy = null, $having = null, $orderBy = null)
   {
-    $orders = new Order;
+    $orders = new self;
     if ($where != null)
     {
       $orders = $orders -> where($where);
@@ -48,7 +51,7 @@ class Order extends Model
 
   public static function getOrder($where = null, $groupBy = null, $having = null, $orderBy = null)
   {
-    $order = new Order;
+    $order = new self;
     if ($where != null)
     {
       $order = $order -> where($where);
@@ -65,11 +68,7 @@ class Order extends Model
     {
       $order = $order -> orderBy($orderBy[0], $orderBy[1]);
     }
-    $order = $order -> firstOr(function()
-      {
-        return null;
-      }
-    );
+    $order = $order -> first();
     return $order;
   }
 

@@ -14,6 +14,9 @@ class Product extends Model
 
   public static function addProduct($data)
   {
+    if (empty($data)) {
+      throw new Exception("Product cannot be created!");
+    }
     foreach ($data as $attr => $val)
     {
       if (!in_array($attr, (new self) -> fillable))
@@ -21,12 +24,12 @@ class Product extends Model
         throw new Exception("Product cannot be created!");
       }
     }
-    Product::create($data);
+    return self::create($data);
   }
 
   public static function getProducts($where = null, $groupBy = null, $having = null, $orderBy = null)
   {
-    $products = new Product;
+    $products = new self;
     if ($where != null)
     {
       $products = $products -> where($where);
@@ -48,7 +51,7 @@ class Product extends Model
 
   public static function getProduct($where = null)
   {
-    $product = new Product;
+    $product = new self;
     if ($where != null)
     {
       $product = $product -> where($where);
@@ -69,7 +72,7 @@ class Product extends Model
           $user[$attr] = $val;
         }
       }
-      $product -> save();
+      return $product -> save();
     }
   }
 

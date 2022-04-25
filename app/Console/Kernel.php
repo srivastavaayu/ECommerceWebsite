@@ -31,14 +31,23 @@ class Kernel extends ConsoleKernel
         $schedule -> call(function() {
           $products = Product::getProducts() -> all();
           if (count($products) > 0) {
-            $maxUnitsSoldProduct = Product::getProducts() -> max('units_sold');
-            if ($maxUnitsSoldProduct -> units_sold != 0) {
-              EComWebStat::addEComWebStat(['product_id' => $maxUnitsSoldProduct -> id, 'units_sold' => $maxUnitsSoldProduct -> units_sold]);
+            $maxUnitsSoldProduct = Product::getProducts() -> all();
+            $maxUnitsSoldProductID = $maxUnitsSoldProduct[0] -> id;
+            $maxUnitsSoldProductUnitsSold =  $maxUnitsSoldProduct[0] -> units_sold;
+            foreach ($maxUnitsSoldProduct as $product) {
+              if ($product -> units_sold > $maxUnitsSoldProductUnitsSold) {
+                $maxUnitsSoldProductID = $product -> id;
+                $maxUnitsSoldProductUnitsSold = $product -> units_sold;
+              }
+            }
+            if ($maxUnitsSoldProductUnitsSold != 0) {
+              EComWebStat::addEComWebStat(['product_id' => $maxUnitsSoldProductID, 'units_sold' => $maxUnitsSoldProductUnitsSold]);
             } else {
               EComWebStat::addEComWebStat(['product_id' => null, 'units_sold' => null]);
             }
+            echo $products;
           } else {
-            EComWebStat::addEComWebStat(['product_id' => null, 'units_sold' => null]);
+            // EComWebStat::addEComWebStat(['product_id' => null, 'units_sold' => null]);
           }
         }) -> everyFiveMinutes();
     }

@@ -16,6 +16,9 @@ class User extends Authenticatable
 
   public static function addUser($data)
   {
+    if (empty($data)) {
+      throw new Exception("User cannot be created!");
+    }
     foreach ($data as $attr => $val)
     {
       if (!in_array($attr, (new self) -> fillable))
@@ -23,12 +26,12 @@ class User extends Authenticatable
         throw new Exception("User cannot be created!");
       }
     }
-    User::create($data);
+    return self::create($data);
   }
 
   public static function getUsers($where = null, $groupBy = null, $having = null, $orderBy = null)
   {
-    $users = new User;
+    $users = new self;
     if ($where != null)
     {
       $users = $users -> where($where);
@@ -50,7 +53,7 @@ class User extends Authenticatable
 
   public static function getUser($where = null)
   {
-    $user = new User;
+    $user = new self;
     if ($where != null)
     {
       $user = $user -> where($where);
@@ -71,7 +74,7 @@ class User extends Authenticatable
           $user[$attr] = $val;
         }
       }
-      $user -> save();
+      return $user -> save();
     }
   }
 

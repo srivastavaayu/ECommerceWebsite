@@ -10,6 +10,9 @@ class EComWebStat extends Model
   protected $fillable = ['product_id, units_sold'];
 
   public static function addEComWebStat($data) {
+    if (empty($data)) {
+      throw new Exception("Stat cannot be created!");
+    }
     foreach ($data as $attr => $val)
     {
       if (!in_array($attr, (new self) -> fillable))
@@ -17,7 +20,7 @@ class EComWebStat extends Model
         throw new Exception("Stat cannot be created!");
       }
     }
-    EComWebStat::create($data);
+    return self::create($data);
   }
 
 }

@@ -14,6 +14,9 @@ class Category extends Model
 
   public static function addCategory($data)
   {
+    if (empty($data)) {
+      throw new Exception("Category cannot be created!");
+    }
     foreach ($data as $attr => $val)
     {
       if (!in_array($attr, (new self) -> fillable))
@@ -21,12 +24,12 @@ class Category extends Model
         throw new Exception("Category cannot be created!");
       }
     }
-    Category::create($data);
+    return self::create($data);
   }
 
   public static function getCategories($where = null, $groupBy = null, $having = null, $orderBy = null)
   {
-    $categories = new Category;
+    $categories = new self;
     if ($where != null)
     {
       $categories = $categories -> where($where);
@@ -43,13 +46,12 @@ class Category extends Model
     {
       $categories = $categories -> orderBy($orderBy[0], $orderBy[1]);
     }
-    $categories = $categories;
     return $categories;
   }
 
   public static function getCategory($where = null, $groupBy = null, $having = null, $orderBy = null)
   {
-    $category = new Category;
+    $category = new self;
     if ($where != null)
     {
       $category = $category -> where($where);
@@ -66,10 +68,7 @@ class Category extends Model
     {
       $category = $category -> orderBy($orderBy[0], $orderBy[1]);
     }
-    $category = $category -> firstOr(function()
-    {
-      return null;
-    });
+    $category = $category -> first();
     return $category;
   }
 

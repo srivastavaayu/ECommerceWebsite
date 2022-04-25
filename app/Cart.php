@@ -11,6 +11,9 @@ class Cart extends Model
 
   public static function addCart($data)
   {
+    if (empty($data)) {
+      throw new Exception("Cart element cannot be created!");
+    }
     foreach ($data as $attr => $val)
     {
       if (!in_array($attr, (new self) -> fillable))
@@ -18,22 +21,22 @@ class Cart extends Model
         throw new Exception("Cart element cannot be created!");
       }
     }
-    Cart::create($data);
+    return self::create($data);
   }
 
   public static function removeCart($where)
   {
-    $cart = Cart::where($where) -> firstOr(function()
+    $cart = self::where($where) -> firstOr(function()
       {
         return null;
       }
     );
-    $cart -> delete();
+    return $cart -> delete();
   }
 
   public static function getCarts($where = null, $groupBy = null, $having = null, $orderBy = null)
   {
-    $carts = new Cart;
+    $carts = new self;
     if ($where != null)
     {
       $carts = $carts -> where($where);
@@ -55,7 +58,7 @@ class Cart extends Model
 
   public static function getCart($where = null)
   {
-    $cart = new Cart;
+    $cart = new self;
     if ($where != null)
     {
       $cart = $cart -> where($where);
@@ -66,7 +69,7 @@ class Cart extends Model
 
   public static function setCart($where, $data)
   {
-    $cart = Cart::where($where) -> first();
+    $cart = self::where($where) -> first();
     if (!empty($null))
     {
       foreach ($data as $attr => $val)
@@ -76,7 +79,7 @@ class Cart extends Model
           $cart[$attr] = $val;
         }
       }
-      $cart -> save();
+      return $cart -> save();
     }
   }
 
