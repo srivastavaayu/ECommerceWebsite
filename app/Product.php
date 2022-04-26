@@ -28,15 +28,35 @@ class Product extends Model
   {
     $products = new self;
     if ($where != null) {
+      foreach ($where as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $products = $products -> where($where);
     }
     if ($groupBy != null) {
+      foreach ($groupBy as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $products = $products -> groupBy($groupBy);
     }
     if ($having != null) {
+      foreach ($having as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $products = $products -> having($having);
     }
     if ($orderBy != null) {
+      foreach ($orderBy as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $products = $products -> orderBy($orderBy[0], $orderBy[1]);
     }
     return $products;
@@ -46,6 +66,11 @@ class Product extends Model
   {
     $product = new self;
     if ($where != null) {
+      foreach ($where as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $product = $product -> where($where);
     }
     $product = $product -> first();

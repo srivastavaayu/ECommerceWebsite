@@ -28,15 +28,35 @@ class User extends Authenticatable {
   public static function getUsers($where = null, $groupBy = null, $having = null, $orderBy = null) {
     $users = new self;
     if ($where != null) {
+      foreach ($where as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $users = $users -> where($where);
     }
     if ($groupBy != null) {
+      foreach ($groupBy as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $users = $users -> groupBy($groupBy);
     }
     if ($having != null) {
+      foreach ($having as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $users = $users -> having($having);
     }
     if ($orderBy != null) {
+      foreach ($orderBy as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $users = $users -> orderBy($orderBy[0], $orderBy[1]);
     }
     return $users;
@@ -45,6 +65,11 @@ class User extends Authenticatable {
   public static function getUser($where = null) {
     $user = new self;
     if ($where != null) {
+      foreach ($where as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $user = $user -> where($where);
     }
     $user = $user -> first();

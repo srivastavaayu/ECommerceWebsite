@@ -32,15 +32,35 @@ class Cart extends Model {
   {
     $carts = new self;
     if ($where != null) {
+      foreach ($where as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $carts = $carts -> where($where);
     }
     if ($groupBy != null) {
+      foreach ($groupBy as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $carts = $carts -> groupBy($groupBy);
     }
     if ($having != null) {
+      foreach ($having as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $carts = $carts -> having($having);
     }
     if ($orderBy != null) {
+      foreach ($orderBy as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $carts = $carts -> orderBy($orderBy[0], $orderBy[1]);
     }
     return $carts;
@@ -50,6 +70,11 @@ class Cart extends Model {
   {
     $cart = new self;
     if ($where != null) {
+      foreach ($where as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $cart = $cart -> where($where);
     }
     $cart = $cart -> first();

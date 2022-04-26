@@ -28,15 +28,35 @@ class OrderDetail extends Model
   {
     $orderDetails = new self;
     if ($where != null) {
+      foreach ($where as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $orderDetails = $orderDetails -> where($where);
     }
     if ($groupBy != null) {
+      foreach ($groupBy as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $orderDetails = $orderDetails -> groupBy($groupBy);
     }
     if ($having != null) {
+      foreach ($having as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $orderDetails = $orderDetails -> having($having);
     }
     if ($orderBy != null) {
+      foreach ($orderBy as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $orderDetails = $orderDetails -> orderBy($orderBy[0], $orderBy[1]);
     }
     return $orderDetails;
@@ -46,6 +66,11 @@ class OrderDetail extends Model
   {
     $orderDetail = new self;
     if ($where != null) {
+      foreach ($where as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $orderDetail = $orderDetail -> where($where);
     }
     $orderDetail = $orderDetail -> first();

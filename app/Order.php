@@ -26,34 +26,50 @@ class Order extends Model {
   public static function getOrders($where = null, $groupBy = null, $having = null, $orderBy = null) {
     $orders = new self;
     if ($where != null) {
+      foreach ($where as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $orders = $orders -> where($where);
     }
     if ($groupBy != null) {
+      foreach ($groupBy as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $orders = $orders -> groupBy($groupBy);
     }
     if ($having != null) {
+      foreach ($having as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $orders = $orders -> having($having);
     }
     if ($orderBy != null) {
+      foreach ($orderBy as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $orders = $orders -> orderBy($orderBy[0], $orderBy[1]);
     }
     return $orders;
   }
 
-  public static function getOrder($where = null, $groupBy = null, $having = null, $orderBy = null)
+  public static function getOrder($where = null)
   {
     $order = new self;
     if ($where != null) {
+      foreach ($where as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $order = $order -> where($where);
-    }
-    if ($groupBy != null) {
-      $order = $order -> groupBy($groupBy);
-    }
-    if ($having != null) {
-      $order = $order -> having($having);
-    }
-    if ($orderBy != null) {
-      $order = $order -> orderBy($orderBy[0], $orderBy[1]);
     }
     $order = $order -> first();
     return $order;

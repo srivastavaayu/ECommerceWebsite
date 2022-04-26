@@ -26,33 +26,49 @@ class Category extends Model {
   public static function getCategories($where = null, $groupBy = null, $having = null, $orderBy = null) {
     $categories = new self;
     if ($where != null) {
+      foreach ($where as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $categories = $categories -> where($where);
     }
     if ($groupBy != null) {
+      foreach ($groupBy as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $categories = $categories -> groupBy($groupBy);
     }
     if ($having != null) {
+      foreach ($having as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $categories = $categories -> having($having);
     }
     if ($orderBy != null) {
+      foreach ($orderBy as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $categories = $categories -> orderBy($orderBy[0], $orderBy[1]);
     }
     return $categories;
   }
 
-  public static function getCategory($where = null, $groupBy = null, $having = null, $orderBy = null) {
+  public static function getCategory($where = null) {
     $category = new self;
     if ($where != null) {
+      foreach ($where as $attr => $val) {
+        if (!in_array($attr, (new self) -> fillable)) {
+          throw new Exception();
+        }
+      }
       $category = $category -> where($where);
-    }
-    if ($groupBy != null) {
-      $category = $category -> groupBy($groupBy);
-    }
-    if ($having != null) {
-      $category = $category -> having($having);
-    }
-    if ($orderBy != null) {
-      $category = $category -> orderBy($orderBy[0], $orderBy[1]);
     }
     $category = $category -> first();
     return $category;
