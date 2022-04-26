@@ -45,9 +45,8 @@ class Kernel extends ConsoleKernel
             } else {
               EComWebStat::addEComWebStat(['product_id' => null, 'units_sold' => null]);
             }
-            echo $products;
           } else {
-            // EComWebStat::addEComWebStat(['product_id' => null, 'units_sold' => null]);
+            EComWebStat::addEComWebStat(['product_id' => null, 'units_sold' => null]);
           }
         }) -> everyFiveMinutes();
     }

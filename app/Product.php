@@ -83,7 +83,6 @@ class Product extends Model
       foreach ($data as $attr => $val) {
         if (in_array($attr, (new self) -> fillable)) {
           $product[$attr] = $val;
-          echo "insid";
         }
       }
       return $product -> save();
