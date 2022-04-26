@@ -3,10 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Exception;
 
 class EComWebStat extends Model {
 
-  protected $fillable = ['product_id, units_sold'];
+  protected $fillable = ['id', 'product_id, units_sold'];
 
   public static function addEComWebStat($data) {
     if (empty($data)) {

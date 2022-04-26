@@ -109,7 +109,7 @@ class CheckoutController extends Controller
     {
       return view('404');
     }
-    $products = [];
+    echo $cart;
     $cartTotal = 0;
     foreach ($cart as $cartItem)
     {
@@ -124,7 +124,6 @@ class CheckoutController extends Controller
       if ($product -> is_archived == 0)
       {
         $cartTotal += (($product -> price) * $cartItem -> quantity);
-        array_push($products, $product);
       }
     }
 
@@ -164,8 +163,8 @@ class CheckoutController extends Controller
         Product::setProduct(
           [['id', $cartItem -> product_id]],
           [
-            'quantity' => ($product -> quantity - $cartItem -> quantity),
-            'units_sold' => ($product -> units_sold - $cartItem -> quantity)
+            'quantity' => (($product -> quantity) - ($cartItem -> quantity)),
+            'units_sold' => (($product -> units_sold) + ($cartItem -> quantity))
           ]
         );
         Cart::removeCart([['id', $cartItem -> id]]);

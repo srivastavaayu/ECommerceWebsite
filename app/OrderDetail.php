@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Exception;
 
 class OrderDetail extends Model
 {
@@ -11,6 +12,7 @@ class OrderDetail extends Model
   use SoftDeletes;
   protected $dates = ['deleted_at'];
   protected $fillable = ['user_id', 'order_id', 'item_id', 'quantity'];
+  protected $allAttributes = ['id', 'user_id', 'order_id', 'item_id', 'quantity', 'created_at', 'updated_at', 'deleted_at'];
 
   public static function addOrderDetail($data) {
     if (empty($data)) {
@@ -28,34 +30,32 @@ class OrderDetail extends Model
   {
     $orderDetails = new self;
     if ($where != null) {
-      foreach ($where as $attr => $val) {
-        if (!in_array($attr, (new self) -> fillable)) {
+      foreach ($where as $eachWhere) {
+        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
           throw new Exception();
         }
       }
       $orderDetails = $orderDetails -> where($where);
     }
     if ($groupBy != null) {
-      foreach ($groupBy as $attr => $val) {
-        if (!in_array($attr, (new self) -> fillable)) {
+      foreach ($groupBy as $eachGroupBy) {
+        if (!in_array($eachGroupBy[0], (new self) -> allAttributes)) {
           throw new Exception();
         }
       }
       $orderDetails = $orderDetails -> groupBy($groupBy);
     }
     if ($having != null) {
-      foreach ($having as $attr => $val) {
-        if (!in_array($attr, (new self) -> fillable)) {
+      foreach ($having as $eachHaving) {
+        if (!in_array($eachHaving[0], (new self) -> allAttributes)) {
           throw new Exception();
         }
       }
       $orderDetails = $orderDetails -> having($having);
     }
     if ($orderBy != null) {
-      foreach ($orderBy as $attr => $val) {
-        if (!in_array($attr, (new self) -> fillable)) {
-          throw new Exception();
-        }
+      if (!in_array($orderBy[0], (new self) -> allAttributes)) {
+        throw new Exception();
       }
       $orderDetails = $orderDetails -> orderBy($orderBy[0], $orderBy[1]);
     }
@@ -66,8 +66,8 @@ class OrderDetail extends Model
   {
     $orderDetail = new self;
     if ($where != null) {
-      foreach ($where as $attr => $val) {
-        if (!in_array($attr, (new self) -> fillable)) {
+      foreach ($where as $eachWhere) {
+        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
           throw new Exception();
         }
       }

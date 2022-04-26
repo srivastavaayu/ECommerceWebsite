@@ -3,10 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Exception;
 
 class Cart extends Model {
 
   protected $fillable = ['user_id', 'product_id', 'quantity'];
+  protected $allAttributes = ['id', 'user_id', 'product_id', 'quantity', 'created_at', 'updated_at'];
+
 
   public static function addCart($data) {
     if (empty($data)) {
@@ -21,10 +24,7 @@ class Cart extends Model {
   }
 
   public static function removeCart($where) {
-    $cart = self::where($where) -> firstOr(function() {
-        return null;
-      }
-    );
+    $cart = self::where($where) -> first();
     return $cart -> delete();
   }
 
@@ -32,34 +32,32 @@ class Cart extends Model {
   {
     $carts = new self;
     if ($where != null) {
-      foreach ($where as $attr => $val) {
-        if (!in_array($attr, (new self) -> fillable)) {
+      foreach ($where as $eachWhere) {
+        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
           throw new Exception();
         }
       }
       $carts = $carts -> where($where);
     }
     if ($groupBy != null) {
-      foreach ($groupBy as $attr => $val) {
-        if (!in_array($attr, (new self) -> fillable)) {
+      foreach ($groupBy as $eachGroupBy) {
+        if (!in_array($eachGroupBy[0], (new self) -> allAttributes)) {
           throw new Exception();
         }
       }
       $carts = $carts -> groupBy($groupBy);
     }
     if ($having != null) {
-      foreach ($having as $attr => $val) {
-        if (!in_array($attr, (new self) -> fillable)) {
+      foreach ($having as $eachHaving) {
+        if (!in_array($eachHaving[0], (new self) -> allAttributes)) {
           throw new Exception();
         }
       }
       $carts = $carts -> having($having);
     }
     if ($orderBy != null) {
-      foreach ($orderBy as $attr => $val) {
-        if (!in_array($attr, (new self) -> fillable)) {
-          throw new Exception();
-        }
+      if (!in_array($orderBy[0], (new self) -> allAttributes)) {
+        throw new Exception();
       }
       $carts = $carts -> orderBy($orderBy[0], $orderBy[1]);
     }
@@ -70,8 +68,8 @@ class Cart extends Model {
   {
     $cart = new self;
     if ($where != null) {
-      foreach ($where as $attr => $val) {
-        if (!in_array($attr, (new self) -> fillable)) {
+      foreach ($where as $eachWhere) {
+        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
           throw new Exception();
         }
       }
@@ -84,7 +82,7 @@ class Cart extends Model {
   public static function setCart($where, $data)
   {
     $cart = self::where($where) -> first();
-    if (!empty($null)) {
+    if (!empty($cart)) {
       foreach ($data as $attr => $val) {
         if (in_array($attr, (new self) -> fillable)) {
           $cart[$attr] = $val;
