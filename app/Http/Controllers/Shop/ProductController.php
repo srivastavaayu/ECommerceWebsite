@@ -75,6 +75,16 @@ class ProductController extends Controller
     try
     {
       $product = Product::getProduct([['id', $id]]);
+      if (empty($product)) {
+        $resource = "Product";
+        $resourceSmall = "product";
+        return view('custom404', ['resource' => $resource, 'resourceSmall' => $resourceSmall]);
+      }
+      if ($product -> user_id == Auth::id()) {
+        $resource = "Product";
+        $resourceSmall = "product";
+        return view('custom404', ['resource' => $resource, 'resourceSmall' => $resourceSmall]);
+      }
       $category = Category::getCategory([['id', $product -> category_id]]);
       $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
     }

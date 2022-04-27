@@ -149,6 +149,9 @@ class ProductController extends Controller
     {
       return view('404');
     }
+    if (empty($product)) {
+      return redirect('/inventory/product/new-product');
+    }
     return view('inventory/product', ['product' => $product, 'categories' => $categories, 'info' => $info]);
   }
 

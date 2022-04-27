@@ -64,6 +64,11 @@ class CategoryController extends Controller
     try
     {
       $category = Category::getCategory([['id', $id]]);
+      if (empty($category)) {
+        $resource = "Category";
+        $resourceSmall = "category";
+        return view('custom404', ['resource' => $resource, 'resourceSmall' => $resourceSmall]);
+      }
       $products = Product::getProducts(
         [['is_archived', 0], ['category_id', $id], ['user_id', '!=', Auth::id()]],
         null,
