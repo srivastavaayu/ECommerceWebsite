@@ -31,26 +31,49 @@ class CheckoutController extends Controller
     $activeProducts = [];
     $inactiveProducts = [];
     $cartTotal = 0;
-    foreach ($cart as $cartItem)
-    {
-      try
-      {
-        $product = Product::getProduct([['id', $cartItem -> product_id]]);
-      }
-      catch(Exception $e)
-      {
-        return view('404');
-      }
-      if ($product -> is_archived == 0)
-      {
-        $cartTotal += (($product -> price) * $cartItem -> quantity);
-        array_push($activeProducts, $product);
-      }
-      else
-      {
-        array_push($inactiveProducts, $product);
+    $cartProducts = [];
+    foreach ($cart as $cartItem) {
+      $cartProducts[$cartItem -> product_id] = $cartItem -> quantity;
+    }
+    try {
+      $products = Product::getProducts();
+    }
+    catch(Exception $e) {
+      return view('500');
+    }
+    foreach ($products as $product) {
+      if (in_array($product -> id, array_keys($cartProducts))) {
+        if ($product -> is_archived == 0) {
+          $cartTotal += (($product -> price) * $cartProducts[$product -> id]);
+          array_push($activeProducts, $product);
+        }
+        else
+        {
+          array_push($inactiveProducts, $product);
+        }
       }
     }
+
+    // foreach ($cart as $cartItem)
+    // {
+    //   try
+    //   {
+    //     $product = Product::getProduct([['id', $cartItem -> product_id]]);
+    //   }
+    //   catch(Exception $e)
+    //   {
+    //     return view('500');
+    //   }
+    //   if ($product -> is_archived == 0)
+    //   {
+    //     $cartTotal += (($product -> price) * $cartItem -> quantity);
+    //     array_push($activeProducts, $product);
+    //   }
+    //   else
+    //   {
+    //     array_push($inactiveProducts, $product);
+    //   }
+    // }
     return view('checkout/cart',
       [
         'cart' => $cart, 'activeProducts' => $activeProducts,
@@ -76,27 +99,29 @@ class CheckoutController extends Controller
     }
     $checkoutProducts = [];
     $cartTotal = 0;
-    foreach ($cart as $cartItem)
-    {
-      try
-      {
-        $product = Product::getProduct([['id', $cartItem -> product_id]]);
-      }
-      catch(Exception $e)
-      {
-        return view('404');
-      }
-      if ($product -> is_archived == 0)
-      {
-        $cartTotal += (($product -> price) * $cartItem -> quantity);
-        array_push($products, $product);
+    $cartProducts = [];
+    foreach ($cart as $cartItem) {
+      $cartProducts[$cartItem -> product_id] = $cartItem -> quantity;
+    }
+    try {
+      $products = Product::getProducts();
+    }
+    catch(Exception $e) {
+      return view('500');
+    }
+    foreach ($products as $product) {
+      if (in_array($product -> id, array_keys($cartProducts))) {
+        if ($product -> is_archived == 0) {
+          $cartTotal += (($product -> price) * $cartProducts[$product -> id]);
+          array_push($checkoutProducts, $product);
+        }
       }
     }
     return view('checkout/checkout',
       [
         'user' => $user,
         'cart' => $cart,
-        'products' => $products,
+        'products' => $checkoutProducts,
         'cartTotal' => $cartTotal
       ]
     );
@@ -113,20 +138,22 @@ class CheckoutController extends Controller
     catch(Exception $e) {
       return view('500');
     }
-    $cartTotal = 0;
-    foreach ($cart as $cartItem)
-    {
-      try
-      {
-        $product = Product::getProduct([['id', $cartItem -> product_id]]);
-      }
-      catch(Exception $e)
-      {
-        return view('404');
-      }
-      if ($product -> is_archived == 0)
-      {
-        $cartTotal += (($product -> price) * $cartItem -> quantity);
+    $checkoutTotal = 0;
+    $checkoutProducts = [];
+    foreach ($cart as $cartItem) {
+      $checkoutProducts[$cartItem -> product_id] = $cartItem -> quantity;
+    }
+    try {
+      $products = Product::getProducts();
+    }
+    catch(Exception $e) {
+      return view('500');
+    }
+    foreach ($products as $product) {
+      if (in_array($product -> id, array_keys($checkoutProducts))) {
+        if ($product -> is_archived == 0) {
+          $checkoutTotal += (($product -> price) * $checkoutProducts[$product -> id]);
+        }
       }
     }
     // DB::beginTransaction();
@@ -139,23 +166,27 @@ class CheckoutController extends Controller
         'state' => $request -> StateInput,
         'country' => $request -> CountryInput,
         'pin_code' => $request -> PINCodeInput,
-        'total' => $cartTotal
+        'total' => $checkoutTotal
       ]
     );
-
-    foreach ($cart as $cartItem)
-    {
-      try
-      {
+    if (empty($order)) {
+      // DB::rollback();
+      return view('500');
+    }
+    foreach ($cart as $cartItem) {
+      try {
         $product = Product::getProduct([['id', $cartItem -> product_id]]);
+        if (empty($product)) {
+          // DB::rollback();
+          return view('404');
+        }
       }
-      catch(Exception $e)
-      {
-        return view('404');
+      catch(Exception $e) {
+        // DB::rollback();
+        return view('500');
       }
-      if ($product -> is_archived == 0)
-      {
-        OrderDetail::addOrderDetail(
+      if ($product -> is_archived == 0) {
+        $orderDetail = OrderDetail::addOrderDetail(
           [
             'user_id' => Auth::id(),
             'order_id' => $order -> id,
@@ -163,51 +194,57 @@ class CheckoutController extends Controller
             'quantity' => $cartItem -> quantity
           ]
         );
-        Product::setProduct(
+        $product = Product::setProduct(
           [['id', $cartItem -> product_id]],
           [
             'quantity' => (($product -> quantity) - ($cartItem -> quantity)),
             'units_sold' => (($product -> units_sold) + ($cartItem -> quantity))
           ]
         );
-        Cart::removeCart([['id', $cartItem -> id]]);
+        $cart = Cart::removeCart([['id', $cartItem -> id]]);
+        // DB::commit();
       }
     }
 
     return redirect('/checkout/thank-you?orderId='.$order -> id);
   }
 
-  public function thankYou(Request $request)
-  {
-    try
-    {
+  public function thankYou(Request $request) {
+    try {
       $order = Order::getOrder([['id', $request -> orderId]]);
       $user = User::getUser([['id', $order -> user_id]]);
-      $orderItems = OrderDetail::getOrderDetails([['order_id', $order -> id]]) -> get();
+      $orderItems = OrderDetail::getOrderDetails([['order_id', $order -> id]]);
+      if (empty($order) || empty($user) || empty($orderItems)) {
+        return view('404');
+      }
+    }
+    catch(Exception $e) {
+      return view('500');
+    }
+    $orderedProducts = [];
+    $orderProducts = [];
+    foreach ($orderItems as $orderItem) {
+      array_push($orderProducts, $orderItem -> item_id);
+    }
+    try {
+      $products = Product::getProducts();
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
-    $products = [];
-    foreach ($orderItems as $orderItem)
+    foreach ($products as $product)
     {
-      try
-      {
-        $product = Product::getProduct([['id', $orderItem -> item_id]]);
+      if (in_array($product -> id, $orderProducts)) {
+        array_push($orderedProducts, $product);
       }
-      catch(Exception $e)
-      {
-        return view('404');
-      }
-      array_push($products, $product);
     }
     return view('checkout/thank-you',
       [
         'user' => $user,
         'order' => $order,
         'items' => $orderItems,
-        'products' => $products
+        'products' => $orderedProducts
       ]
     );
   }

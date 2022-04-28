@@ -26,7 +26,7 @@ class Cart extends Model {
   public static function removeCart($where) {
     echo var_dump($where);
     foreach ($where as $eachWhere) {
-      if (!in_array($eachWhere[0], (new self) -> fillable)) {
+      if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
         return null;
       }
     }
