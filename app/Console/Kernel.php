@@ -28,27 +28,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule -> call(function() {
-          $products = Product::getProducts() -> all();
-          if (count($products) > 0) {
-            $maxUnitsSoldProduct = Product::getProducts() -> all();
-            $maxUnitsSoldProductID = $maxUnitsSoldProduct[0] -> id;
-            $maxUnitsSoldProductUnitsSold =  $maxUnitsSoldProduct[0] -> units_sold;
-            foreach ($maxUnitsSoldProduct as $product) {
-              if ($product -> units_sold > $maxUnitsSoldProductUnitsSold) {
-                $maxUnitsSoldProductID = $product -> id;
-                $maxUnitsSoldProductUnitsSold = $product -> units_sold;
-              }
-            }
-            if ($maxUnitsSoldProductUnitsSold != 0) {
-              EComWebStat::addEComWebStat(['product_id' => $maxUnitsSoldProductID, 'units_sold' => $maxUnitsSoldProductUnitsSold]);
-            } else {
-              EComWebStat::addEComWebStat(['product_id' => null, 'units_sold' => null]);
-            }
-          } else {
-            EComWebStat::addEComWebStat(['product_id' => null, 'units_sold' => null]);
-          }
-        }) -> everyFiveMinutes();
+        $schedule -> command('ecomwebstat:cron') -> everyFiveMinutes();
     }
 
     /**

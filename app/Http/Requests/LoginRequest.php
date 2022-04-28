@@ -24,16 +24,16 @@ class LoginRequest extends FormRequest
     public function rules()
     {
       return [
-        'UsernameInput' => ['sometimes', 'required', 'min: 1', 'max: 255'],
-        'PasswordInput' => ['sometimes', 'required', 'min: 1', 'max: 255']
+        'usernameInput' => ['sometimes', 'required', 'min: 1', 'max: 255'],
+        'passwordInput' => ['sometimes', 'required', 'min: 1', 'max: 255']
       ];
     }
 
     public function messages()
     {
       return [
-        'UsernameInput.required' => 'Username is required!',
-        'PasswordInput.required' => 'Password is required!'
+        'usernameInput.required' => 'Username is required!',
+        'passwordInput.required' => 'Password is required!'
       ];
     }
 }

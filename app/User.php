@@ -18,17 +18,17 @@ class User extends Authenticatable {
 
   public static function addUser($data) {
     if (empty($data)) {
-      throw new Exception("User cannot be created!");
+      return null;
     }
     foreach ($data as $attr => $val) {
       if (!in_array($attr, (new self) -> fillable)) {
-        throw new Exception("User cannot be created!");
+        return null;
       }
     }
     return self::create($data);
   }
 
-  public static function getUsers($where = null, $groupBy = null, $having = null, $orderBy = null) {
+  public static function getUsers($where = null, $groupBy = null, $having = null, $orderBy = null, $paginateRequired = false, $paginateItems = 3) {
     $users = new self;
     if ($where != null) {
       foreach ($where as $eachWhere) {
@@ -60,7 +60,12 @@ class User extends Authenticatable {
       }
       $users = $users -> orderBy($orderBy[0], $orderBy[1]);
     }
-    return $users;
+    if ($paginateRequired) {
+      return $users -> simplePaginate($paginateItems);
+    }
+    else {
+      return $users -> get();
+    }
   }
 
   public static function getUser($where = null) {
@@ -73,8 +78,10 @@ class User extends Authenticatable {
       }
       $user = $user -> where($where);
     }
-    $user = $user -> first();
-    return $user;
+    if (empty($user)) {
+      return null;
+    }
+    return $user -> first();
   }
 
   public static function setUser($where, $data) {
@@ -87,6 +94,7 @@ class User extends Authenticatable {
       }
       return $user -> save();
     }
+    return null;
   }
 
 }

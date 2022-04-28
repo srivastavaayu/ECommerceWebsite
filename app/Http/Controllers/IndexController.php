@@ -15,8 +15,8 @@ class IndexController extends Controller
     {
       $products = Product::getProducts(
         [['is_archived', 0], ['user_id', '!=', Auth::id()]]
-      ) -> get();
-      $categories = Category::getCategories() -> get();
+      );
+      $categories = Category::getCategories();
     }
     catch(Exception $e)
     {

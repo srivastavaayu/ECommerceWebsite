@@ -35,6 +35,7 @@
             <div id="star5" class="star star5"></div>
           </div> -->
           <form method="POST" action="/shop/product/{{ $product -> id }}/setRating">
+            {{ method_field('PATCH') }}
             {{ csrf_field() }}
             <div class="d-flex flex-row mb-3">
               <div class="form-check">
@@ -58,16 +59,28 @@
           @if ($product -> is_archived == 1)
             <div>
                 @if ($cart != null)
-                  <form id="removeFromCart" method="POST" action="/shop/product/{{ $product -> id}}/removeFromCart">{{ csrf_field() }}</form>
+                  <form id="removeFromCart" method="POST" action="/shop/product/{{ $product -> id}}/removeFromCart">
+                    {{ method_field('PATCH') }}
+                    {{ csrf_field() }}
+                  </form>
                   <button class="btn btn-primary mb-2" form="removeFromCart"><img src="../../../images/trash.png" class="productCartImage"> Remove From Cart</button>
                 @endif
                 <p style="color: red; font-size: 1.1em;">Product is not available for purchase!</p>
             </div>
           @else
             @if ($cart != null)
-              <form id="removeFromCart" method="POST" action="/shop/product/{{ $product -> id }}/removeFromCart">{{ csrf_field() }}</form>
-              <form id="decreaseCartQuantity" method="POST" action="/shop/product/{{ $product -> id }}/decreaseCartQuantity">{{ csrf_field() }}</form>
-              <form id="increaseCartQuantity" method="POST" action="/shop/product/{{ $product -> id }}/increaseCartQuantity">{{ csrf_field() }}</form>
+              <form id="removeFromCart" method="POST" action="/shop/product/{{ $product -> id }}/removeFromCart">
+                {{ method_field('PATCH') }}
+                {{ csrf_field() }}
+              </form>
+              <form id="decreaseCartQuantity" method="POST" action="/shop/product/{{ $product -> id }}/decreaseCartQuantity">
+                {{ method_field('PATCH') }}
+                {{ csrf_field() }}
+              </form>
+              <form id="increaseCartQuantity" method="POST" action="/shop/product/{{ $product -> id }}/increaseCartQuantity">
+                {{ method_field('PATCH') }}
+                {{ csrf_field() }}
+              </form>
               <a href="/checkout/cart"><button class="btn btn-success mb-2">Go To Cart</button></a>
               <div class="d-flex flex-row input-group">
                 @if ($cart -> quantity <= 1)
@@ -76,6 +89,7 @@
                   <button class="btn btn-secondary" form="decreaseCartQuantity"> -1 </button>
                 @endif
                 <form method="POST" action="/shop/product/{{ $product -> id}}/setCartQuantity">
+                  {{ method_field('PATCH') }}
                   {{ csrf_field() }}
                   <input type="number" class="form-control text-center" name="quantity" value="{{ $cart -> quantity }}" min="1" max="{{ $product -> quantity }}" onchange="this.form.submit()" required>
                 </form>
@@ -90,6 +104,7 @@
               <div>
                 @if ($product -> quantity > 0)
                   <form method="POST" action="/shop/product/{{ $product -> id }}/addToCart">
+                    {{ method_field('PATCH') }}
                     {{ csrf_field() }}
                     <button class="btn btn-primary"><img src="../../../images/cart.png" class="productCartImage"> Add To Cart</button>
                   </form>

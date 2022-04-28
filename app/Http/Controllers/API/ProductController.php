@@ -15,7 +15,7 @@ class ProductController extends Controller
     if ($request -> has('userName')) {
       $user = User::getUser([['name', $request -> userName]]);
       if (!empty($user)) {
-        $products = Product::getProducts([['user_id', $user -> id]]) -> get();
+        $products = Product::getProducts([['user_id', $user -> id]]);
         return response() -> json($products, 200);
       }
       else {
@@ -23,7 +23,7 @@ class ProductController extends Controller
       }
     }
     if ($request -> has('orderID')) {
-      $items = OrderDetail::getOrderDetails([['order_id', $request -> orderID]]) -> get();
+      $items = OrderDetail::getOrderDetails([['order_id', $request -> orderID]]);
       if (!empty($items) and count($items) > 0) {
         $products = [];
         foreach ($items as $item) {
@@ -44,7 +44,7 @@ class ProductController extends Controller
         return response() -> json(["message" => "No product exists with this ID."], 404);
       }
     }
-    $products = Product::getProducts() -> all();
+    $products = Product::getProducts();
     return response() -> json($products, 200);
   }
 
@@ -55,10 +55,10 @@ class ProductController extends Controller
     }
     if ($currentPage < 1)
       return response() -> json(['error' => 'Invalid Page Requested'], 422);
-    $products = Product::getProducts() -> all();
-    $totalPages = ceil(count($products) / $request -> items);
+    $products = Product::getProductsCount();
+    $totalPages = ceil($products / ($request -> items));
     if ($currentPage <= $totalPages) {
-      $products = Product::getProducts() -> skip(($currentPage - 1) * $request -> items) -> take($request -> items) -> get();
+      $products = Product::getProductsWithCustomPagination(null, null, null, null, (($currentPage - 1) * $request -> items), ($request -> items));
       return response() -> json(['currentPage' => $currentPage, 'totalPages' => $totalPages, 'data' => $products], 200);
     }
     else {

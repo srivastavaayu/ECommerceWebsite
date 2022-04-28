@@ -27,13 +27,13 @@ Route::middleware(['checkAuthorization']) -> prefix('user')->group(function () {
 
   Route::get('profile', 'UserController@showProfile');
 
-  Route::post('profile', 'UserController@storeProfile');
+  Route::patch('profile', 'UserController@storeProfile');
 
   Route::get('orders-history', 'UserController@ordersHistory');
 
   Route::get('update-password', 'UserController@showUpdatePassword');
 
-  Route::post('update-password', 'UserController@storeUpdatePassword');
+  Route::patch('update-password', 'UserController@storeUpdatePassword');
 
 });
 
@@ -41,7 +41,7 @@ Route::middleware(['checkAuthorization']) -> prefix('inventory') -> group(functi
 
   Route::get('product', 'Inventory\ProductController@showProducts');
 
-  Route::post('product', 'Inventory\ProductController@storeProducts');
+  Route::patch('product', 'Inventory\ProductController@storeProducts');
 
   Route::get('product/new-product', 'Inventory\ProductController@showAddNewProduct');
 
@@ -49,7 +49,7 @@ Route::middleware(['checkAuthorization']) -> prefix('inventory') -> group(functi
 
   Route::get('product/{id}', 'Inventory\ProductController@showProduct');
 
-  Route::post('product/{id}', 'Inventory\ProductController@storeProduct');
+  Route::put('product/{id}', 'Inventory\ProductController@storeProduct');
 
 });
 
@@ -65,17 +65,17 @@ Route::middleware(['checkAuthorization']) -> prefix('shop')->group(function () {
 
   Route::get('product/{id}', 'Shop\ProductController@showProduct');
 
-  Route::post('product/{id}/addToCart', 'Shop\ProductController@addToCart');
+  Route::patch('product/{id}/addToCart', 'Shop\ProductController@addToCart');
 
-  Route::post('product/{id}/removeFromCart', 'Shop\ProductController@removeFromCart');
+  Route::patch('product/{id}/removeFromCart', 'Shop\ProductController@removeFromCart');
 
-  Route::post('product/{id}/setCartQuantity', 'Shop\ProductController@setCartQuantity');
+  Route::patch('product/{id}/setCartQuantity', 'Shop\ProductController@setCartQuantity');
 
-  Route::post('product/{id}/increaseCartQuantity', 'Shop\ProductController@increaseCartQuantity');
+  Route::patch('product/{id}/increaseCartQuantity', 'Shop\ProductController@increaseCartQuantity');
 
-  Route::post('product/{id}/decreaseCartQuantity', 'Shop\ProductController@decreaseCartQuantity');
+  Route::patch('product/{id}/decreaseCartQuantity', 'Shop\ProductController@decreaseCartQuantity');
 
-  Route::post('product/{id}/setRating', 'Shop\ProductController@setRating');
+  Route::patch('product/{id}/setRating', 'Shop\ProductController@setRating');
 
 });
 

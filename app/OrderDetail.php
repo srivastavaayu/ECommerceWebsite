@@ -16,23 +16,23 @@ class OrderDetail extends Model
 
   public static function addOrderDetail($data) {
     if (empty($data)) {
-      throw new Exception("Order Detail cannot be created!");
+      return null;
     }
     foreach ($data as $attr => $val) {
       if (!in_array($attr, (new self) -> fillable)) {
-        throw new Exception("Order Detail cannot be created!");
+        return null;
       }
     }
     return self::create($data);
   }
 
-  public static function getOrderDetails($where = null, $groupBy = null, $having = null, $orderBy = null)
+  public static function getOrderDetails($where = null, $groupBy = null, $having = null, $orderBy = null, $paginateRequired = false, $paginateItems = 3)
   {
     $orderDetails = new self;
     if ($where != null) {
       foreach ($where as $eachWhere) {
         if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          throw new Exception();
+          return null;
         }
       }
       $orderDetails = $orderDetails -> where($where);
@@ -40,7 +40,7 @@ class OrderDetail extends Model
     if ($groupBy != null) {
       foreach ($groupBy as $eachGroupBy) {
         if (!in_array($eachGroupBy[0], (new self) -> allAttributes)) {
-          throw new Exception();
+          return null;
         }
       }
       $orderDetails = $orderDetails -> groupBy($groupBy);
@@ -48,18 +48,23 @@ class OrderDetail extends Model
     if ($having != null) {
       foreach ($having as $eachHaving) {
         if (!in_array($eachHaving[0], (new self) -> allAttributes)) {
-          throw new Exception();
+          return null;
         }
       }
       $orderDetails = $orderDetails -> having($having);
     }
     if ($orderBy != null) {
       if (!in_array($orderBy[0], (new self) -> allAttributes)) {
-        throw new Exception();
+        return null;
       }
       $orderDetails = $orderDetails -> orderBy($orderBy[0], $orderBy[1]);
     }
-    return $orderDetails;
+    if ($paginateRequired) {
+      return $orderDetails -> simplePaginate($paginateItems);
+    }
+    else {
+      return $orderDetails -> get();
+    }
   }
 
   public static function getOrderDetail($where = null)
@@ -68,13 +73,15 @@ class OrderDetail extends Model
     if ($where != null) {
       foreach ($where as $eachWhere) {
         if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          throw new Exception();
+          return null;
         }
       }
       $orderDetail = $orderDetail -> where($where);
     }
-    $orderDetail = $orderDetail -> first();
-    return $orderDetail;
+    if (empty($orderDetail)) {
+      return null;
+    }
+    return $orderDetail -> first();
   }
 
 }

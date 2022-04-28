@@ -33,16 +33,16 @@
           <form id="checkoutForm" method="POST" action="/checkout/checkout">
             {{ csrf_field() }}
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="FullNameInput" name="FullNameInput" placeholder="Full Name" value="{{ $user -> name }}" readonly>
-              <label for="FullNameInput">Full Name*</label>
+              <input type="text" class="form-control" id="fullNameInput" name="fullNameInput" placeholder="Full Name" value="{{ $user -> name }}" readonly>
+              <label for="fullNameInput">Full Name*</label>
             </div>
             <div class="form-floating mb-3">
-              <input type="email" class="form-control" id="EmailInput" name="EmailInput" placeholder="Email" value="{{ $user -> email }}" readonly>
-              <label for="EmailInput">Email Address*</label>
+              <input type="email" class="form-control" id="emailInput" name="emailInput" placeholder="Email" value="{{ $user -> email }}" readonly>
+              <label for="emailInput">Email Address*</label>
             </div>
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="PhoneNumberInput" name="PhoneNumberInput" placeholder="Phone Number" value="{{ $user -> phone_number }}" readonly>
-              <label for="PhoneNumberInput">Phone Number*</label>
+              <input type="text" class="form-control" id="phoneNumberInput" name="phoneNumberInput" placeholder="Phone Number" value="{{ $user -> phone_number }}" readonly>
+              <label for="phoneNumberInput">Phone Number*</label>
             </div>
             <div class="form-floating mb-3">
               <input type="text" class="form-control" id="AddressLine1Input" name="AddressLine1Input" placeholder="Address Line 1" value="{{ old('AddressLine1Input') }}" required>

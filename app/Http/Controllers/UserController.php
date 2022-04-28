@@ -41,21 +41,21 @@ class UserController extends Controller
     {
       return view('404');
     }
-    if (!is_null($request -> FullNameInput))
+    if (!is_null($request -> fullNameInput))
     {
-      $data['name'] = $request -> FullNameInput;
+      $data['name'] = $request -> fullNameInput;
     }
-    if (!is_null($request -> EmailInput))
+    if (!is_null($request -> emailInput))
     {
-      $data['email'] = $request -> EmailInput;
+      $data['email'] = $request -> emailInput;
     }
-    if (!is_null($request -> PhoneNumberInput))
+    if (!is_null($request -> phoneNumberInput))
     {
-      $data['phone_number'] = $request -> PhoneNumberInput;
+      $data['phone_number'] = $request -> phoneNumberInput;
     }
-    if (!is_null($request -> UsernameInput))
+    if (!is_null($request -> usernameInput))
     {
-      $data['username'] = $request -> UsernameInput;
+      $data['username'] = $request -> usernameInput;
     }
     if (count($data) > 0)
     {
@@ -96,7 +96,7 @@ class UserController extends Controller
       try
       {
         $order = Order::getOrder([['id', $request -> orderId]]);
-        $orderDetail = OrderDetail::getOrderDetails([['order_id', $order -> id]]) -> get();
+        $orderDetail = OrderDetail::getOrderDetails([['order_id', $order -> id]]);
       }
       catch(Exception $e)
       {
@@ -131,7 +131,7 @@ class UserController extends Controller
         null,
         null,
         ['updated_at', 'DESC']
-      ) -> get();
+      );
     }
     catch(Exception $e)
     {
@@ -155,11 +155,11 @@ class UserController extends Controller
     {
       return view('404');
     }
-    if (Hash::check($request -> CurrentPasswordInput, $user -> password))
+    if (Hash::check($request -> currentPasswordInput, $user -> password))
     {
       User::setUser(
         [['id', Auth::id()]],
-        ['password' => Hash::make($request -> PasswordInput)]
+        ['password' => Hash::make($request -> passwordInput)]
       );
       $info = "Password has been updated successfully!";
     }

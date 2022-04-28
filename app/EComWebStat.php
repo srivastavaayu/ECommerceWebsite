@@ -11,11 +11,11 @@ class EComWebStat extends Model {
 
   public static function addEComWebStat($data) {
     if (empty($data)) {
-      throw new Exception("Stat cannot be created!");
+      return null;
     }
     foreach ($data as $attr => $val) {
       if (!in_array($attr, (new self) -> fillable)) {
-        throw new Exception("Stat cannot be created!");
+        return null;
       }
     }
     return self::create($data);

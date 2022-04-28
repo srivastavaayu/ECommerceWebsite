@@ -27,29 +27,29 @@
       <form method="POST" action="/register">
         {{ csrf_field() }}
         <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="FullNameInput" name="FullNameInput" placeholder="Full Name" value="{{ old('FullNameInput') }}" pattern="[A-Za-z0-9 ]+" required>
-          <label for="FullNameInput">Full Name*</label>
+          <input type="text" class="form-control" id="fullNameInput" name="fullNameInput" placeholder="Full Name" value="{{ old('fullNameInput') }}" pattern="[A-Za-z0-9 ]+" required>
+          <label for="fullNameInput">Full Name*</label>
         </div>
         <div class="form-floating mb-3">
-          <input type="email" class="form-control" id="EmailInput" name="EmailInput" placeholder="Email" value="{{ old('EmailInput') }}" pattern="\S+@\S+\.\S+" required>
-          <label for="EmailInput">Email Address*</label>
+          <input type="email" class="form-control" id="emailInput" name="emailInput" placeholder="Email" value="{{ old('emailInput') }}" pattern="\S+@\S+\.\S+" required>
+          <label for="emailInput">Email Address*</label>
         </div>
         <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="PhoneNumberInput" name="PhoneNumberInput" placeholder="Phone Number" value="{{ old('PhoneNumberInput') }}" pattern="^[0-9]{10}$" required>
-          <label for="PhoneNumberInput">Phone Number*</label>
+          <input type="text" class="form-control" id="phoneNumberInput" name="phoneNumberInput" placeholder="Phone Number" value="{{ old('phoneNumberInput') }}" pattern="^[0-9]{10}$" required>
+          <label for="phoneNumberInput">Phone Number*</label>
         </div>
         <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="UsernameInput" name="UsernameInput" placeholder="Username" value="{{ old('UsernameInput') }}" pattern="[A-Za-z0-9]+" required>
-          <label for="UsernameInput">Username*</label>
+          <input type="text" class="form-control" id="usernameInput" name="usernameInput" placeholder="Username" value="{{ old('usernameInput') }}" pattern="[A-Za-z0-9]+" required>
+          <label for="usernameInput">Username*</label>
         </div>
         <small class="px-4">Note: The password must contain atleast 8 and atmost 20 characters including an uppercase character, a lowercase character, a digit and a special symbol.</small>
         <div class="form-floating mb-3 mt-3">
-          <input type="password" class="form-control" id="PasswordInput" name="PasswordInput" placeholder="Password" pattern="^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$" required>
-          <label for="PasswordInput">Password*</label>
+          <input type="password" class="form-control" id="passwordInput" name="passwordInput" placeholder="Password" pattern="^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$" required>
+          <label for="passwordInput">Password*</label>
         </div>
         <div class="form-floating mb-3">
-          <input type="password" class="form-control" id="ReenterPasswordInput" name="ReenterPasswordInput" placeholder="Re-enter Password" required>
-          <label for="ReenterPasswordInput">Re-enter Password*</label>
+          <input type="password" class="form-control" id="reenterPasswordInput" name="reenterPasswordInput" placeholder="Re-enter Password" required>
+          <label for="reenterPasswordInput">Re-enter Password*</label>
         </div>
         <br />
         <div class="d-flex justify-content-end">

@@ -24,7 +24,7 @@ class UpdatePasswordRequest extends FormRequest
     public function rules()
     {
       return [
-        'CurrentPasswordInput' =>
+        'currentPasswordInput' =>
           [
             'sometimes',
             'required',
@@ -32,7 +32,7 @@ class UpdatePasswordRequest extends FormRequest
             'min: 1',
             'max: 255'
           ],
-        'PasswordInput' =>
+        'passwordInput' =>
           [
             'sometimes',
             'required',
@@ -40,12 +40,12 @@ class UpdatePasswordRequest extends FormRequest
             'min: 1',
             'max: 255'
           ],
-        'ReenterPasswordInput' =>
+        'reenterPasswordInput' =>
           [
             'sometimes',
             'required',
             'regex:/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$/u',
-            'same:PasswordInput',
+            'same:passwordInput',
             'min: 1',
             'max: 255'
           ]

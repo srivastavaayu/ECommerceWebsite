@@ -28,12 +28,12 @@
       <form class="mb-5" method="POST" action="/login">
         {{ csrf_field() }}
         <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="UsernameInput" name="UsernameInput" placeholder="Username" pattern="[A-Za-z0-9]+" required>
-          <label for="UsernameInput">Username*</label>
+          <input type="text" class="form-control" id="usernameInput" name="usernameInput" placeholder="Username" pattern="[A-Za-z0-9]+" required>
+          <label for="usernameInput">Username*</label>
         </div>
         <div class="form-floating mb-3">
-          <input type="password" class="form-control" id="PasswordInput" name="PasswordInput" placeholder="Password" required>
-          <label for="PasswordInput">Password*</label>
+          <input type="password" class="form-control" id="passwordInput" name="passwordInput" placeholder="Password" required>
+          <label for="passwordInput">Password*</label>
         </div>
         <div class="d-flex justify-content-end">
           <a href="/register"><button type="button" class="btn btn-primary">New to EComWeb? Register here!</button></a>

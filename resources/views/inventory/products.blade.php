@@ -28,6 +28,7 @@
 
       <div class="d-flex justify-content-between">
         <form method="POST" action="/inventory/product">
+          {{ method_field('PATCH') }}
           {{ csrf_field() }}
           <div class="btn-group" role="group">
             @if ($viewStyle == 'tabular')
@@ -95,6 +96,7 @@
                         </td>
                         <td>
                           <form method="POST" action="/inventory/product">
+                            {{ method_field('PATCH') }}
                             {{ csrf_field() }}
                             <button type="submit" class="btn btn-danger ms-2" name="productId" value="{{ $product -> id }}">
                               @if ($product -> is_archived)
@@ -146,6 +148,7 @@
                         </td>
                         <td>
                           <form method="POST" action="/inventory/product">
+                            {{ method_field('PATCH') }}
                             {{ csrf_field() }}
                             <button type="submit" class="btn btn-danger ms-2" name="productId" value="{{ $product -> id }}">
                               @if ($product -> is_archived)
@@ -197,6 +200,7 @@
                         </td>
                         <td>
                           <form method="POST" action="/inventory/product">
+                            {{ method_field('PATCH') }}
                             {{ csrf_field() }}
                             <button type="submit" class="btn btn-danger ms-2" name="productId" value="{{ $product -> id }}">
                               @if ($product -> is_archived)
@@ -247,6 +251,7 @@
                             <button type="button" class="btn btn-warning">Edit Product</button>
                           </a>
                           <form method="POST" action="/inventory/product">
+                            {{ method_field('PATCH') }}
                             {{ csrf_field() }}
                             <button type="submit" class="btn btn-danger ms-2" name="productId" value="{{ $product -> id }}">
                               @if ($product -> is_archived)
@@ -258,40 +263,40 @@
                           </form>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="SKUInput">Stock Keeping Unit (SKU)</label>
-                          <input type="text" class="form-control" id="SKUInput" name="SKUInput" value="{{ $product -> sku }}" placeholder="{{ $product -> sku }}" readonly>
+                          <label class="form-label" for="skuInput">Stock Keeping Unit (SKU)</label>
+                          <input type="text" class="form-control" id="skuInput" name="skuInput" value="{{ $product -> sku }}" placeholder="{{ $product -> sku }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="CategoryInput">Category</label>
+                          <label class="form-label" for="categoryInput">Category</label>
                           @foreach ($categories as $category)
                             @if (($category -> id) == ($product -> category_id))
-                              <input type="text" class="form-control" id="CategoryInput" name="CategoryInput" value="{{ $category -> name }}" placeholder="{{ $category -> name }}" readonly>
+                              <input type="text" class="form-control" id="categoryInput" name="categoryInput" value="{{ $category -> name }}" placeholder="{{ $category -> name }}" readonly>
                             @endif
                           @endforeach
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="ProductNameInput">Product Name</label>
-                          <input type="text" class="form-control" id="ProductNameInput" name="ProductNameInput" value="{{ $product -> name }}" placeholder="{{ $product -> name }}" readonly>
+                          <label class="form-label" for="productNameInput">Product Name</label>
+                          <input type="text" class="form-control" id="productNameInput" name="productNameInput" value="{{ $product -> name }}" placeholder="{{ $product -> name }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="ProductDescriptionInput">Product Description</label>
-                          <textarea class="form-control" id="ProductDescriptionInput" name="ProductDescriptionInput" placeholder="{{ $product -> description }}" style="height: 50vh" readonly>{{ $product -> description }}</textarea>
+                          <label class="form-label" for="productDescriptionInput">Product Description</label>
+                          <textarea class="form-control" id="productDescriptionInput" name="productDescriptionInput" placeholder="{{ $product -> description }}" style="height: 50vh" readonly>{{ $product -> description }}</textarea>
                         </div>
                         <label class="form-label">Product Images</label>
                         @if (!is_null($product -> image_path) && ($product -> image_path != ""))
                           <div class="productImageContainer mb-3"><img src="{{ asset(Storage::url($product -> image_path)) }}" style="object-fit: contain; height: 100%;"/></div>
                         @endif
                         <div class="mb-3">
-                          <label class="form-label" for="PriceInput">Price per unit</label>
-                          <input type="number" class="form-control" id="PriceInput" name="PriceInput" value="{{ $product -> price }}" placeholder="{{ $product -> price }}" readonly>
+                          <label class="form-label" for="priceInput">Price per unit</label>
+                          <input type="number" class="form-control" id="priceInput" name="priceInput" value="{{ $product -> price }}" placeholder="{{ $product -> price }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="UnitInput">Item Unit</label>
-                          <input type="text" class="form-control" id="UnitInput" name="UnitInput" value="{{ $product -> unit }}" placeholder="{{ $product -> unit }}" readonly>
+                          <label class="form-label" for="unitInput">Item Unit</label>
+                          <input type="text" class="form-control" id="unitInput" name="unitInput" value="{{ $product -> unit }}" placeholder="{{ $product -> unit }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="StockQuantityInput">Stock Quantity</label>
-                          <input type="number" class="form-control" id="StockQuantityInput" name="StockQuantityInput" value="{{ $product -> quantity }}" placeholder="{{ $product -> quantity }}" readonly>
+                          <label class="form-label" for="stockQuantityInput">Stock Quantity</label>
+                          <input type="number" class="form-control" id="stockQuantityInput" name="stockQuantityInput" value="{{ $product -> quantity }}" placeholder="{{ $product -> quantity }}" readonly>
                         </div>
                         <div class="mb-3">
                           <label class="form-label">Product Status</label>
@@ -330,45 +335,46 @@
                             <button type="button" class="btn btn-warning">Edit Product</button>
                           </a>
                           <form method="POST" action="/inventory/product">
+                            {{ method_field('PATCH') }}
                             {{ csrf_field() }}
                             <button type="submit" class="btn btn-danger ms-2" name="productId" value="{{ $product -> id }}">Archive Product</button>
                           </form>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="SKUInput">Stock Keeping Unit (SKU)</label>
-                          <input type="text" class="form-control" id="SKUInput" name="SKUInput" value="{{ $product -> sku }}" placeholder="{{ $product -> sku }}" readonly>
+                          <label class="form-label" for="skuInput">Stock Keeping Unit (SKU)</label>
+                          <input type="text" class="form-control" id="skuInput" name="skuInput" value="{{ $product -> sku }}" placeholder="{{ $product -> sku }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="CategoryInput">Category</label>
+                          <label class="form-label" for="categoryInput">Category</label>
                           @foreach ($categories as $category)
                             @if (($category -> id) == ($product -> category_id))
-                              <input type="text" class="form-control" id="CategoryInput" name="CategoryInput" value="{{ $category -> name }}" placeholder="{{ $category -> name }}" readonly>
+                              <input type="text" class="form-control" id="categoryInput" name="categoryInput" value="{{ $category -> name }}" placeholder="{{ $category -> name }}" readonly>
                             @endif
                           @endforeach
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="ProductNameInput">Product Name</label>
-                          <input type="text" class="form-control" id="ProductNameInput" name="ProductNameInput" value="{{ $product -> name }}" placeholder="{{ $product -> name }}" readonly>
+                          <label class="form-label" for="productNameInput">Product Name</label>
+                          <input type="text" class="form-control" id="productNameInput" name="productNameInput" value="{{ $product -> name }}" placeholder="{{ $product -> name }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="ProductDescriptionInput">Product Description</label>
-                          <textarea class="form-control" id="ProductDescriptionInput" name="ProductDescriptionInput" placeholder="{{ $product -> description }}" style="height: 50vh" readonly>{{ $product -> description }}</textarea>
+                          <label class="form-label" for="productDescriptionInput">Product Description</label>
+                          <textarea class="form-control" id="productDescriptionInput" name="productDescriptionInput" placeholder="{{ $product -> description }}" style="height: 50vh" readonly>{{ $product -> description }}</textarea>
                         </div>
                         <label class="form-label">Product Images</label>
                         @if (!is_null($product -> image_path) && ($product -> image_path != ""))
                           <div class="productImageContainer mb-3"><img src="{{ asset(Storage::url($product -> image_path)) }}" style="object-fit: contain; height: 100%;"/></div>
                         @endif
                         <div class="mb-3">
-                          <label class="form-label" for="PriceInput">Price per unit</label>
-                          <input type="text" class="form-control" id="PriceInput" name="PriceInput" value="{{ $product -> price }}" placeholder="{{ $product -> price }}" readonly>
+                          <label class="form-label" for="priceInput">Price per unit</label>
+                          <input type="text" class="form-control" id="priceInput" name="priceInput" value="{{ $product -> price }}" placeholder="{{ $product -> price }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="UnitInput">Item Unit</label>
-                          <input type="text" class="form-control" id="UnitInput" name="UnitInput" value="{{ $product -> unit }}" placeholder="{{ $product -> unit }}" readonly>
+                          <label class="form-label" for="unitInput">Item Unit</label>
+                          <input type="text" class="form-control" id="unitInput" name="unitInput" value="{{ $product -> unit }}" placeholder="{{ $product -> unit }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="StockQuantityInput">Stock Quantity</label>
-                          <input type="text" class="form-control" id="StockQuantityInput" name="StockQuantityInput" value="{{ $product -> quantity }}" placeholder="{{ $product -> quantity }}" readonly>
+                          <label class="form-label" for="stockQuantityInput">Stock Quantity</label>
+                          <input type="text" class="form-control" id="stockQuantityInput" name="stockQuantityInput" value="{{ $product -> quantity }}" placeholder="{{ $product -> quantity }}" readonly>
                         </div>
                       </div>
                     </div>
@@ -398,45 +404,46 @@
                             <button type="button" class="btn btn-warning">Edit Product</button>
                           </a>
                           <form method="POST" action="/inventory/product">
+                            {{ method_field('PATCH') }}
                             {{ csrf_field() }}
                             <button type="submit" class="btn btn-danger ms-2" name="productId" value="{{ $product -> id }}">Unarchive Product</button>
                           </form>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="SKUInput">Stock Keeping Unit (SKU)</label>
-                          <input type="text" class="form-control" id="SKUInput" name="SKUInput" value="{{ $product -> sku }}" placeholder="{{ $product -> sku }}" readonly>
+                          <label class="form-label" for="skuInput">Stock Keeping Unit (SKU)</label>
+                          <input type="text" class="form-control" id="skuInput" name="skuInput" value="{{ $product -> sku }}" placeholder="{{ $product -> sku }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="CategoryInput">Category</label>
+                          <label class="form-label" for="categoryInput">Category</label>
                           @foreach ($categories as $category)
                             @if (($category -> id) == ($product -> category_id))
-                              <input type="text" class="form-control" id="CategoryInput" name="CategoryInput" value="{{ $category -> name }}" placeholder="{{ $category -> name }}" readonly>
+                              <input type="text" class="form-control" id="categoryInput" name="categoryInput" value="{{ $category -> name }}" placeholder="{{ $category -> name }}" readonly>
                             @endif
                           @endforeach
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="ProductNameInput">Product Name</label>
-                          <input type="text" class="form-control" id="ProductNameInput" name="ProductNameInput" value="{{ $product -> name }}" placeholder="{{ $product -> name }}" readonly>
+                          <label class="form-label" for="productNameInput">Product Name</label>
+                          <input type="text" class="form-control" id="productNameInput" name="productNameInput" value="{{ $product -> name }}" placeholder="{{ $product -> name }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="ProductDescriptionInput">Product Description</label>
-                          <textarea class="form-control" id="ProductDescriptionInput" name="ProductDescriptionInput" placeholder="{{ $product -> description }}" style="height: 50vh" readonly>{{ $product -> description }}</textarea>
+                          <label class="form-label" for="productDescriptionInput">Product Description</label>
+                          <textarea class="form-control" id="productDescriptionInput" name="productDescriptionInput" placeholder="{{ $product -> description }}" style="height: 50vh" readonly>{{ $product -> description }}</textarea>
                         </div>
                         <label class="form-label">Product Images</label>
                         @if (!is_null($product -> image_path) && ($product -> image_path != ""))
                           <div class="productImageContainer mb-3"><img src="{{ asset(Storage::url($product -> image_path)) }}" style="object-fit: contain; height: 100%;"/></div>
                         @endif
                         <div class="mb-3">
-                          <label class="form-label" for="PriceInput">Price per unit</label>
-                          <input type="text" class="form-control" id="PriceInput" name="PriceInput" value="{{ $product -> price }}" placeholder="{{ $product -> price }}" readonly>
+                          <label class="form-label" for="priceInput">Price per unit</label>
+                          <input type="text" class="form-control" id="priceInput" name="priceInput" value="{{ $product -> price }}" placeholder="{{ $product -> price }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="UnitInput">Item Unit</label>
-                          <input type="text" class="form-control" id="UnitInput" name="UnitInput" value="{{ $product -> unit }}" placeholder="{{ $product -> unit }}" readonly>
+                          <label class="form-label" for="unitInput">Item Unit</label>
+                          <input type="text" class="form-control" id="unitInput" name="unitInput" value="{{ $product -> unit }}" placeholder="{{ $product -> unit }}" readonly>
                         </div>
                         <div class="mb-3">
-                          <label class="form-label" for="StockQuantityInput">Stock Quantity</label>
-                          <input type="text" class="form-control" id="StockQuantityInput" name="StockQuantityInput" value="{{ $product -> quantity }}" placeholder="{{ $product -> quantity }}" readonly>
+                          <label class="form-label" for="stockQuantityInput">Stock Quantity</label>
+                          <input type="text" class="form-control" id="stockQuantityInput" name="stockQuantityInput" value="{{ $product -> quantity }}" placeholder="{{ $product -> quantity }}" readonly>
                         </div>
                       </div>
                     </div>

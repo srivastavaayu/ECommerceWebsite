@@ -24,12 +24,12 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
       return [
-        'FullNameInput' => ['sometimes', 'required', 'regex:/[A-Za-z0-9 ]+/u', 'min: 2', 'max: 255'],
-        'EmailInput' => ['sometimes', 'required', 'regex:/\S+@\S+\.\S+/u', 'unique:users,email', 'min: 3', 'max: 255'],
-        'PhoneNumberInput' => ['sometimes', 'required', 'regex:/^[0-9]{10}$/u', 'unique:users,phone_number', 'size: 10'],
-        'UsernameInput' => ['sometimes', 'required', 'regex:/[A-Za-z0-9]+/u', 'unique:users,username', 'min: 1', 'max: 255'],
-        'PasswordInput' => ['sometimes', 'required', 'regex:/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$/u', 'min: 1', 'max: 255'],
-        'ReenterPasswordInput' => ['sometimes', 'required', 'regex:/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$/u', 'same:PasswordInput', 'min: 1', 'max: 255'],
+        'fullNameInput' => ['sometimes', 'required', 'regex:/[A-Za-z0-9 ]+/u', 'min: 2', 'max: 255'],
+        'emailInput' => ['sometimes', 'required', 'regex:/\S+@\S+\.\S+/u', 'unique:users,email', 'min: 3', 'max: 255'],
+        'phoneNumberInput' => ['sometimes', 'required', 'regex:/^[0-9]{10}$/u', 'unique:users,phone_number', 'size: 10'],
+        'usernameInput' => ['sometimes', 'required', 'regex:/[A-Za-z0-9]+/u', 'unique:users,username', 'min: 1', 'max: 255'],
+        'passwordInput' => ['sometimes', 'required', 'regex:/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$/u', 'min: 1', 'max: 255'],
+        'reenterPasswordInput' => ['sometimes', 'required', 'regex:/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$/u', 'same:PasswordInput', 'min: 1', 'max: 255'],
       ];
     }
 }

@@ -15,22 +15,22 @@ class Order extends Model {
 
   public static function addOrder($data) {
     if (empty($data)) {
-      throw new Exception("Order cannot be created!");
+      return null;
     }
     foreach ($data as $attr => $val) {
       if (!in_array($attr, (new self) -> fillable)) {
-        throw new Exception("Order cannot be created!");
+        return null;
       }
     }
     return self::create($data);
   }
 
-  public static function getOrders($where = null, $groupBy = null, $having = null, $orderBy = null) {
+  public static function getOrders($where = null, $groupBy = null, $having = null, $orderBy = null, $paginateRequired = false, $paginateItems = 3) {
     $orders = new self;
     if ($where != null) {
       foreach ($where as $eachWhere) {
         if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          throw new Exception();
+          return null;
         }
       }
       $orders = $orders -> where($where);
@@ -38,7 +38,7 @@ class Order extends Model {
     if ($groupBy != null) {
       foreach ($groupBy as $eachGroupBy) {
         if (!in_array($eachGroupBy[0], (new self) -> allAttributes)) {
-          throw new Exception();
+          return null;
         }
       }
       $orders = $orders -> groupBy($groupBy);
@@ -46,18 +46,23 @@ class Order extends Model {
     if ($having != null) {
       foreach ($having as $eachHaving) {
         if (!in_array($eachHaving[0], (new self) -> allAttributes)) {
-          throw new Exception();
+          return null;
         }
       }
       $orders = $orders -> having($having);
     }
     if ($orderBy != null) {
       if (!in_array($orderBy[0], (new self) -> allAttributes)) {
-        throw new Exception();
+        return null;
       }
       $orders = $orders -> orderBy($orderBy[0], $orderBy[1]);
     }
-    return $orders;
+    if ($paginateRequired) {
+      return $orders -> simplePaginate($paginateItems);
+    }
+    else {
+      return $orders -> get();
+    }
   }
 
   public static function getOrder($where = null)
@@ -71,8 +76,10 @@ class Order extends Model {
       }
       $order = $order -> where($where);
     }
-    $order = $order -> first();
-    return $order;
+    if (empty($order)) {
+      return null;
+    }
+    return $order -> first();
   }
 
 }

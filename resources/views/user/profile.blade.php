@@ -31,22 +31,23 @@
         <button type="button" class="btn btn-primary ms-2" onclick="editProfile()">Edit Profile</button>
       </div>
       <form method="POST" action="/user/profile">
+        {{ method_field('PATCH') }}
         {{ csrf_field() }}
         <div class="mb-3">
-          <label class="form-label" for="FullNameInput">Full Name</label>
-          <input type="text" class="form-control" id="FullNameInput" name="FullNameInput" placeholder="{{ $name }}" value="{{ old('FullNameInput') }}" pattern="[A-Za-z0-9 ]+" readonly>
+          <label class="form-label" for="fullNameInput">Full Name</label>
+          <input type="text" class="form-control" id="fullNameInput" name="fullNameInput" placeholder="{{ $name }}" value="{{ old('fullNameInput') }}" pattern="[A-Za-z0-9 ]+" readonly>
         </div>
         <div class="mb-3">
-          <label class="form-label" for="EmailInput">Email Address</label>
-          <input type="email" class="form-control" id="EmailInput" name="EmailInput" placeholder="{{ $email }}" value="{{ old('EmailInput') }}" pattern="\S+@\S+\.\S+" readonly>
+          <label class="form-label" for="emailInput">Email Address</label>
+          <input type="email" class="form-control" id="emailInput" name="emailInput" placeholder="{{ $email }}" value="{{ old('emailInput') }}" pattern="\S+@\S+\.\S+" readonly>
         </div>
         <div class="mb-3">
-          <label class="form-label" for="PhoneNumberInput">Phone Number</label>
-          <input type="text" class="form-control" id="PhoneNumberInput" name="PhoneNumberInput" placeholder="{{ $phoneNumber }}" value="{{ old('PhoneNumberInput') }}" pattern="^[0-9]{10}$" readonly>
+          <label class="form-label" for="phoneNumberInput">Phone Number</label>
+          <input type="text" class="form-control" id="phoneNumberInput" name="phoneNumberInput" placeholder="{{ $phoneNumber }}" value="{{ old('phoneNumberInput') }}" pattern="^[0-9]{10}$" readonly>
         </div>
         <div class="mb-3">
-          <label class="form-label" for="UsernameInput">Username</label>
-          <input type="text" class="form-control" id="UsernameInput" name="UsernameInput" placeholder="{{ $username }}" value="{{ old('UsernameInput') }}" pattern="[A-Za-z0-9]+" readonly>
+          <label class="form-label" for="usernameInput">Username</label>
+          <input type="text" class="form-control" id="usernameInput" name="usernameInput" placeholder="{{ $username }}" value="{{ old('usernameInput') }}" pattern="[A-Za-z0-9]+" readonly>
         </div>
         <div id="editProfileButtons" class="justify-content-end">
           <button type="button" class="btn btn-danger" onclick="editProfile()">Cancel</button>

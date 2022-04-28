@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 
@@ -21,20 +22,23 @@ class AuthController extends Controller
 
   public function storeRegister(RegisterRequest $request)
   {
+    DB::beginTransaction();
     try
     {
       User::addUser(
         [
-          'name' => $request -> FullNameInput,
-          'email' => $request -> EmailInput,
-          'phone_number' => $request -> PhoneNumberInput,
-          'username' => $request -> UsernameInput,
-          'password' => Hash::make($request -> PasswordInput)
+          'name' => $request -> fullNameInput,
+          'email' => $request -> emailInput,
+          'phone_number' => $request -> phoneNumberInput,
+          'username' => $request -> usernameInput,
+          'password' => Hash::make($request -> passwordInput)
         ]
       );
+      DB::commit();
     }
     catch(Exception $e)
     {
+      DB::rollback();
       return view('404');
     }
     return redirect('/login');
@@ -49,15 +53,15 @@ class AuthController extends Controller
   {
     try
     {
-      $users = User::getUser([['username', $request -> UsernameInput]]);
+      $users = User::getUser([['username', $request -> usernameInput]]);
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
     if ($users != null)
     {
-      if (Hash::check($request -> PasswordInput, $users -> password))
+      if (Hash::check($request -> passwordInput, $users -> password))
       {
         Auth::loginUsingId($users -> id);
         return redirect('/');

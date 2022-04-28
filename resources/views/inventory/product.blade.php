@@ -68,10 +68,11 @@
         </form>
       </div>
       <form method="POST" enctype="multipart/form-data" action="/inventory/product/{{ $product -> id }}">
+        {{ method_field('PUT') }}
         {{ csrf_field() }}
-        <label class="form-label" for="CategoryInput">Category*</label>
+        <label class="form-label" for="categoryInput">Category*</label>
         <div class="input-group mb-3">
-          <select class="form-select" id="CategoryInput" name="CategoryInput" placeholder="{{ $product -> category_id }}" value="{{ old('CategoryInput') }}">
+          <select class="form-select" id="categoryInput" name="categoryInput" placeholder="{{ $product -> category_id }}" value="{{ old('categoryInput') }}">
             <option value="" disabled>Please select an option</option>
             @if (isset($categories))
               @foreach ($categories as $category)
@@ -88,36 +89,36 @@
           </button>
         </div>
         <div class="mb-3">
-          <label class="form-label" for="SKUInput">Stock Keeping Unit (SKU)*</label>
-          <input type="text" class="form-control" id="SKUInput" name="SKUInput" placeholder="{{ $product -> sku }}" value="{{ old('SKUInput') }}">
+          <label class="form-label" for="skuInput">Stock Keeping Unit (SKU)*</label>
+          <input type="text" class="form-control" id="skuInput" name="skuInput" placeholder="{{ $product -> sku }}" value="{{ old('skuInput') }}">
         </div>
         <div class="mb-3">
-          <label class="form-label" for="ProductNameInput">Product Name*</label>
-          <input type="text" class="form-control" id="ProductNameInput" name="ProductNameInput" placeholder="{{ $product -> name }}" value="{{ old('ProductNameInput') }}">
+          <label class="form-label" for="productNameInput">Product Name*</label>
+          <input type="text" class="form-control" id="productNameInput" name="productNameInput" placeholder="{{ $product -> name }}" value="{{ old('productNameInput') }}">
         </div>
         <div class="mb-3">
-          <label class="form-label" for="ProductDescriptionInput">Product Description*</label>
-          <textarea class="form-control" id="ProductDescriptionInput" name="ProductDescriptionInput" placeholder="{{ $product -> description }}" style="height: 50vh">{{ old('ProductDescriptionInput') }}</textarea>
+          <label class="form-label" for="productDescriptionInput">Product Description*</label>
+          <textarea class="form-control" id="productDescriptionInput" name="productDescriptionInput" placeholder="{{ $product -> description }}" style="height: 50vh">{{ old('productDescriptionInput') }}</textarea>
         </div>
         <label class="form-label">Current Product Images</label>
         @if (!is_null($product -> image_path) && ($product -> image_path != ""))
           <div class="productImageContainer mb-3"><img src="{{ asset(Storage::url($product -> image_path)) }}" style="object-fit: contain; height: 100%;"/></div>
         @endif
         <div class="mt-3 mb-3">
-          <label for="ProductImageInput" class="form-label">Product Image</label>
-          <input type="file" class="form-control" id="ProductImageInput" name="ProductImageInput">
+          <label for="productImageInput" class="form-label">Product Image</label>
+          <input type="file" class="form-control" id="productImageInput" name="productImageInput">
         </div>
         <div class="mb-3">
-          <label class="form-label" for="PriceInput">Price per unit*</label>
-          <input type="number" class="form-control" id="PriceInput" name="PriceInput" placeholder="{{ $product -> price }}" value="{{ old('PriceInput') }}" pattern="[0-9]+" min="1">
+          <label class="form-label" for="priceInput">Price per unit*</label>
+          <input type="number" class="form-control" id="priceInput" name="priceInput" placeholder="{{ $product -> price }}" value="{{ old('priceInput') }}" pattern="[0-9]+" min="1">
         </div>
         <div class="mb-3">
-          <label class="form-label" for="UnitInput">Item Unit*</label>
-          <input type="text" class="form-control" id="UnitInput" name="UnitInput" placeholder="{{ $product -> unit }}" value="{{ old('UnitInput') }}">
+          <label class="form-label" for="unitInput">Item Unit*</label>
+          <input type="text" class="form-control" id="unitInput" name="unitInput" placeholder="{{ $product -> unit }}" value="{{ old('unitInput') }}">
         </div>
         <div class="mb-3">
-          <label class="form-label" for="StockQuantityInput">Stock Quantity*</label>
-          <input type="number" class="form-control" id="StockQuantityInput" name="StockQuantityInput" placeholder="{{ $product -> quantity }}" value="{{ old('StockQuantityInput') }}" min="1">
+          <label class="form-label" for="stockQuantityInput">Stock Quantity*</label>
+          <input type="number" class="form-control" id="stockQuantityInput" name="stockQuantityInput" placeholder="{{ $product -> quantity }}" value="{{ old('stockQuantityInput') }}" min="1">
         </div>
         <div class="d-flex justify-content-end">
           <a href="/inventory/product"><button type="button" class="btn btn-danger">Cancel</button></a>

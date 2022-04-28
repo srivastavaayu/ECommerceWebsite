@@ -27,19 +27,20 @@
       @endif
 
       <form method="POST" action="/user/update-password">
+        {{ method_field('PATCH') }}
         {{ csrf_field() }}
         <div class="mb-3 mt-3">
-          <label class="form-label" for="CurrentPasswordInput">Current Password*</label>
-          <input type="password" class="form-control" id="CurrentPasswordInput" name="CurrentPasswordInput" placeholder="Current Password" pattern="^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$" required>
+          <label class="form-label" for="currentPasswordInput">Current Password*</label>
+          <input type="password" class="form-control" id="currentPasswordInput" name="currentPasswordInput" placeholder="Current Password" pattern="^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$" required>
         </div>
         <small class="px-4">Note: The password must contain atleast 8 and atmost 20 characters including an uppercase character, a lowercase character, a digit and a special symbol.</small>
         <div class="mb-3 mt-3">
-          <label class="form-label" for="PasswordInput">New Password*</label>
-          <input type="password" class="form-control" id="PasswordInput" name="PasswordInput" placeholder="New Password" pattern="^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$" required>
+          <label class="form-label" for="passwordInput">New Password*</label>
+          <input type="password" class="form-control" id="passwordInput" name="passwordInput" placeholder="New Password" pattern="^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,20}$" required>
         </div>
         <div class="mb-3">
-          <label class="form-label" for="ReenterPasswordInput">Re-enter New Password*</label>
-          <input type="password" class="form-control" id="ReenterPasswordInput" name="ReenterPasswordInput" placeholder="Re-enter New Password" required>
+          <label class="form-label" for="reenterPasswordInput">Re-enter New Password*</label>
+          <input type="password" class="form-control" id="reenterPasswordInput" name="reenterPasswordInput" placeholder="Re-enter New Password" required>
         </div>
         <br />
         <div class="d-flex justify-content-end">

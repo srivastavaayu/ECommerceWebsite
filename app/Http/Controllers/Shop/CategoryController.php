@@ -19,7 +19,7 @@ class CategoryController extends Controller
   {
     try
     {
-      $categories = Category::getCategories() -> simplePaginate(2);
+      $categories = Category::getCategories(null, null, null, null, true, 2);
     }
     catch(Exception $e)
     {
@@ -30,6 +30,9 @@ class CategoryController extends Controller
 
   public function showCategory(Request $request, $id)
   {
+    if (!is_numeric($id)) {
+      return view('404');
+    }
     if ($request -> has('sort'))
     {
       switch ($request -> sort)
@@ -73,12 +76,14 @@ class CategoryController extends Controller
         [['is_archived', 0], ['category_id', $id], ['user_id', '!=', Auth::id()]],
         null,
         null,
-        [$this -> sortField, $this -> sortDirection]
-      ) -> simplePaginate(3);
+        [$this -> sortField, $this -> sortDirection],
+        true,
+        3
+      );
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
     return view('shop/category',
       [

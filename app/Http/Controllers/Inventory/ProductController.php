@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-use App\Http\Requests\NewProductRequest;
+use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
@@ -32,25 +32,25 @@ class ProductController extends Controller
         null,
         null,
         ['updated_at', $this -> sortBehavior]
-      ) -> get();
+      );
       $activeProducts = Product::getProducts(
         [['user_id', Auth::id()], ['is_archived', 0]],
         null,
         null,
         ['updated_at', $this -> sortBehavior]
-      ) -> get();
+      );
       $archivedProducts = Product::getProducts(
         [['user_id', Auth::id()],
         ['is_archived', 1]],
         null,
         null,
         ['updated_at', $this -> sortBehavior]
-      ) -> get();
-      $categories = Category::getCategories() -> get();
+      );
+      $categories = Category::getCategories();
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
     return view('inventory/products',
       [
@@ -81,20 +81,25 @@ class ProductController extends Controller
       try
       {
         $product = Product::getProduct([['id', $request -> productId]]);
+        if (empty($product)) {
+          return view('404');
+        }
       }
       catch(Exception $e)
       {
-        return view('404');
+        return view('500');
       }
       if ($product -> is_archived)
       {
-        Product::setProduct([['id', $request -> productId]], ['is_archived' => 0]);
-        $info = "Product unarchived successfully!";
+        $setProductStatus = Product::setProduct([['id', $request -> productId]], ['is_archived' => 0]);
+        if ($setProductStatus)
+          $info = "Product unarchived successfully!";
       }
       else
       {
-        Product::setProduct([['id', $request -> productId]], ['is_archived' => 1]);
-        $info = "Product archived successfully!";
+        $setProductStatus = Product::setProduct([['id', $request -> productId]], ['is_archived' => 1]);
+        if ($setProductStatus)
+          $info = "Product archived successfully!";
       }
     }
     try
@@ -104,25 +109,25 @@ class ProductController extends Controller
         null,
         null,
         ['updated_at', $this -> sortBehavior]
-      ) -> get();
+      );
       $activeProducts = Product::getProducts(
         [['user_id', Auth::id()], ['is_archived', 0]],
         null,
         null,
         ['updated_at', $this -> sortBehavior]
-      ) -> get();
+      );
       $archivedProducts = Product::getProducts(
         [['user_id', Auth::id()],
         ['is_archived', 1]],
         null,
         null,
         ['updated_at', $this -> sortBehavior]
-      ) -> get();
-      $categories = Category::getCategories() -> get();
+      );
+      $categories = Category::getCategories();
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
     return view('inventory/products',
       [
@@ -139,84 +144,97 @@ class ProductController extends Controller
 
   public function showProduct(Request $request, $id)
   {
+    if (!is_numeric($id)) {
+      return view('404');
+    }
     $info = "";
     try
     {
       $product = Product::getProduct([['id', $id]]);
-      $categories = Category::getCategories() -> get();
+      $categories = Category::getCategories();
+      if (empty($product) || ($product -> user_id != Auth::id()) || empty($categories)) {
+        return view('404');
+      }
     }
     catch(Exception $e)
     {
-      return view('404');
-    }
-    if (empty($product)) {
-      return redirect('/inventory/product/new-product');
+      return view('500');
     }
     return view('inventory/product', ['product' => $product, 'categories' => $categories, 'info' => $info]);
   }
 
-  public function storeProduct(Request $request, $id)
+  public function storeProduct(ProductRequest $request, $id)
   {
+    if (!is_numeric($id)) {
+      return view('404');
+    }
     $info = "";
     try
     {
       $product = Product::getProduct([['id', $id]]);
+      if (empty($product) || ($product -> user_id != Auth::id())) {
+        return view('404');
+      }
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
     $data = [];
-    if (($request -> ProductNameInput) != ($product -> name) && (!is_null($request -> ProductNameInput)))
+    if ((!is_null($request -> productNameInput)) && ($request -> productNameInput) != ($product -> name))
     {
-      $data['name'] = $request -> ProductNameInput;
+      $data['name'] = $request -> productNameInput;
     }
-    if (($request -> ProductDescriptionInput) != ($product -> description) && (!is_null($request -> ProductDescriptionInput)))
+    if ((!is_null($request -> productDescriptionInput)) && ($request -> productDescriptionInput) != ($product -> description))
     {
-      $data['description'] = $request -> ProductDescriptionInput;
+      $data['description'] = $request -> productDescriptionInput;
 
     }
-    if (($request -> SKUInput) != ($product -> sku) && (!is_null($request -> SKUInput)))
+    if ((!is_null($request -> skuInput)) && ($request -> skuInput) != ($product -> sku))
     {
-      $data['sku'] = $request -> SKUInput;
+      $data['sku'] = $request -> skuInput;
 
     }
-    if (($request -> CategoryInput) != ($product -> category_id) && (!is_null($request -> CategoryInput)))
+    if ((!is_null($request -> categoryInput)) && ($request -> categoryInput) != ($product -> category_id))
     {
-      $data['category_id'] = $request -> CategoryInput;
+      $data['category_id'] = $request -> categoryInput;
 
     }
-    if ($request -> hasFile('ProductImageInput'))
+    if ($request -> hasFile('productImageInput'))
     {
-      $productImageInputPath = Storage::putFile('public', $request -> ProductImageInput);
+      $productImageInputPath = Storage::putFile('public', $request -> productImageInput);
       $product -> image_path = $productImageInputPath;
       $data['image_path'] = $productImageInputPath;
     }
-    if (($request -> PriceInput) != ($product -> price) && (!is_null($request -> PriceInput)))
+    if ((!is_null($request -> priceInput)) && ($request -> priceInput) != ($product -> price))
     {
-      $data['price'] = $request -> PriceInput;
+      $data['price'] = $request -> priceInput;
     }
-    if (($request -> UnitInput) != ($product -> unit) && (!is_null($request -> UnitInput)))
+    if ((!is_null($request -> unitInput)) && ($request -> unitInput) != ($product -> unit))
     {
-      $data['unit'] = $request -> UnitInput;
+      $data['unit'] = $request -> unitInput;
     }
-    if (($request -> StockQuantityInput) != ($product -> quantity) && (!is_null($request -> StockQuantityInput)))
+    if ((!is_null($request -> stockQuantityInput)) && ($request -> stockQuantityInput) != ($product -> quantity))
     {
-      $data['quantity'] = $request -> StockQuantityInput;
+      $data['quantity'] = $request -> stockQuantityInput;
     }
     if (count($data) > 0)
     {
-      Product::setProduct([['id', $id]], $data);
-      $info = "Product updated successfully!";
+      $setProductStatus = Product::setProduct([['id', $id]], $data);
+      if ($setProductStatus)
+        $info = "Product updated successfully!";
     }
     try
     {
       $product = Product::getProduct([['id', $id]]);
-      $categories = Category::getCategories() -> get();
+      $categories = Category::getCategories();
+      if (empty($product) || empty($categories)) {
+        return view('404');
+      }
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
     return view('inventory/product', ['product' => $product, 'categories' => $categories, 'info' => $info]);
   }
@@ -225,16 +243,16 @@ class ProductController extends Controller
   {
     try
     {
-      $categories = Category::getCategories() -> get();
+      $categories = Category::getCategories();
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
     return view('inventory/new-product', ['categories' => $categories]);
   }
 
-  public function storeAddNewProduct(NewProductRequest $request)
+  public function storeAddNewProduct(ProductRequest $request)
   {
     if ($request -> action == "AddNewCategory")
     {
@@ -246,40 +264,46 @@ class ProductController extends Controller
             'description' => $request -> CategoryDescriptionInput
           ]
         );
+        if (empty($category)) {
+          return view('404');
+        }
       }
       catch(Exception $e)
       {
-        return view('404');
+        return view('500');
       }
       return redirect('/inventory/product/new-product');
     }
     else {
-      if ($request -> hasFile('ProductImageInput'))
+      if ($request -> hasFile('productImageInput'))
       {
-        $productImageInputPath = Storage::putFile('public', $request -> ProductImageInput);
+        $productImageInputPath = Storage::putFile('public', $request -> productImageInput);
       }
       try
       {
         $product = Product::addProduct(
           [
             'user_id' => Auth::id(),
-            'category_id' => $request -> CategoryInput,
-            'sku' => $request -> SKUInput,
-            'name' => $request -> ProductNameInput,
-            'description' => $request -> ProductDescriptionInput,
+            'category_id' => $request -> categoryInput,
+            'sku' => $request -> skuInput,
+            'name' => $request -> productNameInput,
+            'description' => $request -> productDescriptionInput,
             'image_path' => $productImageInputPath,
-            'price' => $request -> PriceInput,
-            'unit' => $request -> UnitInput,
-            'quantity' => $request -> StockQuantityInput,
+            'price' => $request -> priceInput,
+            'unit' => $request -> unitInput,
+            'quantity' => $request -> stockQuantityInput,
             'units_sold' => 0,
             'is_archived' => 0,
             'rating' => 0
           ]
         );
+        if (empty($product)) {
+          return view('404');
+        }
       }
       catch(Exception $e)
       {
-        return view('404');
+        return view('500');
       }
       return redirect('/inventory/product');
     }

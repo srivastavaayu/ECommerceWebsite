@@ -26,8 +26,8 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-          'FullNameInput' => ['sometimes', 'nullable', 'regex:/[A-Za-z0-9 ]+/u', 'min: 2', 'max: 255'],
-          'EmailInput' =>
+          'fullNameInput' => ['sometimes', 'nullable', 'regex:/[A-Za-z0-9 ]+/u', 'min: 2', 'max: 255'],
+          'emailInput' =>
             [
               'sometimes',
               'nullable', 'regex:/\S+@\S+\.\S+/u',
@@ -35,14 +35,14 @@ class ProfileRequest extends FormRequest
               'min: 3',
               'max: 255'
             ],
-          'PhoneNumberInput' =>
+          'phoneNumberInput' =>
             [
               'sometimes',
               'nullable', 'regex:/^[0-9]{10}$/u',
               Rule::unique('users', 'phone_number')->ignore(Auth::id()),
               'size: 10'
             ],
-          'UsernameInput' =>
+          'usernameInput' =>
             [
               'sometimes',
               'nullable', 'regex:/[A-Za-z0-9]+/u',

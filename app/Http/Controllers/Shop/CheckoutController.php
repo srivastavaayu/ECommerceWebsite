@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\CheckoutRequest;
 
 class CheckoutController extends Controller
@@ -21,11 +22,11 @@ class CheckoutController extends Controller
   {
     try
     {
-      $cart = Cart::getCarts([['user_id', Auth::id()]]) -> get();
+      $cart = Cart::getCarts([['user_id', Auth::id()]]);
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
     $activeProducts = [];
     $inactiveProducts = [];
@@ -64,13 +65,16 @@ class CheckoutController extends Controller
     $user = Auth::user();
     try
     {
-      $cart = Cart::getCarts([['user_id', Auth::id()]]) -> get();
+      $cart = Cart::getCarts([['user_id', Auth::id()]]);
+      if (empty($cart)) {
+        return view('404');
+      }
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
-    $products = [];
+    $checkoutProducts = [];
     $cartTotal = 0;
     foreach ($cart as $cartItem)
     {
@@ -98,18 +102,17 @@ class CheckoutController extends Controller
     );
   }
 
-  public function storeCheckout(CheckoutRequest $request)
-  {
+  public function storeCheckout(CheckoutRequest $request) {
     $user = Auth::user();
-    try
-    {
-      $cart = Cart::getCarts([['user_id', Auth::id()]]) -> get();
+    try {
+      $cart = Cart::getCarts([['user_id', Auth::id()]]);
+      if (empty($cart)) {
+        return view('404');
+      }
     }
-    catch(Exception $e)
-    {
-      return view('404');
+    catch(Exception $e) {
+      return view('500');
     }
-    echo $cart;
     $cartTotal = 0;
     foreach ($cart as $cartItem)
     {
@@ -126,7 +129,7 @@ class CheckoutController extends Controller
         $cartTotal += (($product -> price) * $cartItem -> quantity);
       }
     }
-
+    // DB::beginTransaction();
     $order = Order::addOrder(
       [
         'user_id' => Auth::id(),

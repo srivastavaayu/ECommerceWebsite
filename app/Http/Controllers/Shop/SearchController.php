@@ -16,8 +16,8 @@ class SearchController extends Controller
     $searchTerm = "";
     try
     {
-      $products = Product::getProducts([['user_id', '!=', Auth::id()]]) -> get();
-      $categories = Category::getCategories() -> get();
+      $products = Product::getProducts([['user_id', '!=', Auth::id()]]);
+      $categories = Category::getCategories();
     }
     catch(Exception $e)
     {
@@ -30,10 +30,10 @@ class SearchController extends Controller
       {
         $products = Product::getProducts(
           [['name', 'LIKE', '%'.$searchTerm.'%'], ['user_id', '!=', Auth::id()]]
-        ) -> get();
+        );
         $categories = Category::getCategories(
           [['name', 'LIKE', '%'.$searchTerm.'%']]
-        ) -> get();
+        );
       }
       catch(Exception $e)
       {

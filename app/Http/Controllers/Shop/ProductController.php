@@ -55,12 +55,14 @@ class ProductController extends Controller
         [['is_archived', 0], ['user_id', '!=', Auth::id()]],
         null,
         null,
-        [$this -> sortField, $this -> sortDirection]
-      ) -> simplePaginate(3);
+        [$this -> sortField, $this -> sortDirection],
+        true,
+        3
+      );
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
       return view('shop/products',
       [
@@ -72,15 +74,13 @@ class ProductController extends Controller
 
   public function showProduct($id)
   {
+    if (!is_numeric($id)) {
+      return view('404');
+    }
     try
     {
       $product = Product::getProduct([['id', $id]]);
-      if (empty($product)) {
-        $resource = "Product";
-        $resourceSmall = "product";
-        return view('custom404', ['resource' => $resource, 'resourceSmall' => $resourceSmall]);
-      }
-      if ($product -> user_id == Auth::id()) {
+      if (empty($product) || $product -> user_id == Auth::id()) {
         $resource = "Product";
         $resourceSmall = "product";
         return view('custom404', ['resource' => $resource, 'resourceSmall' => $resourceSmall]);
@@ -90,7 +90,7 @@ class ProductController extends Controller
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
     return view('shop/product',
       [
@@ -103,6 +103,9 @@ class ProductController extends Controller
 
   public function addToCart($id)
   {
+    if (!is_numeric($id)) {
+      return view('404');
+    }
     try
     {
       Cart::addCart(
@@ -115,26 +118,32 @@ class ProductController extends Controller
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
     return redirect('/shop/product/'.$id);
   }
 
   public function removeFromCart($id)
   {
+    if (!is_numeric($id)) {
+      return view('404');
+    }
     try
     {
-      Cart::removeCart([['product_id', $id], ['user_id', Auth::id()]]);
+      Cart::removeCart([['product_id', (int)$id], ['user_id', Auth::id()]]);
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
     return redirect('/shop/product/'.$id);
   }
 
   public function setCartQuantity(Request $request, $id)
   {
+    if (!is_numeric($id)) {
+      return view('404');
+    }
     try
     {
       $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
@@ -142,7 +151,7 @@ class ProductController extends Controller
     }
     catch(Exception $e)
     {
-      return view('404');
+      return view('500');
     }
     if ($request -> quantity > $product -> quantity)
     {
@@ -169,6 +178,9 @@ class ProductController extends Controller
 
   public function increaseCartQuantity($id)
   {
+    if (!is_numeric($id)) {
+      return view('404');
+    }
     try
     {
       $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
@@ -186,6 +198,9 @@ class ProductController extends Controller
 
   public function decreaseCartQuantity($id)
   {
+    if (!is_numeric($id)) {
+      return view('404');
+    }
     try
     {
       $cart = Cart::getCart([['product_id', $id], ['user_id', Auth::id()]]);
@@ -203,6 +218,9 @@ class ProductController extends Controller
 
   public function setRating(Request $request, $id)
   {
+    if (!is_numeric($id)) {
+      return view('404');
+    }
     Product::setProduct([['id', $id]], ['rating' => $request -> rating]);
     return redirect('/shop/product/'.$id);
   }
