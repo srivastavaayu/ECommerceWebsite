@@ -156,7 +156,7 @@ class CheckoutController extends Controller
         }
       }
     }
-    // DB::beginTransaction();
+    DB::beginTransaction();
     $order = Order::addOrder(
       [
         'user_id' => Auth::id(),
@@ -170,19 +170,19 @@ class CheckoutController extends Controller
       ]
     );
     if (empty($order)) {
-      // DB::rollback();
+      DB::rollback();
       return view('500');
     }
     foreach ($cart as $cartItem) {
       try {
         $product = Product::getProduct([['id', $cartItem -> product_id]]);
         if (empty($product)) {
-          // DB::rollback();
+          DB::rollback();
           return view('404');
         }
       }
       catch(Exception $e) {
-        // DB::rollback();
+        DB::rollback();
         return view('500');
       }
       if ($product -> is_archived == 0) {
@@ -194,6 +194,10 @@ class CheckoutController extends Controller
             'quantity' => $cartItem -> quantity
           ]
         );
+        if (empty($orderDetail)) {
+          DB::rollback();
+          return view('404');
+        }
         $product = Product::setProduct(
           [['id', $cartItem -> product_id]],
           [
@@ -201,8 +205,12 @@ class CheckoutController extends Controller
             'units_sold' => (($product -> units_sold) + ($cartItem -> quantity))
           ]
         );
+        if (empty($product)) {
+          DB::rollback();
+          return view('404');
+        }
         $cart = Cart::removeCart([['id', $cartItem -> id]]);
-        // DB::commit();
+        DB::commit();
       }
     }
 
