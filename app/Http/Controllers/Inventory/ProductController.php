@@ -28,22 +28,21 @@ class ProductController extends Controller
     try
     {
       $allProducts = Product::getProducts(
-        [['user_id', Auth::id()]],
+        Auth::id(),
         null,
         null,
         ['updated_at', $this -> sortBehavior]
       );
       $activeProducts = Product::getProducts(
-        [['user_id', Auth::id()], ['is_archived', 0]],
+        Auth::id(),
         null,
-        null,
+        0,
         ['updated_at', $this -> sortBehavior]
       );
       $archivedProducts = Product::getProducts(
-        [['user_id', Auth::id()],
-        ['is_archived', 1]],
+        Auth::id(),
         null,
-        null,
+        1,
         ['updated_at', $this -> sortBehavior]
       );
       $categories = Category::getCategories();
@@ -80,7 +79,7 @@ class ProductController extends Controller
     {
       try
       {
-        $product = Product::getProduct([['id', $request -> productId]]);
+        $product = Product::getProduct($request -> productId);
         if (empty($product)) {
           return view('404');
         }
@@ -91,13 +90,13 @@ class ProductController extends Controller
       }
       if ($product -> is_archived)
       {
-        $setProductStatus = Product::setProduct([['id', $request -> productId]], ['is_archived' => 0]);
+        $setProductStatus = Product::setProduct($request -> productId, ['is_archived' => 0]);
         if ($setProductStatus)
           $info = "Product unarchived successfully!";
       }
       else
       {
-        $setProductStatus = Product::setProduct([['id', $request -> productId]], ['is_archived' => 1]);
+        $setProductStatus = Product::setProduct($request -> productId, ['is_archived' => 1]);
         if ($setProductStatus)
           $info = "Product archived successfully!";
       }
@@ -105,22 +104,21 @@ class ProductController extends Controller
     try
     {
       $allProducts = Product::getProducts(
-        [['user_id', Auth::id()]],
+        Auth::id(),
         null,
         null,
         ['updated_at', $this -> sortBehavior]
       );
       $activeProducts = Product::getProducts(
-        [['user_id', Auth::id()], ['is_archived', 0]],
+        Auth::id(),
         null,
-        null,
+        0,
         ['updated_at', $this -> sortBehavior]
       );
       $archivedProducts = Product::getProducts(
-        [['user_id', Auth::id()],
-        ['is_archived', 1]],
+        Auth::id(),
         null,
-        null,
+        1,
         ['updated_at', $this -> sortBehavior]
       );
       $categories = Category::getCategories();
@@ -144,13 +142,22 @@ class ProductController extends Controller
 
   public function showProduct(Request $request, $id)
   {
-    if (!is_numeric($id)) {
-      return view('404');
+    $urlParameters = [
+      'id' => $id,
+    ];
+    $validator = Validator::make($urlParameters, [
+      'id' => ['required', 'numeric', 'integer']
+    ]);
+    // if (!is_numeric($id)) {
+    //   return view('404');
+    // }
+    if ($validator->fails()) {
+      return view('422');
     }
     $info = "";
     try
     {
-      $product = Product::getProduct([['id', $id]]);
+      $product = Product::getProduct($id);
       $categories = Category::getCategories();
       if (empty($product) || ($product -> user_id != Auth::id()) || empty($categories)) {
         return view('404');
@@ -165,13 +172,22 @@ class ProductController extends Controller
 
   public function storeProduct(ProductRequest $request, $id)
   {
-    if (!is_numeric($id)) {
-      return view('404');
+    $urlParameters = [
+      'id' => $id,
+    ];
+    $validator = Validator::make($urlParameters, [
+      'id' => ['required', 'numeric', 'integer']
+    ]);
+    // if (!is_numeric($id)) {
+    //   return view('404');
+    // }
+    if ($validator->fails()) {
+      return view('422');
     }
     $info = "";
     try
     {
-      $product = Product::getProduct([['id', $id]]);
+      $product = Product::getProduct($id);
       if (empty($product) || ($product -> user_id != Auth::id())) {
         return view('404');
       }
@@ -220,13 +236,13 @@ class ProductController extends Controller
     }
     if (count($data) > 0)
     {
-      $setProductStatus = Product::setProduct([['id', $id]], $data);
+      $setProductStatus = Product::setProduct($id, $data);
       if ($setProductStatus)
         $info = "Product updated successfully!";
     }
     try
     {
-      $product = Product::getProduct([['id', $id]]);
+      $product = Product::getProduct($id);
       $categories = Category::getCategories();
       if (empty($product) || empty($categories)) {
         return view('404');

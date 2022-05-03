@@ -53,7 +53,7 @@ class AuthController extends Controller
   {
     try
     {
-      $users = User::getUser([['username', $request -> usernameInput]]);
+      $users = User::getUserByUsername($request -> usernameInput);
     }
     catch(Exception $e)
     {

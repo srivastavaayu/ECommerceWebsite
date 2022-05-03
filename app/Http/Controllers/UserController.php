@@ -35,7 +35,7 @@ class UserController extends Controller
     $data = [];
     try
     {
-      $user = User::getUser([['id', Auth::id()]]);
+      $user = User::getUserByID(Auth::id());
     }
     catch(Exception $e)
     {
@@ -61,7 +61,7 @@ class UserController extends Controller
     {
       try
       {
-        User::setUser([['id', Auth::id()]], $data);
+        User::setUser(Auth::id(), $data);
       }
       catch(Exception $e)
       {
@@ -70,7 +70,7 @@ class UserController extends Controller
     }
     try
     {
-      $user = User::getUser([['id', Auth::id()]]);
+      $user = User::getUserByID(Auth::id());
     }
     catch(Exception $e)
     {
@@ -95,8 +95,8 @@ class UserController extends Controller
     {
       try
       {
-        $order = Order::getOrder([['id', $request -> orderId]]);
-        $orderDetail = OrderDetail::getOrderDetails([['order_id', $order -> id]]);
+        $order = Order::getOrder($request -> orderId);
+        $orderDetail = OrderDetail::getOrderDetails($order -> id);
       }
       catch(Exception $e)
       {
@@ -107,7 +107,7 @@ class UserController extends Controller
       {
         try
         {
-          $product = Product::getProduct([['id', $orderItem -> item_id]]);
+          $product = Product::getProduct($orderItem -> item_id);
         }
         catch(Exception $e)
         {
@@ -127,7 +127,7 @@ class UserController extends Controller
     try
     {
       $orders = Order::getOrders(
-        [['user_id', Auth::id()]],
+        Auth::id(),
         null,
         null,
         ['updated_at', 'DESC']
@@ -149,7 +149,7 @@ class UserController extends Controller
   {
     try
     {
-      $user = User::getUser([['id', Auth::id()]]);
+      $user = User::getUserByID(Auth::id());
     }
     catch(Exception $e)
     {
@@ -158,7 +158,7 @@ class UserController extends Controller
     if (Hash::check($request -> currentPasswordInput, $user -> password))
     {
       User::setUser(
-        [['id', Auth::id()]],
+        Auth::id(),
         ['password' => Hash::make($request -> passwordInput)]
       );
       $info = "Password has been updated successfully!";

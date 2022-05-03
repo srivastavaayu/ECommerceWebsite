@@ -26,37 +26,25 @@ class Product extends Model
     return self::create($data);
   }
 
-  public static function getProducts($where = null, $groupBy = null, $having = null, $orderBy = null, $paginateRequired = false, $paginateItems = 3) {
+  public static function getProducts($userId = null, $categoryId = null, $isArchived = null, $orderBy = null, $paginateRequired = false, $paginateItems = 3) {
     $products = new self;
-    if ($where != null) {
-      foreach ($where as $eachWhere) {
-        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $products = $products -> where($where);
+    if ($userId != null) {
+      $products = $products -> where('user_id', $userId);
     }
-    if ($groupBy != null) {
-      foreach ($groupBy as $eachGroupBy) {
-        if (!in_array($eachGroupBy[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $products = $products -> groupBy($groupBy);
+    if ($categoryId != null) {
+      $products = $products -> where('category_id', $categoryId);
     }
-    if ($having != null) {
-      foreach ($having as $eachHaving) {
-        if (!in_array($eachHaving[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $products = $products -> having($having);
+    if ($isArchived != null) {
+      $products = $products -> where('is_archived', $isArchived);
     }
     if ($orderBy != null) {
       if (!in_array($orderBy[0], (new self) -> allAttributes)) {
         return null;
       }
       $products = $products -> orderBy($orderBy[0], $orderBy[1]);
+    }
+    if (empty($products)) {
+      return null;
     }
     if ($paginateRequired) {
       return $products -> simplePaginate($paginateItems);
@@ -66,31 +54,13 @@ class Product extends Model
     }
   }
 
-  public static function getProductsWithCustomPagination($where = null, $groupBy = null, $having = null, $orderBy = null, $skip = 0, $take = 3) {
+  public static function getProductsWithSearch($searchTerm = null, $isArchived = null, $orderBy = null) {
     $products = new self;
-    if ($where != null) {
-      foreach ($where as $eachWhere) {
-        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $products = $products -> where($where);
+    if ($searchTerm != null) {
+      $products = $products -> where('name', 'LIKE', '%'.$searchTerm.'%') -> orWhere('description', 'LIKE', '%'.$searchTerm.'%');
     }
-    if ($groupBy != null) {
-      foreach ($groupBy as $eachGroupBy) {
-        if (!in_array($eachGroupBy[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $products = $products -> groupBy($groupBy);
-    }
-    if ($having != null) {
-      foreach ($having as $eachHaving) {
-        if (!in_array($eachHaving[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $products = $products -> having($having);
+    if ($isArchived != null) {
+      $products = $products -> where('is_archived', $isArchived);
     }
     if ($orderBy != null) {
       if (!in_array($orderBy[0], (new self) -> allAttributes)) {
@@ -98,53 +68,29 @@ class Product extends Model
       }
       $products = $products -> orderBy($orderBy[0], $orderBy[1]);
     }
+    if (empty($products)) {
+      return null;
+    }
+    return $products -> get();
+  }
+
+  public static function getProductsWithCustomPagination($skip = 0, $take = 3) {
+    $products = new self;
     return $products -> skip($skip) -> take($take) -> get();
   }
 
-  public static function getProductsCount($where = null, $groupBy = null, $having = null)
+  public static function getProductsCount()
   {
     $products = new self;
-    if ($where != null) {
-      foreach ($where as $eachWhere) {
-        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $products = $products -> where($where);
-    }
-    if ($groupBy != null) {
-      foreach ($groupBy as $eachGroupBy) {
-        if (!in_array($eachGroupBy[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $products = $products -> groupBy($groupBy);
-    }
-    if ($having != null) {
-      foreach ($having as $eachHaving) {
-        if (!in_array($eachHaving[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $products = $products -> having($having);
-    }
     return $products -> count();
 
   }
 
-  public static function getProduct($where = null)
+  public static function getProduct($id = null)
   {
     $product = new self;
-    if (empty($product)) {
-      throw new Exception();
-    }
-    if ($where != null) {
-      foreach ($where as $eachWhere) {
-        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $product = $product -> where($where);
+    if ($id != null) {
+      $product = $product -> where('id', $id);
     }
     if (empty($product)) {
       return null;
@@ -152,8 +98,8 @@ class Product extends Model
     return $product -> first();
   }
 
-  public static function setProduct($where, $data) {
-    $product = Product::where($where) -> first();
+  public static function setProduct($id, $data) {
+    $product = Product::where('id', $id) -> first();
     if (!empty($product)) {
       foreach ($data as $attr => $val) {
         if (in_array($attr, (new self) -> fillable)) {

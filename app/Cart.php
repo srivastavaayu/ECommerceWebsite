@@ -38,56 +38,25 @@ class Cart extends Model {
     return $cart -> delete();
   }
 
-  public static function getCarts($where = null, $groupBy = null, $having = null, $orderBy = null, $paginateRequired = false, $paginateItems = 3) {
+  public static function getCarts($userId = null) {
     $carts = new self;
-    if ($where != null) {
-      foreach ($where as $eachWhere) {
-        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $carts = $carts -> where($where);
+    if ($userId != null) {
+      $carts = $carts -> where('user_id', $userId);
     }
-    if ($groupBy != null) {
-      foreach ($groupBy as $eachGroupBy) {
-        if (!in_array($eachGroupBy[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $carts = $carts -> groupBy($groupBy);
+    if (empty($carts)) {
+      return null;
     }
-    if ($having != null) {
-      foreach ($having as $eachHaving) {
-        if (!in_array($eachHaving[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $carts = $carts -> having($having);
-    }
-    if ($orderBy != null) {
-      if (!in_array($orderBy[0], (new self) -> allAttributes)) {
-        return null;
-      }
-      $carts = $carts -> orderBy($orderBy[0], $orderBy[1]);
-    }
-    if ($paginateRequired) {
-      return $carts -> simplePaginate($paginateItems);
-    }
-    else {
-      return $carts -> get();
-    }
+    return $carts -> get();
   }
 
-  public static function getCart($where = null)
+  public static function getCart($productId = null, $userId = null)
   {
     $cart = new self;
-    if ($where != null) {
-      foreach ($where as $eachWhere) {
-        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $cart = $cart -> where($where);
+    if ($productId != null) {
+      $cart = $cart -> where('product_id', $productId);
+    }
+    if ($userId != null) {
+      $cart = $cart -> where('user_id', $userId);
     }
     $cart = $cart -> first();
     if (empty($cart)) {
@@ -96,9 +65,9 @@ class Cart extends Model {
     return $cart;
   }
 
-  public static function setCart($where, $data)
+  public static function setCart($productId, $userId, $data)
   {
-    $cart = self::where($where) -> first();
+    $cart = self::where([['product_id', $productId], ['user_id', $userId]]) -> first();
     if (!empty($cart)) {
       foreach ($data as $attr => $val) {
         if (in_array($attr, (new self) -> fillable)) {

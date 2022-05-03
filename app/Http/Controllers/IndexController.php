@@ -13,9 +13,10 @@ class IndexController extends Controller
   {
     try
     {
-      $products = Product::getProducts(
-        [['is_archived', 0], ['user_id', '!=', Auth::id()]]
-      );
+      $products = Product::getProducts(null, null, 0);
+      // $products = Product::getProducts(
+      //   [['is_archived', 0], ['user_id', '!=', Auth::id()]]
+      // );
       $categories = Category::getCategories();
     }
     catch(Exception $e)

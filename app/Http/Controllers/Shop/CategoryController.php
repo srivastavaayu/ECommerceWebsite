@@ -6,6 +6,7 @@ use App\Product;
 use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
@@ -19,7 +20,7 @@ class CategoryController extends Controller
   {
     try
     {
-      $categories = Category::getCategories(null, null, null, null, true, 2);
+      $categories = Category::getCategories(true, 2);
     }
     catch(Exception $e)
     {
@@ -30,8 +31,17 @@ class CategoryController extends Controller
 
   public function showCategory(Request $request, $id)
   {
-    if (!is_numeric($id)) {
-      return view('404');
+    $urlParameters = [
+      'id' => $id,
+    ];
+    $validator = Validator::make($urlParameters, [
+      'id' => ['required', 'numeric', 'integer']
+    ]);
+    // if (!is_numeric($id)) {
+    //   return view('404');
+    // }
+    if ($validator->fails()) {
+      return view('422');
     }
     if ($request -> has('sort'))
     {
@@ -73,9 +83,9 @@ class CategoryController extends Controller
         return view('custom404', ['resource' => $resource, 'resourceSmall' => $resourceSmall]);
       }
       $products = Product::getProducts(
-        [['is_archived', 0], ['category_id', $id], ['user_id', '!=', Auth::id()]],
         null,
-        null,
+        $id,
+        0,
         [$this -> sortField, $this -> sortDirection],
         true,
         3

@@ -25,31 +25,10 @@ class Order extends Model {
     return self::create($data);
   }
 
-  public static function getOrders($where = null, $groupBy = null, $having = null, $orderBy = null, $paginateRequired = false, $paginateItems = 3) {
+  public static function getOrders($userId = null, $orderBy = null) {
     $orders = new self;
-    if ($where != null) {
-      foreach ($where as $eachWhere) {
-        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $orders = $orders -> where($where);
-    }
-    if ($groupBy != null) {
-      foreach ($groupBy as $eachGroupBy) {
-        if (!in_array($eachGroupBy[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $orders = $orders -> groupBy($groupBy);
-    }
-    if ($having != null) {
-      foreach ($having as $eachHaving) {
-        if (!in_array($eachHaving[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $orders = $orders -> having($having);
+    if ($userId != null) {
+      $orders = $orders -> where('user_id', $userId);
     }
     if ($orderBy != null) {
       if (!in_array($orderBy[0], (new self) -> allAttributes)) {
@@ -57,24 +36,17 @@ class Order extends Model {
       }
       $orders = $orders -> orderBy($orderBy[0], $orderBy[1]);
     }
-    if ($paginateRequired) {
-      return $orders -> simplePaginate($paginateItems);
+    if (empty($orders)) {
+      return null;
     }
-    else {
-      return $orders -> get();
-    }
+    return $orders -> get();
   }
 
-  public static function getOrder($where = null)
+  public static function getOrder($id = null)
   {
     $order = new self;
-    if ($where != null) {
-      foreach ($where as $eachWhere) {
-        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          throw new Exception();
-        }
-      }
-      $order = $order -> where($where);
+    if ($id != null) {
+      $order = $order -> where('id', $id);
     }
     if (empty($order)) {
       return null;

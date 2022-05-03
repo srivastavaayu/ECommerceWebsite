@@ -26,62 +26,16 @@ class OrderDetail extends Model
     return self::create($data);
   }
 
-  public static function getOrderDetails($where = null, $groupBy = null, $having = null, $orderBy = null, $paginateRequired = false, $paginateItems = 3)
+  public static function getOrderDetails($orderId = null)
   {
     $orderDetails = new self;
-    if ($where != null) {
-      foreach ($where as $eachWhere) {
-        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $orderDetails = $orderDetails -> where($where);
+    if ($orderId != null) {
+      $orderDetails = $orderDetails -> where('order_id', $orderId);
     }
-    if ($groupBy != null) {
-      foreach ($groupBy as $eachGroupBy) {
-        if (!in_array($eachGroupBy[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $orderDetails = $orderDetails -> groupBy($groupBy);
-    }
-    if ($having != null) {
-      foreach ($having as $eachHaving) {
-        if (!in_array($eachHaving[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $orderDetails = $orderDetails -> having($having);
-    }
-    if ($orderBy != null) {
-      if (!in_array($orderBy[0], (new self) -> allAttributes)) {
-        return null;
-      }
-      $orderDetails = $orderDetails -> orderBy($orderBy[0], $orderBy[1]);
-    }
-    if ($paginateRequired) {
-      return $orderDetails -> simplePaginate($paginateItems);
-    }
-    else {
-      return $orderDetails -> get();
-    }
-  }
-
-  public static function getOrderDetail($where = null)
-  {
-    $orderDetail = new self;
-    if ($where != null) {
-      foreach ($where as $eachWhere) {
-        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $orderDetail = $orderDetail -> where($where);
-    }
-    if (empty($orderDetail)) {
+    if (empty($orderDetails)) {
       return null;
     }
-    return $orderDetail -> first();
+    return $orderDetails -> get();
   }
 
 }

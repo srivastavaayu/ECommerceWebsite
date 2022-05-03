@@ -22,7 +22,7 @@ class CheckoutController extends Controller
   {
     try
     {
-      $cart = Cart::getCarts([['user_id', Auth::id()]]);
+      $cart = Cart::getCarts(Auth::id());
     }
     catch(Exception $e)
     {
@@ -88,7 +88,7 @@ class CheckoutController extends Controller
     $user = Auth::user();
     try
     {
-      $cart = Cart::getCarts([['user_id', Auth::id()]]);
+      $cart = Cart::getCarts(Auth::id());
       if (empty($cart)) {
         return view('404');
       }
@@ -130,7 +130,7 @@ class CheckoutController extends Controller
   public function storeCheckout(CheckoutRequest $request) {
     $user = Auth::user();
     try {
-      $cart = Cart::getCarts([['user_id', Auth::id()]]);
+      $cart = Cart::getCarts(Auth::id());
       if (empty($cart)) {
         return view('404');
       }
@@ -175,7 +175,7 @@ class CheckoutController extends Controller
     }
     foreach ($cart as $cartItem) {
       try {
-        $product = Product::getProduct([['id', $cartItem -> product_id]]);
+        $product = Product::getProduct($cartItem -> product_id);
         if (empty($product)) {
           DB::rollback();
           return view('404');
@@ -199,7 +199,7 @@ class CheckoutController extends Controller
           return view('404');
         }
         $product = Product::setProduct(
-          [['id', $cartItem -> product_id]],
+          $cartItem -> product_id,
           [
             'quantity' => (($product -> quantity) - ($cartItem -> quantity)),
             'units_sold' => (($product -> units_sold) + ($cartItem -> quantity))
@@ -219,9 +219,9 @@ class CheckoutController extends Controller
 
   public function thankYou(Request $request) {
     try {
-      $order = Order::getOrder([['id', $request -> orderId]]);
-      $user = User::getUser([['id', $order -> user_id]]);
-      $orderItems = OrderDetail::getOrderDetails([['order_id', $order -> id]]);
+      $order = Order::getOrder($request -> orderId);
+      $user = User::getUserByID($order -> user_id);
+      $orderItems = OrderDetail::getOrderDetails($order -> id);
       if (empty($order) || empty($user) || empty($orderItems)) {
         return view('404');
       }

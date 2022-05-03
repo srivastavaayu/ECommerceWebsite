@@ -26,44 +26,25 @@ class Category extends Model {
     return self::create($data);
   }
 
-  public static function getCategories($where = null, $groupBy = null, $having = null, $orderBy = null, $paginateRequired = false, $paginateItems = 3) {
+  public static function getCategories($paginateRequired = false, $paginateItems = 3) {
     $categories = new self;
-    if ($where != null) {
-      foreach ($where as $eachWhere) {
-        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $categories = $categories -> where($where);
-    }
-    if ($groupBy != null) {
-      foreach ($groupBy as $eachGroupBy) {
-        if (!in_array($eachGroupBy[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $categories = $categories -> groupBy($groupBy);
-    }
-    if ($having != null) {
-      foreach ($having as $eachHaving) {
-        if (!in_array($eachHaving[0], (new self) -> allAttributes)) {
-          return null;
-        }
-      }
-      $categories = $categories -> having($having);
-    }
-    if ($orderBy != null) {
-      if (!in_array($orderBy[0], (new self) -> allAttributes)) {
-        return null;
-      }
-      $categories = $categories -> orderBy($orderBy[0], $orderBy[1]);
-    }
     if ($paginateRequired) {
       return $categories -> simplePaginate($paginateItems);
     }
     else {
       return $categories -> get();
     }
+  }
+
+  public static function getCategoriesWithSearch($searchTerm = null) {
+    $categories = new self;
+    if ($searchTerm != null) {
+      $categories = $categories -> where('name', 'LIKE', '%'.$searchTerm.'%');
+    }
+    if (empty($categories)) {
+      return null;
+    }
+    return $categories -> get();
   }
 
   public static function getCategory($where = null) {

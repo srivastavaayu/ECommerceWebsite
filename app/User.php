@@ -28,55 +28,10 @@ class User extends Authenticatable {
     return self::create($data);
   }
 
-  public static function getUsers($where = null, $groupBy = null, $having = null, $orderBy = null, $paginateRequired = false, $paginateItems = 3) {
-    $users = new self;
-    if ($where != null) {
-      foreach ($where as $eachWhere) {
-        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          throw new Exception();
-        }
-      }
-      $users = $users -> where($where);
-    }
-    if ($groupBy != null) {
-      foreach ($groupBy as $eachGroupBy) {
-        if (!in_array($eachGroupBy[0], (new self) -> allAttributes)) {
-          throw new Exception();
-        }
-      }
-      $users = $users -> groupBy($groupBy);
-    }
-    if ($having != null) {
-      foreach ($having as $eachHaving) {
-        if (!in_array($eachHaving[0], (new self) -> allAttributes)) {
-          throw new Exception();
-        }
-      }
-      $users = $users -> having($having);
-    }
-    if ($orderBy != null) {
-      if (!in_array($orderBy[0], (new self) -> allAttributes)) {
-        throw new Exception();
-      }
-      $users = $users -> orderBy($orderBy[0], $orderBy[1]);
-    }
-    if ($paginateRequired) {
-      return $users -> simplePaginate($paginateItems);
-    }
-    else {
-      return $users -> get();
-    }
-  }
-
-  public static function getUser($where = null) {
+  public static function getUserByID($id = null) {
     $user = new self;
-    if ($where != null) {
-      foreach ($where as $eachWhere) {
-        if (!in_array($eachWhere[0], (new self) -> allAttributes)) {
-          throw new Exception();
-        }
-      }
-      $user = $user -> where($where);
+    if ($id != null) {
+      $user = $user -> where('id', $id);
     }
     if (empty($user)) {
       return null;
@@ -84,8 +39,30 @@ class User extends Authenticatable {
     return $user -> first();
   }
 
-  public static function setUser($where, $data) {
-    $user = User::where($where) -> first();
+  public static function getUserByUsername($username = null) {
+    $user = new self;
+    if ($username != null) {
+      $user = $user -> where('username', $username);
+    }
+    if (empty($user)) {
+      return null;
+    }
+    return $user -> first();
+  }
+
+  public static function getUserByName($name = null) {
+    $user = new self;
+    if ($name != null) {
+      $user = $user -> where('name', $name);
+    }
+    if (empty($user)) {
+      return null;
+    }
+    return $user -> first();
+  }
+
+  public static function setUser($id, $data) {
+    $user = User::where('id', $id) -> first();
     if (!empty($user)) {
       foreach ($data as $attr => $val) {
         if (in_array($attr, (new self) -> fillable)) {
