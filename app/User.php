@@ -16,6 +16,14 @@ class User extends Authenticatable {
     protected $allAttributes = ['id', 'name', 'email', 'phone_number', 'username', 'password', 'created_at', 'updated_at', 'deleted_at'];
 
 
+  /**
+   * It takes an array of data, checks if the data is empty, checks if the data is fillable, and then
+   * creates the data
+   *
+   * @param data The data to be added to the database.
+   *
+   * @return A new user is being created.
+   */
   public static function addUser($data) {
     if (empty($data)) {
       return null;
@@ -28,6 +36,13 @@ class User extends Authenticatable {
     return self::create($data);
   }
 
+  /**
+   * It returns the user with the given id.
+   *
+   * @param id The id of the user you want to get.
+   *
+   * @return The first user in the database.
+   */
   public static function getUserByID($id = null) {
     $user = new self;
     if ($id != null) {
@@ -39,6 +54,13 @@ class User extends Authenticatable {
     return $user -> first();
   }
 
+  /**
+   * > This function returns a user object if the username is found in the database
+   *
+   * @param username The username of the user you want to get.
+   *
+   * @return The first user with the username that is passed in.
+   */
   public static function getUserByUsername($username = null) {
     $user = new self;
     if ($username != null) {
@@ -50,6 +72,13 @@ class User extends Authenticatable {
     return $user -> first();
   }
 
+  /**
+   * > This function returns a user object based on the name of the user
+   *
+   * @param name The name of the user you want to get.
+   *
+   * @return The first user with the name .
+   */
   public static function getUserByName($name = null) {
     $user = new self;
     if ($name != null) {
@@ -61,6 +90,15 @@ class User extends Authenticatable {
     return $user -> first();
   }
 
+  /**
+   * > It takes an id and an array of data, finds the user with that id, and updates the user with the
+   * data
+   *
+   * @param id The id of the user you want to update.
+   * @param data an array of attributes and values to be updated
+   *
+   * @return The user object is being returned.
+   */
   public static function setUser($id, $data) {
     $user = User::where('id', $id) -> first();
     if (!empty($user)) {

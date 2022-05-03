@@ -76,7 +76,7 @@ class CategoryController extends Controller
     }
     try
     {
-      $category = Category::getCategory([['id', $id]]);
+      $category = Category::getCategory($id);
       if (empty($category)) {
         $resource = "Category";
         $resourceSmall = "category";

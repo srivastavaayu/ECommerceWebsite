@@ -14,6 +14,14 @@ class OrderDetail extends Model
   protected $fillable = ['user_id', 'order_id', 'item_id', 'quantity'];
   protected $allAttributes = ['id', 'user_id', 'order_id', 'item_id', 'quantity', 'created_at', 'updated_at', 'deleted_at'];
 
+  /**
+   * It takes an array of data, checks if the data is empty, checks if the data is fillable, and then
+   * creates the data
+   *
+   * @param data The data to be added to the database.
+   *
+   * @return An instance of the OrderDetail class.
+   */
   public static function addOrderDetail($data) {
     if (empty($data)) {
       return null;
@@ -26,6 +34,13 @@ class OrderDetail extends Model
     return self::create($data);
   }
 
+  /**
+   * It returns the order details for a given order id
+   *
+   * @param orderId The order id of the order you want to get the details for.
+   *
+   * @return An array of objects.
+   */
   public static function getOrderDetails($orderId = null)
   {
     $orderDetails = new self;

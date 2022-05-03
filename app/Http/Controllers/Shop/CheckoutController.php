@@ -209,7 +209,7 @@ class CheckoutController extends Controller
           DB::rollback();
           return view('404');
         }
-        $cart = Cart::removeCart([['id', $cartItem -> id]]);
+        $cart = Cart::removeCartByID($cartItem -> id);
         DB::commit();
       }
     }

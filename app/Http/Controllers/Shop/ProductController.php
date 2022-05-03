@@ -97,7 +97,7 @@ class ProductController extends Controller
         $resourceSmall = "product";
         return view('custom404', ['resource' => $resource, 'resourceSmall' => $resourceSmall]);
       }
-      $category = Category::getCategory([['id', $product -> category_id]]);
+      $category = Category::getCategory($product -> category_id);
       $cart = Cart::getCart($id, Auth::id());
     }
     catch(Exception $e)
@@ -160,7 +160,7 @@ class ProductController extends Controller
     }
     try
     {
-      Cart::removeCart([['product_id', (int)$id], ['user_id', Auth::id()]]);
+      Cart::removeCartByProductAndUserInfo((int)$id, Auth::id());
     }
     catch(Exception $e)
     {
