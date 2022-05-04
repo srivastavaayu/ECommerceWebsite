@@ -24,7 +24,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="AddNewCategoryForm" method="POST" action="/inventory/product/new-product">
+            <form id="AddNewCategoryForm" method="POST" action="/inventory/product/{{ $product -> id }}">
               {{ csrf_field() }}
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="CategoryNameInput" name="CategoryNameInput" placeholder="Category Name" value="{{ old('CategoryNameInput') }}" required>

@@ -43,11 +43,13 @@ Route::middleware(['checkAuthorization']) -> prefix('inventory') -> group(functi
 
   Route::patch('product', 'Inventory\ProductController@storeProducts');
 
-  Route::get('product/new-product', 'Inventory\ProductController@showAddNewProduct');
+  Route::get('product/product', 'Inventory\ProductController@showAddNewProduct');
 
-  Route::post('product/new-product', 'Inventory\ProductController@storeAddNewProduct');
+  Route::post('product/product', 'Inventory\ProductController@storeAddNewProduct');
 
   Route::get('product/{id}', 'Inventory\ProductController@showProduct');
+
+  Route::post('product/{id}', 'Inventory\ProductController@storeCategory');
 
   Route::put('product/{id}', 'Inventory\ProductController@storeProduct');
 

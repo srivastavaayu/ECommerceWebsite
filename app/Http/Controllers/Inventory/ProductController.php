@@ -170,6 +170,56 @@ class ProductController extends Controller
     return view('inventory/product', ['product' => $product, 'categories' => $categories, 'info' => $info]);
   }
 
+  public function storeCategory(Request $request, $id)
+  {
+    $urlParameters = [
+      'id' => $id,
+    ];
+    $validator = Validator::make($urlParameters, [
+      'id' => ['required', 'numeric', 'integer']
+    ]);
+    // if (!is_numeric($id)) {
+    //   return view('404');
+    // }
+    if ($validator->fails()) {
+      return view('422');
+    }
+    $info = "";
+    if ($request -> action == "AddNewCategory")
+    {
+      try
+      {
+        $category = Category::addCategory(
+          [
+            'name' => $request -> CategoryNameInput,
+            'description' => $request -> CategoryDescriptionInput
+          ]
+        );
+        if (empty($category)) {
+          return view('404');
+        }
+      }
+      catch(Exception $e)
+      {
+        return view('500');
+      }
+      $info = "Category added successfully!";
+    }
+    try
+    {
+      $product = Product::getProduct($id);
+      $categories = Category::getCategories();
+      if (empty($product) || ($product -> user_id != Auth::id()) || empty($categories)) {
+        return view('404');
+      }
+    }
+    catch(Exception $e)
+    {
+      return view('500');
+    }
+    return view('inventory/product', ['product' => $product, 'categories' => $categories, 'info' => $info]);
+  }
+
   public function storeProduct(ProductRequest $request, $id)
   {
     $urlParameters = [
@@ -288,7 +338,7 @@ class ProductController extends Controller
       {
         return view('500');
       }
-      return redirect('/inventory/product/new-product');
+      return redirect('/inventory/product/product');
     }
     else {
       if ($request -> hasFile('productImageInput'))

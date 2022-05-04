@@ -23,7 +23,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="AddNewCategoryForm" method="POST" action="/inventory/product/new-product">
+            <form id="AddNewCategoryForm" method="POST" action="/inventory/product/product">
               {{ csrf_field() }}
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="CategoryNameInput" name="CategoryNameInput" placeholder="Category Name" value="{{ old('CategoryNameInput') }}" required>
@@ -54,7 +54,7 @@
         @endforeach
       @endif
 
-      <form method="POST" enctype="multipart/form-data" action="/inventory/product/new-product">
+      <form method="POST" enctype="multipart/form-data" action="/inventory/product/product">
         {{ csrf_field() }}
         <div class="input-group form-floating mb-3">
           <select class="form-select" id="categoryInput" name="categoryInput" placeholder="Category" value="{{ old('categoryInput') }}" required>
