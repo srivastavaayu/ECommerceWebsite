@@ -75,6 +75,22 @@ class Product extends Model
     }
   }
 
+  /**
+   * It returns a collection of products based on the parameters passed to it
+   *
+   * @param categoryId The id of the category you want to filter by.
+   * @param isArchived If you want to get all the products that are archived, set this to 1. If you
+   * want to get all the products that are not archived, set this to 0. If you want to get all the
+   * products, set this to null.
+   * @param loggedInUserId This is the id of the user who is logged in. This is used to exclude the
+   * products of the logged in user from the list of products.
+   * @param orderBy This is an array of two elements. The first element is the column name and the
+   * second element is the order.
+   * @param paginateRequired If you want to paginate the results, set this to true.
+   * @param paginateItems The number of items to be displayed per page.
+   *
+   * @return A collection of products.
+   */
   public static function getClientProducts($categoryId = null, $isArchived = null, $loggedInUserId = null, $orderBy = null, $paginateRequired = false, $paginateItems = 3) {
     $products = new self;
     if ($loggedInUserId != null) {

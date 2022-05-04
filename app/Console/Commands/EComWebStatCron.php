@@ -40,9 +40,7 @@ class EComWebStatCron extends Command
     public function handle()
     {
 
-      echo "hey";
       $products = Product::getProductsCount();
-      echo $products;
       if ($products > 0) {
         $maxUnitsSoldProduct = Product::getProducts();
         $maxUnitsSoldProductID = $maxUnitsSoldProduct[0] -> id;
@@ -53,7 +51,6 @@ class EComWebStatCron extends Command
             $maxUnitsSoldProductUnitsSold = $product -> units_sold;
           }
         }
-        echo $maxUnitsSoldProductID, $maxUnitsSoldProductUnitsSold;
         if ($maxUnitsSoldProductUnitsSold != 0) {
           EComWebStat::addEComWebStat(['product_id' => $maxUnitsSoldProductID, 'units_sold' => $maxUnitsSoldProductUnitsSold]);
         } else {
