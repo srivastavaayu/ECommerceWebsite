@@ -13,7 +13,7 @@ class IndexController extends Controller
   {
     try
     {
-      $products = Product::getProducts(null, null, 0);
+      $products = Product::getClientProducts(null, 0, Auth::id());
       // $products = Product::getProducts(
       //   [['is_archived', 0], ['user_id', '!=', Auth::id()]]
       // );

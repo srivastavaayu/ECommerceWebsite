@@ -82,10 +82,10 @@ class CategoryController extends Controller
         $resourceSmall = "category";
         return view('custom404', ['resource' => $resource, 'resourceSmall' => $resourceSmall]);
       }
-      $products = Product::getProducts(
-        null,
+      $products = Product::getClientProducts(
         $id,
         0,
+        Auth::id(),
         [$this -> sortField, $this -> sortDirection],
         true,
         3

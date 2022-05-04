@@ -54,10 +54,10 @@ class ProductController extends Controller
     }
     try
     {
-      $products = Product::getProducts(
-        null,
+      $products = Product::getClientProducts(
         null,
         0,
+        Auth::id(),
         [$this -> sortField, $this -> sortDirection],
         true,
         3
@@ -92,7 +92,7 @@ class ProductController extends Controller
     try
     {
       $product = Product::getProduct($id);
-      if (empty($product) /*|| $product -> user_id == Auth::id()*/) {
+      if (empty($product) || $product -> user_id == Auth::id()) {
         $resource = "Product";
         $resourceSmall = "product";
         return view('custom404', ['resource' => $resource, 'resourceSmall' => $resourceSmall]);

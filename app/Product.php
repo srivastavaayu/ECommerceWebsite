@@ -75,6 +75,34 @@ class Product extends Model
     }
   }
 
+  public static function getClientProducts($categoryId = null, $isArchived = null, $loggedInUserId = null, $orderBy = null, $paginateRequired = false, $paginateItems = 3) {
+    $products = new self;
+    if ($loggedInUserId != null) {
+      $products = $products -> where('user_id', '!=', $loggedInUserId);
+    }
+    if ($categoryId != null) {
+      $products = $products -> where('category_id', $categoryId);
+    }
+    if ($isArchived != null) {
+      $products = $products -> where('is_archived', $isArchived);
+    }
+    if ($orderBy != null) {
+      if (!in_array($orderBy[0], (new self) -> allAttributes)) {
+        return null;
+      }
+      $products = $products -> orderBy($orderBy[0], $orderBy[1]);
+    }
+    if (empty($products)) {
+      return null;
+    }
+    if ($paginateRequired) {
+      return $products -> simplePaginate($paginateItems);
+    }
+    else {
+      return $products -> get();
+    }
+  }
+
   /**
    * It returns a collection of products that match the search term, is archived status, and order by
    * parameters

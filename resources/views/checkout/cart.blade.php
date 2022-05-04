@@ -20,7 +20,7 @@
       <a href="{{ url()->previous() }}"><button type="button" class="btn btn-primary">&larr; Back</button></a>
       <h2 class="text-center mb-4">Cart</h2>
 
-      @if ($cart -> count() <= 0)
+      @if ($cart -> count() <= 0 || $cartTotal == 0)
         <div class="d-flex flex-column justify-content-center">
           <h3 class="text-center">Cart is empty!</h3>
         </div>

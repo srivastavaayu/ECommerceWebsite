@@ -54,7 +54,6 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarSellDropdown">
               <li><a class="dropdown-item" href="/inventory/product">Products</a></li>
-              <li><a class="dropdown-item" href="/inventory/warehouse">Warehouses</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">

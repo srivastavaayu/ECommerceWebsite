@@ -16,7 +16,7 @@ class SearchController extends Controller
     $searchTerm = "";
     try
     {
-      $products = Product::getProducts();
+      $products = Product::getClientProducts(null, null, Auth::id());
       $categories = Category::getCategories();
     }
     catch(Exception $e)

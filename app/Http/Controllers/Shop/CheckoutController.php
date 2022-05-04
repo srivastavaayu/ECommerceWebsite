@@ -36,7 +36,7 @@ class CheckoutController extends Controller
       $cartProducts[$cartItem -> product_id] = $cartItem -> quantity;
     }
     try {
-      $products = Product::getProducts();
+      $products = Product::getClientProducts(null, null, Auth::id());
     }
     catch(Exception $e) {
       return view('500');
